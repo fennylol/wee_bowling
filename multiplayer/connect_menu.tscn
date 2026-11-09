@@ -1,0 +1,224 @@
+[gd_scene format=3 uid="uid://do53qj7jk7esd"]
+
+[node name="ConnectMenu" type="HBoxContainer" unique_id=13288426]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="spacer" type="Control" parent="." unique_id=1452459821]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.25
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1837260711]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="spacer8" type="Control" parent="VBoxContainer" unique_id=136568027]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.2
+
+[node name="Label" type="Label" parent="VBoxContainer" unique_id=1636921487]
+layout_mode = 2
+text = "The Scariest Main Menu You've Ever Seen"
+horizontal_alignment = 1
+
+[node name="spacer9" type="Control" parent="VBoxContainer" unique_id=1848617427]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=1197044250]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 5.0
+
+[node name="YourInfo" type="VBoxContainer" parent="VBoxContainer/HBoxContainer" unique_id=680828620]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 10.0
+
+[node name="WAN_vs_LAN_box" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/YourInfo" unique_id=1386407957]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+
+[node name="global_button" type="Button" parent="VBoxContainer/HBoxContainer/YourInfo/WAN_vs_LAN_box" unique_id=712101999]
+layout_mode = 2
+size_flags_horizontal = 3
+disabled = true
+text = "Play Globally
+"
+
+[node name="spacer" type="Control" parent="VBoxContainer/HBoxContainer/YourInfo/WAN_vs_LAN_box" unique_id=1574151843]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.05
+
+[node name="local_button" type="Button" parent="VBoxContainer/HBoxContainer/YourInfo/WAN_vs_LAN_box" unique_id=1590002401]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Play Locally"
+
+[node name="spacer5" type="Control" parent="VBoxContainer/HBoxContainer/YourInfo" unique_id=2072007868]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="Host_vs_Client_box" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/YourInfo" unique_id=795674627]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+
+[node name="client_button" type="Button" parent="VBoxContainer/HBoxContainer/YourInfo/Host_vs_Client_box" unique_id=576900257]
+layout_mode = 2
+size_flags_horizontal = 3
+disabled = true
+text = "Join
+"
+
+[node name="spacer" type="Control" parent="VBoxContainer/HBoxContainer/YourInfo/Host_vs_Client_box" unique_id=2004787308]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.05
+
+[node name="host_button" type="Button" parent="VBoxContainer/HBoxContainer/YourInfo/Host_vs_Client_box" unique_id=2011580050]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Host"
+
+[node name="spacer2" type="Control" parent="VBoxContainer/HBoxContainer/YourInfo" unique_id=421277097]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="IP_info" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/YourInfo" unique_id=718756249]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+
+[node name="IP_label" type="Label" parent="VBoxContainer/HBoxContainer/YourInfo/IP_info" unique_id=687741824]
+layout_mode = 2
+size_flags_horizontal = 6
+text = "PEE.POO.CUM.POO:WEINER"
+
+[node name="copy_IP_button" type="Button" parent="VBoxContainer/HBoxContainer/YourInfo/IP_info" unique_id=1307268099]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.4
+text = "copy IP
+"
+
+[node name="spacer" type="Control" parent="VBoxContainer/HBoxContainer/YourInfo" unique_id=458992889]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="id_info" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/YourInfo" unique_id=529617953]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+
+[node name="ID_label" type="Label" parent="VBoxContainer/HBoxContainer/YourInfo/id_info" unique_id=390847983]
+layout_mode = 2
+size_flags_horizontal = 6
+text = "80085"
+
+[node name="copy_ID_button" type="Button" parent="VBoxContainer/HBoxContainer/YourInfo/id_info" unique_id=1712719287]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.4
+text = "copy ID"
+
+[node name="spacer4" type="Control" parent="VBoxContainer/HBoxContainer/YourInfo" unique_id=880933413]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 8.6
+
+[node name="name_box" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/YourInfo" unique_id=233220469]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+
+[node name="name_box" type="LineEdit" parent="VBoxContainer/HBoxContainer/YourInfo/name_box" unique_id=1818026537]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+placeholder_text = "Your Name Here"
+max_length = 25
+
+[node name="set_name_button" type="Button" parent="VBoxContainer/HBoxContainer/YourInfo/name_box" unique_id=1781356594]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+text = "change name"
+
+[node name="spacer3" type="Control" parent="VBoxContainer/HBoxContainer" unique_id=1090649834]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TheirInfo" type="VBoxContainer" parent="VBoxContainer/HBoxContainer" unique_id=1746596909]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 10.0
+
+[node name="quit_button" type="Button" parent="VBoxContainer/HBoxContainer/TheirInfo" unique_id=1503336351]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.3
+disabled = true
+text = "exit lobby"
+
+[node name="spacer7" type="Control" parent="VBoxContainer/HBoxContainer/TheirInfo" unique_id=1633925559]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="peer_list" type="TextEdit" parent="VBoxContainer/HBoxContainer/TheirInfo" unique_id=161763713]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 10.0
+placeholder_text = "no connections..."
+editable = false
+wrap_mode = 1
+
+[node name="target_ip_box" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/TheirInfo" unique_id=243243047]
+layout_mode = 2
+
+[node name="target_IP_box" type="LineEdit" parent="VBoxContainer/HBoxContainer/TheirInfo/target_ip_box" unique_id=77419116]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+placeholder_text = "your friend's IP goes here"
+
+[node name="connect_button" type="Button" parent="VBoxContainer/HBoxContainer/TheirInfo/target_ip_box" unique_id=1700404570]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+text = "connect"
+
+[node name="spacer7" type="Control" parent="VBoxContainer" unique_id=39651765]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="ready_button" type="Button" parent="VBoxContainer" unique_id=1485044988]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.3
+text = "ready"
+
+[node name="spacer6" type="Control" parent="VBoxContainer" unique_id=2075749329]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.2
+
+[node name="spacer2" type="Control" parent="." unique_id=249199528]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.25

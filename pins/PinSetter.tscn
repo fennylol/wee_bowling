@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://b6j7x5q81xbgx"]
+
+[ext_resource type="Script" uid="uid://ty6gqo2ifypq" path="res://pins/pin_setter.gd" id="1_y0qho"]
+
+[node name="PinSetter" type="Node3D" unique_id=247713855]
+script = ExtResource("1_y0qho")

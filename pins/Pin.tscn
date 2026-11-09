@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://de3pmu83pdcbq"]
+
+[ext_resource type="ArrayMesh" uid="uid://c5u54vaylhsus" path="res://pins/pin_mesh.tres" id="1_8k0n7"]
+[ext_resource type="Texture2D" uid="uid://cjefky1tlf7j" path="res://pins/pin.png" id="1_g20kd"]
+[ext_resource type="Script" uid="uid://d1d7a2ady3jhi" path="res://pins/pin.gd" id="1_nx0ib"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_3uk5a"]
+bounce = 0.75
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nx0ib"]
+albedo_texture = ExtResource("1_g20kd")
+texture_filter = 0
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_bsava"]
+height = 1.125
+radius = 0.18
+
+[node name="Pin" type="RigidBody3D" unique_id=2058885192]
+mass = 1.5
+physics_material_override = SubResource("PhysicsMaterial_3uk5a")
+center_of_mass_mode = 1
+center_of_mass = Vector3(0, 0.33, 0)
+linear_damp = 0.95
+angular_damp = 0.1
+script = ExtResource("1_nx0ib")
+
+[node name="PinMesh" type="MeshInstance3D" parent="." unique_id=1993604312]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+material_override = SubResource("StandardMaterial3D_nx0ib")
+mesh = ExtResource("1_8k0n7")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=850474721]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.562, 0)
+shape = SubResource("CylinderShape3D_bsava")

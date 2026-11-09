@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://dhklqs0eyw4da"]
+
+[ext_resource type="Script" uid="uid://ckc2co82s4de0" path="res://5_global_utility/managers/multiplayer_manager/multiplayer_manager.gd" id="1_1ai7x"]
+[ext_resource type="PackedScene" uid="uid://do53qj7jk7esd" path="res://5_global_utility/managers/multiplayer_manager/connect_menu/connect_menu.tscn" id="2_i4uy1"]
+
+[node name="MultiplayerManager" type="Node" unique_id=1314530488]
+script = ExtResource("1_1ai7x")
+
+[node name="ConnectMenu" parent="." unique_id=13288426 instance=ExtResource("2_i4uy1")]

@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://cx041c1wlad1i"]
+
+[ext_resource type="Script" uid="uid://cwgqpucbdolkl" path="res://ball/ball.gd" id="1_3uk5a"]
+[ext_resource type="ArrayMesh" uid="uid://cvmqh7dcn2ss7" path="res://ball/ball_mesh.tres" id="2_3uk5a"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_3uk5a"]
+friction = 0.0
+bounce = 0.5
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_bsava"]
+radius = 0.25
+
+[node name="Ball" type="RigidBody3D" unique_id=409190505]
+mass = 30.0
+physics_material_override = SubResource("PhysicsMaterial_3uk5a")
+gravity_scale = 3.0
+script = ExtResource("1_3uk5a")
+
+[node name="BallMesh" type="MeshInstance3D" parent="." unique_id=1150285554]
+mesh = ExtResource("2_3uk5a")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=643895596]
+shape = SubResource("SphereShape3D_bsava")
