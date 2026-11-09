@@ -5,6 +5,7 @@ const BALL_TEXTURE := preload("res://ball/ball.png")
 const QUEUE_TIME: float = 5.0
 
 const KILL_DEPTH: float = -5.0
+const KILL_DIST : float = 3.0 
 
 const MAX_WEIGHT: float = 100.0
 const MIN_WEIGHT: float = 5.0
@@ -15,10 +16,13 @@ signal cleared()
 
 @onready var BallMesh: MeshInstance3D = $BallMesh
 
+var ParentBallMachine: BallMachine
 var QueueTime: float = QUEUE_TIME
 var Cleared: bool = false
 
 func _ready() -> void:
+   super()
+   
    var attribute_a: float = randf()
    var attribute_b: float = randf_range(0.5,0.8)
    
@@ -38,6 +42,10 @@ func _ready() -> void:
    set_name("Ball_" + str(int(attribute_a*100)) + "_" + str(int(attribute_b)))
    
 func _process(_delta: float) -> void:
-   if position.y < KILL_DEPTH:
+   if (abs(global_position.distance_to(ParentBallMachine.global_position)) > KILL_DIST\
+   and linear_velocity.length() < 0.5 and angular_velocity.length() < 0.1 ) \
+   or position.y < KILL_DEPTH:
       cleared.emit()
+
+      
    

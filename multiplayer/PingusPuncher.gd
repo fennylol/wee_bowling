@@ -1,10 +1,13 @@
 extends Node
-class_name OneTruePingus
-## utility class for managing and communicating with an arbitrary amount of 
-## multiplayer connections.[br][br]
+class_name PingusPuncher
+## connection-establishing half of [OneTruePingus]: discovers the external
+## address, punches through NAT to an arbitrary amount of peers, and keeps the
+## holes open. it does not carry application data. once peers are connected,
+## free this node to release the socket and bind another transport (e.g. ENet)
+## to [member LocalPort].[br][br]
 ## see also: [br]
-## [OneTruePingus.STUNGopher][br]
-## [OneTruePingus.PingusPeer]
+## [PingusPuncher.AddressGopher][br]
+## [PingusPuncher.PingusPeer]
 ## [codeblock]
 ## WORK LEFT TO DO:
 ## 1. enable LAN/WAN cross connections
@@ -14,18 +17,15 @@ class_name OneTruePingus
 # ========= #
 # constants #
 # ========= #
-## the only reserved data type. used internally when sending control data through [method send_data]
-enum  DataTypes    {CONTROL = 0xC0}
 ## the current state of the connection to each peer
 enum  PingusStates {NOT_STARTED, INFORMING, CONNECTED}
-## the type of pingus being sent/recieved. used internally
+## the type of pingus being sent/recieved. used internally. DATA is kept so
+## packet values match [OneTruePingus], but is never sent or handled here.
 enum  PingusTypes  {INFORM = 0x1EF0, KEEPALIVE = 0x8EE9, DATA = 0xDA7A}
 ## size in bytes of a [member NetworkID]. see [constant HEADER_SIZE]
 const NETWORK_ID_SIZE : int   = 4
-## size in bytes of a [OneTruePingus.PingusPeer]'s network port
+## size in bytes of a [PingusPuncher.PingusPeer]'s network port
 const PORT_SIZE       : int   = 2
-## size in bytes of user defined data types. see [method send_data] and [signal recieved_data]
-const DATA_TYPE_SIZE  : int   = 1
 ## size in bytes of the internally defined and used [enum PingusTypes]. 
 const PINGUS_TYPE_SIZE: int   = 2
 ## header layout: [lb]pkt [enum PingusType] u16[rb][lb]sender's [member NetworkID]
@@ -35,12 +35,12 @@ const HEADER_SIZE     : int   = PINGUS_TYPE_SIZE + NETWORK_ID_SIZE + NETWORK_ID_
 const _RETRY_TIME     : float = 0.5
 const _MAX_RETRIES    : int   = 5
 const _KEEP_ALIVE_TIME: float = 5.0
-const _TIMEOUT_TIME   : float = 30.0
+const _TIMEOUT_TIME   : float = 60.0
 const _TWO_GENERALS   : int   = 0x26E1
 # ========= #
 # variables #
 # ========= #
-## all connected [OneTruePingus.PingusPeer]s
+## all connected [PingusPuncher.PingusPeer]s
 var Peers      : Array[PingusPeer] = []
 ## the external facing address on our router
 var ExternAddr : String            = "":
@@ -72,64 +72,59 @@ var LocalPort  : int               = 0:
       LocalPort = _Udp.get_local_port()
       return _Udp.get_local_port()
 var _Udp            : PacketPeerUDP     = PacketPeerUDP.new()
-var _SprayRate      : int               = 10
+var _SprayRate      : int               = 100
 var _RetryCount     : int               = 0
 var _FetchingAddress: bool              = false
 # ======= #
 # signals #
 # ======= #
-## emitted when a packet or control signal is recieved. if it is an internal control 
-## signal, [param data_type] will be [enum DataTypes].CONTROL and [param data] 
-## will be a [String]. in all other cases, [b][param data_type] should be an enum
-## value defined by the application using OneTruePingus[/b][br]see [constant DATA_TYPE_SIZE]
-## and [constant HEADER_SIZE]
-signal recieved_data(sender_id: int, data_type: int, data: PackedByteArray)
-## emitted when a [OneTruePingus.PingusPeer] reaches the [enum PingusStates].CONNECTED status
+signal control_emitted(msg: String)
+## emitted when a [PingusPuncher.PingusPeer] reaches the [enum PingusStates].CONNECTED status
 signal connection_established(sender_id: int, address: String, port: int)
 # ===== #
 # setup #
 # ===== #
-func _init(external_address: String = "", network_id: int = 0) -> void:
+func _init(external_address: String = "", network_id: int = 0, custom_stun_addr: String = "") -> void:
    NetworkID = network_id
    ExternAddr = external_address
    var bind_err = _Udp.bind(0)
-   if bind_err != OK: _emit_control("ERROR: OneTruePingus failed to bind UDP socket"); return
+   if bind_err != OK: control_emitted.emit("ERROR: PingusPuncher failed to bind UDP socket"); return
    if NetworkID  == 0: _discover_network_id()
-   if ExternAddr == "": _discover_address()
+   if ExternAddr == "": _discover_address(custom_stun_addr)
 func _discover_network_id() -> void:
    while NetworkID == 0:
       seed(((Time.get_unix_time_from_system()*100000)+_Udp.get_local_port()) as int)
       NetworkID = randi()
-func _discover_address() -> void:
+func _discover_address(custom_stun_addr: String = "") -> void:
    _FetchingAddress = true
-   var gopher := STUNGopher.new(_Udp)
+   var ag := AddressGopher.new(_Udp, custom_stun_addr)
 
-   gopher.info_fetching_complete.connect(
-      func(result: STUNGopher.InfoFetchingResults, address: String = "", port: int = 0):
+   ag.info_fetching_complete.connect(
+      func(result: AddressGopher.InfoFetchingResults, address: String = "", port: int = 0):
          var retry_on_fail: Callable = func(err_str: String):
             _RetryCount += 1
             if _RetryCount < _MAX_RETRIES:
-               _emit_control(err_str + " Retrying...")
+               control_emitted.emit(err_str + " Retrying...")
                await get_tree().create_timer(_RETRY_TIME).timeout
-               gopher.attempt_info_fetch()
+               ag.attempt_info_fetch()
             else:
                _FetchingAddress = false
-               _emit_control(err_str + " Aborting...")
+               control_emitted.emit(err_str + " Aborting...")
          match result:
-            STUNGopher.InfoFetchingResults.OK:
+            AddressGopher.InfoFetchingResults.OK:
                _FetchingAddress = false
                ExternAddr = address
                ExternPort = port
-               _emit_control("External address: " + ExternAddr + ":" + str(ExternPort))
-            STUNGopher.InfoFetchingResults.BAD_SERVER_LIST_RESULT  : retry_on_fail.call("BAD_SERVER_LIST_RESULT")
-            STUNGopher.InfoFetchingResults.BAD_SERVER_LIST_RESPONSE: retry_on_fail.call("BAD_SERVER_LIST_RESPONSE")
-            STUNGopher.InfoFetchingResults.BAD_SERVER_LIST_DATA    : retry_on_fail.call("BAD_SERVER_LIST_DATA")
-            STUNGopher.InfoFetchingResults.BAD_STUN_RESULT         : retry_on_fail.call("BAD_STUN_RESULT")
-            STUNGopher.InfoFetchingResults.BAD_STUN_RESPONSE       : retry_on_fail.call("BAD_STUN_RESPONSE")
-            STUNGopher.InfoFetchingResults.BAD_STUN_DATA           : retry_on_fail.call("BAD_STUN_DATA")
+               control_emitted.emit("External address: " + ExternAddr + ":" + str(ExternPort))
+            AddressGopher.InfoFetchingResults.BAD_SERVER_LIST_RESULT  : retry_on_fail.call("BAD_SERVER_LIST_RESULT")
+            AddressGopher.InfoFetchingResults.BAD_SERVER_LIST_RESPONSE: retry_on_fail.call("BAD_SERVER_LIST_RESPONSE")
+            AddressGopher.InfoFetchingResults.BAD_SERVER_LIST_DATA    : retry_on_fail.call("BAD_SERVER_LIST_DATA")
+            AddressGopher.InfoFetchingResults.BAD_STUN_RESULT         : retry_on_fail.call("BAD_STUN_RESULT")
+            AddressGopher.InfoFetchingResults.BAD_STUN_RESPONSE       : retry_on_fail.call("BAD_STUN_RESPONSE")
+            AddressGopher.InfoFetchingResults.BAD_STUN_DATA           : retry_on_fail.call("BAD_STUN_DATA")
    )
-   gopher.set_name("STUNGopher")
-   add_child(gopher)
+   ag.set_name("AddressGopher")
+   add_child(ag)
 # =============== #
 # actual function #
 # =============== #
@@ -147,7 +142,7 @@ func add_peer(target_addr: String, target_port: int, target_id: int = 0) -> void
    var peer   := PingusPeer.new(target_addr, target_port, target_id)
    peer.State  = PingusStates.INFORMING
    Peers.append(peer)
-   _emit_control("Attempting to connect to " + target_addr + ":" + str(target_port))
+   control_emitted.emit("Attempting to connect to " + target_addr + ":" + str(target_port))
 func _process(delta: float) -> void:
    if ExternAddr == "" or ExternPort == -1 or NetworkID == 0: return
 
@@ -158,7 +153,7 @@ func _process(delta: float) -> void:
       var from_port  = _Udp.get_packet_port()
       if Peers.is_empty(): continue
       # decode and validate packet
-      if pkt.size() < HEADER_SIZE: _emit_control("ERROR: undersized packet"); continue
+      if pkt.size() < HEADER_SIZE: control_emitted.emit("ERROR: undersized packet"); continue
       var pkt_type : int = pkt.decode_u16(0)
       var sender_id: int = pkt.decode_u32(PINGUS_TYPE_SIZE)
       var target_id: int = pkt.decode_u32(PINGUS_TYPE_SIZE + NETWORK_ID_SIZE)
@@ -166,33 +161,29 @@ func _process(delta: float) -> void:
       if target_id != 0 and target_id != NetworkID: continue
       # locate peer
       var peer = _find_peer(from_addr, from_port, sender_id)
-      if peer == null: _emit_control("ERROR: packet from unknown peer " + from_addr + ":" + str(from_port)); continue
+      if peer == null: control_emitted.emit("ERROR: packet from unknown peer " + from_addr + ":" + str(from_port)); continue
       if peer.NetworkID == 0 and sender_id != 0: peer.NetworkID = sender_id
       # handle packet
       match peer.State:
          PingusStates.INFORMING:
-            if pkt_type != PingusTypes.INFORM: _emit_control("ERROR: incorrect packet type while informing"); continue
-            if pkt.size() < HEADER_SIZE + PORT_SIZE: _emit_control("ERROR: INFORM packet too small for port"); continue
+            if pkt_type != PingusTypes.INFORM: control_emitted.emit("ERROR: incorrect packet type while informing"); continue
+            if pkt.size() < HEADER_SIZE + PORT_SIZE: control_emitted.emit("ERROR: INFORM packet too small for port"); continue
             peer.State = PingusStates.CONNECTED
-            peer.clear_timers()
-            _emit_control("Established connection to " + str(sender_id) + " (" + from_addr + ":" + str(from_port) + ")", sender_id)
+            peer.TimeSincePkt = 0.0
+            control_emitted.emit("Established connection to " + str(sender_id) + " (" + from_addr + ":" + str(from_port) + ")")
             _inform_peer(peer, delta)
             connection_established.emit(sender_id, from_addr, from_port)
          PingusStates.CONNECTED:
-            if from_addr != peer.Addr or from_port != peer.Port: _emit_control("ERROR: packet from unidentified source"); continue
-            if sender_id != peer.NetworkID or (target_id != 0 and target_id != NetworkID): _emit_control("ERROR: packet signed by unidentified sender"); continue
+            if from_addr != peer.Addr or from_port != peer.Port: control_emitted.emit("ERROR: packet from unidentified source"); continue
+            if sender_id != peer.NetworkID or (target_id != 0 and target_id != NetworkID): control_emitted.emit("ERROR: packet signed by unidentified sender"); continue
             match pkt_type:
-               PingusTypes.KEEPALIVE: _emit_control(str(sender_id) + " (" + peer.Addr + ":" + str(peer.Port) + ") is keeping connection alive", sender_id)
+               PingusTypes.KEEPALIVE: control_emitted.emit(str(sender_id) + " (" + peer.Addr + ":" + str(peer.Port) + ") is keeping connection alive")
                PingusTypes.INFORM:
-                  _emit_control(str(sender_id) + " (" + peer.Addr + ":" + str(peer.Port) + ") re-confirmed connection", sender_id)
+                  control_emitted.emit(str(sender_id) + " (" + peer.Addr + ":" + str(peer.Port) + ") re-confirmed connection")
                   if pkt.size() <= HEADER_SIZE + PORT_SIZE:
                      _inform_peer(peer, delta, true)
-                     _emit_control(str(sender_id) + " (" + peer.Addr + ":" + str(peer.Port) + ") is experiencing a two-generals problem", sender_id)
-               PingusTypes.DATA:
-                  if pkt.size() < HEADER_SIZE + DATA_TYPE_SIZE: _emit_control("ERROR: DATA packet missing type byte"); continue
-                  recieved_data.emit(sender_id, pkt.decode_u8(HEADER_SIZE), pkt.slice(HEADER_SIZE + DATA_TYPE_SIZE))
-                  peer.clear_timers()
-               _: _emit_control("ERROR: incorrect packet type while connected")
+                     control_emitted.emit(str(sender_id) + " (" + peer.Addr + ":" + str(peer.Port) + ") is experiencing a two-generals problem")
+               _: control_emitted.emit("ERROR: incorrect packet type while connected")
    
    # inform peers and keep connections alive
    for peer:PingusPeer in Peers:
@@ -202,11 +193,10 @@ func _process(delta: float) -> void:
             _inform_peer(peer, delta)
             if peer.TimeSincePkt >= _TIMEOUT_TIME:
                Peers.erase(peer)
-               _emit_control("Attempt to establish connection to: " + peer.Addr + ":" + str(peer.Port) + " has timed out")
+               control_emitted.emit("Attempt to establish connection to: " + peer.Addr + ":" + str(peer.Port) + " has timed out")
          PingusStates.CONNECTED:
             if peer.TimeSincePkt >= _KEEP_ALIVE_TIME:
                peer.TimeSincePkt -= _KEEP_ALIVE_TIME
-               peer.KeepAliveNum += 1
                _keepalive_peer(peer)
 func _find_peer(from_addr: String, from_port: int, sender_id: int) -> PingusPeer:
    if sender_id != 0:
@@ -219,18 +209,6 @@ func _find_peer(from_addr: String, from_port: int, sender_id: int) -> PingusPeer
 # ============== #
 # packet sending #
 # ============== #
-## send typed application data to all connected peers. data_type is a single byte.
-## values other than [enum DataTypes].CONTROL (0xC0) are free for the application to define.
-func send_data(data_type: int, data: PackedByteArray = PackedByteArray()) -> void:
-   for peer in Peers:
-      if peer.State != PingusStates.CONNECTED: continue
-      _Udp.set_dest_address(peer.Addr, peer.Port)
-      var pkt := _make_header(PingusTypes.DATA, peer)
-      pkt.resize(HEADER_SIZE + DATA_TYPE_SIZE)
-      pkt.encode_u8(HEADER_SIZE, data_type)
-      pkt.append_array(data)
-      var send_err = _Udp.put_packet(pkt)
-      if send_err != OK: _emit_control("ERROR: failed to send data to " + peer.Addr + ":" + str(peer.Port))
 func _make_header(pkt_type: PingusTypes, peer: PingusPeer) -> PackedByteArray:
    var hdr := PackedByteArray()
    hdr.resize(HEADER_SIZE)
@@ -238,8 +216,6 @@ func _make_header(pkt_type: PingusTypes, peer: PingusPeer) -> PackedByteArray:
    hdr.encode_u32(PINGUS_TYPE_SIZE, NetworkID)
    hdr.encode_u32(PINGUS_TYPE_SIZE + NETWORK_ID_SIZE, peer.NetworkID)
    return hdr
-func _emit_control(msg: String, sender_id: int = 0) -> void:
-   recieved_data.emit(sender_id if sender_id else NetworkID, DataTypes.CONTROL, msg.to_utf8_buffer())
 func _inform_peer(peer: PingusPeer, delta: float, two_generals: bool = false) -> void:
    # PingusStates.INFORMING
    _Udp.set_dest_address(peer.Addr, peer.Port)
@@ -251,45 +227,40 @@ func _inform_peer(peer: PingusPeer, delta: float, two_generals: bool = false) ->
       pkt.encode_u16(HEADER_SIZE, peer.Port)
       if two_generals: pkt.append(_TWO_GENERALS)
       var send_err = _Udp.put_packet(pkt)
-      if send_err != OK: _emit_control("ERROR: failed to send inform to " + peer.Addr + ":" + str(peer.Port))
-   _emit_control("Informing " + peer.Addr + " at port: " + str(peer.Port))
+      if send_err != OK: control_emitted.emit("ERROR: failed to send inform to " + peer.Addr + ":" + str(peer.Port))
+   control_emitted.emit("Informing " + peer.Addr + " at port: " + str(peer.Port))
 func _keepalive_peer(peer: PingusPeer) -> void:
    # PingusStates.CONNECTED
    _Udp.set_dest_address(peer.Addr, peer.Port)
    var send_err = _Udp.put_packet(_make_header(PingusTypes.KEEPALIVE, peer))
-   if send_err != OK: _emit_control("ERROR: failed to send keepalive to " + peer.Addr + ":" + str(peer.Port))
-   else: _emit_control("Preventing timeout with " + peer.Addr + ":" + str(peer.Port))
+   if send_err != OK: control_emitted.emit("ERROR: failed to send keepalive to " + peer.Addr + ":" + str(peer.Port))
+   else: control_emitted.emit("Preventing timeout with " + peer.Addr + ":" + str(peer.Port))
 
 ## data structure to store info about a peer. 
 class PingusPeer:
-   ## the IP address the [OneTruePingus] uses to connect to the peer. 
-   var Addr        : String = ""
-   ## the Port the [OneTruePingus] uses to connect to this peer
-   var Port        : int    = -1
-   ## the network ID of the peer. see [member OneTruePingus.NetworkID]
-   var NetworkID   : int    = 0
-   ## time elapsed since last packet. see [member OneTruePingus._KEEP_ALIVE_TIME] and [member OneTruePingus._TIMEOUT_TIME] (yeah those are both hidden properties i know lmao
-   var TimeSincePkt: float  = 0.0
-   ## number of keepalives sent since the last packet arrived
-   var KeepAliveNum: int    = 1
-   ## the state of the connection between the [OneTruePingus] and the peer.
+   ## the IP address the [PingusPuncher] uses to connect to the peer. 
+   var Addr         : String = ""
+   ## the Port the [PingusPuncher] uses to connect to this peer
+   var Port         : int    = -1
+   ## the network ID of the peer. see [member PingusPuncher.NetworkID]
+   var NetworkID    : int    = 0
+   ## time elapsed since last packet. see [member PingusPuncher._KEEP_ALIVE_TIME] and [member PingusPuncher._TIMEOUT_TIME] (yeah those are both hidden properties i know lmao
+   var TimeSincePkt : float  = 0.0
+   ## the state of the connection between the [PingusPuncher] and the peer.
    var State  : PingusStates = PingusStates.NOT_STARTED
    func _init(addr: String, port: int, id: int) -> void:
       Addr      = addr
       Port      = port
       NetworkID = id
-   func clear_timers() -> void:
-      TimeSincePkt = 0.0
-      KeepAliveNum = 0
 ## utility class to fetch external facing IP/port combo.[br]
 ## underpinned by [url=https://github.com/pradt2/always-online-stun.git]pradt2's github[/url]. many thanks to them![br][br]
 ## [i]*writted by Claude Opus 4.8, so it might be straight dookie idk. i didn't feel like dealing with the complexities of the STUN protocol. sue me...[/i]
-class STUNGopher extends Node:
+class AddressGopher extends Node:
    ## SERVER_LIST errors are involved with fetching the sever list from [url=https://github.com/pradt2/always-online-stun.git]pradt2's github[/url].[br]
    ## STUN errors are involved with contacting the actual STUN server.
    enum InfoFetchingResults {OK, BAD_SERVER_LIST_RESULT, BAD_SERVER_LIST_RESPONSE, BAD_SERVER_LIST_DATA, BAD_STUN_RESULT, BAD_STUN_RESPONSE, BAD_STUN_DATA }
    ## the route by which the info will return. ensure you connect  a handler to 
-   ## this signal before adding the STUNGopher to the tree because this 
+   ## this signal before adding the AddressGopher to the tree because this 
    ## [b]***will blow its own shit smooth off the moment it sends a [member InfoFetchingResults.OK]***[/b]
    signal info_fetching_complete(result: InfoFetchingResults, ip: String, port: int)
    ## [url=https://github.com/pradt2/always-online-stun.git]pradt2's github[/url] 
@@ -305,7 +276,7 @@ class STUNGopher extends Node:
    var   CustomStunUrl     : String          = ""
    var   _SharedUdp        : PacketPeerUDP   = null
 
-   func _init(shared_udp: PacketPeerUDP, custom_stun_server_addr: String = "", ) -> void:
+   func _init(shared_udp: PacketPeerUDP, custom_stun_server_addr: String = "") -> void:
       _SharedUdp    = shared_udp
       CustomStunUrl = custom_stun_server_addr
    func _ready() -> void: attempt_info_fetch()

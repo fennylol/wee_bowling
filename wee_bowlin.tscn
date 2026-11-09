@@ -1,9 +1,13 @@
 [gd_scene format=3 uid="uid://gliypqhesgkr"]
 
-[ext_resource type="Script" uid="uid://dpajpqkoficwd" path="res://multiplayer/game_context.gd" id="1_8bn30"]
+[ext_resource type="Script" uid="uid://dpajpqkoficwd" path="res://wee_bowling.gd" id="1_8bn30"]
 [ext_resource type="PackedScene" uid="uid://do53qj7jk7esd" path="res://multiplayer/connect_menu.tscn" id="2_rdx6i"]
+[ext_resource type="PackedScene" uid="uid://1n6hffbto8cc" path="res://map/the_alley.tscn" id="3_rdx6i"]
 
 [node name="WeeBowlin" type="Node" unique_id=1271250447]
 script = ExtResource("1_8bn30")
 
 [node name="ConnectMenu" parent="." unique_id=13288426 instance=ExtResource("2_rdx6i")]
+visible = false
+
+[node name="TheAlley" parent="." unique_id=705342910 instance=ExtResource("3_rdx6i")]

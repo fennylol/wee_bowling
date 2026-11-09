@@ -16,15 +16,17 @@ class_name ConnectMenu
 @onready var PEER_LIST      : TextEdit = $VBoxContainer/HBoxContainer/TheirInfo/peer_list
 @onready var TARGET_IP_BOX  : LineEdit = $VBoxContainer/HBoxContainer/TheirInfo/target_ip_box/target_IP_box
 @onready var CONNECT_BUTTON : Button   = $VBoxContainer/HBoxContainer/TheirInfo/target_ip_box/connect_button
-@onready var READY_BUTTON   : Button   = $VBoxContainer/ready_button
+@onready var STATUS_LABEL   : Label    = $VBoxContainer/status_label
 
 
 signal network_type_changed(global: bool)
 signal hosting_type_changed(client: bool)
 signal connect_button_pressed(Address: String)
-signal ready_button_pressed()
 signal quit_button_pressed()
-signal identity_changed()
+signal identity_changed(new_name: String)
+
+var _IsGlobal: bool = true
+var _IsClient: bool = true
 
 func _ready() -> void:
    GLOBAL_BUTTON.pressed.connect(_on_network_type_changed.bind(true))
@@ -34,7 +36,6 @@ func _ready() -> void:
    
    CONNECT_BUTTON.pressed.connect(_on_connect_button_pressed)
    SET_NAME_BUTTON.pressed.connect(_on_set_name_button_pressed)
-   READY_BUTTON.pressed.connect(ready_button_pressed.emit)
    QUIT_BUTTON.pressed.connect(quit_button_pressed.emit)
    
    COPY_ID_BUTTON.pressed.connect(func(): DisplayServer.clipboard_set(ID_LABEL.text.strip_edges()))
@@ -47,7 +48,7 @@ func _ready() -> void:
 # =============== #
 func _on_connect_button_pressed() -> void:
    var input_text = TARGET_IP_BOX.text.strip_edges()
-   if _is_valid_ip_addr(input_text) or _is_valid_ip_port(input_text):
+   if _is_valid_ip_port(input_text):
       TARGET_IP_BOX.text = ""
       connect_button_pressed.emit(input_text)
 func _on_set_name_button_pressed() -> void:
@@ -55,12 +56,14 @@ func _on_set_name_button_pressed() -> void:
    if new_name != "":
       NAME_TAG_BOX.placeholder_text = new_name
       NAME_TAG_BOX.text = ""
-      identity_changed.emit()
+      identity_changed.emit(new_name)
 func _on_network_type_changed(global: bool) -> void:
+   _IsGlobal = global
    network_type_changed.emit(global)
    GLOBAL_BUTTON.disabled = global
    LOCAL_BUTTON.disabled = not global
 func _on_hosting_type_changed(client: bool) -> void:
+   _IsClient = client
    hosting_type_changed.emit(client)
    JOIN_BUTTON.disabled = client
    HOST_BUTTON.disabled = not client
@@ -74,20 +77,47 @@ func set_id_label(input_text: String) -> void:
 func set_ip_label(input_text: String) -> void:
    #if _is_valid_ip_addr(input_text):
    IP_LABEL.text = input_text
+func set_name_placeholder(current_name: String) -> void:
+   NAME_TAG_BOX.placeholder_text = current_name
+## [param status] is shown under the peer list. [param locked] freezes the
+## global/local and host/join toggles while a session is live.
+func set_session_state(status: String, locked: bool, can_quit: bool, can_connect: bool) -> void:
+   STATUS_LABEL.text       = status
+   QUIT_BUTTON.disabled    = not can_quit
+   CONNECT_BUTTON.disabled = not can_connect
+   GLOBAL_BUTTON.disabled  = locked or _IsGlobal
+   LOCAL_BUTTON.disabled   = locked or not _IsGlobal
+   JOIN_BUTTON.disabled    = locked or _IsClient
+   HOST_BUTTON.disabled    = locked or not _IsClient
 # ============= #
 # other utility #
 # ============= #
-func update_peers(peers: Array[OneTruePingus.PingusPeer]) -> void:
+func update_peers(peers: Array[PingusPuncher.PingusPeer]) -> void:
    var lines: PackedStringArray = []
    for peer in peers:
       var state_str: String = peer.Addr + ":" + str(peer.Port)
       match peer.State:
-         OneTruePingus.PingusStates.NOT_STARTED: state_str += " not started"
-         OneTruePingus.PingusStates.INFORMING  : state_str += " informing..."
-         OneTruePingus.PingusStates.CONNECTED  : state_str += " connected"
+         PingusPuncher.PingusStates.NOT_STARTED: state_str += " not started"
+         PingusPuncher.PingusStates.INFORMING  : state_str += " informing..."
+         PingusPuncher.PingusStates.CONNECTED  : state_str += " connected"
          _                                     : state_str += " unknown"
       lines.append(state_str)
-   PEER_LIST.text = "\n".join(lines)
+   _set_peer_list_text("\n".join(lines))
+## list everyone in the ENet session by display name
+func update_session_peers(names: Dictionary[int, String], my_id: int) -> void:
+   var ids := names.keys()
+   ids.sort()
+   var lines: PackedStringArray = []
+   for id in ids:
+      var line: String = names[id]
+      if id == 1    : line += " (host)"
+      if id == my_id: line += " (you)"
+      lines.append(line)
+   _set_peer_list_text("\n".join(lines))
+## only touch the TextEdit when the text changes, since this runs every frame
+## while the puncher is informing
+func _set_peer_list_text(new_text: String) -> void:
+   if PEER_LIST.text != new_text: PEER_LIST.text = new_text
       
 func _is_valid_ip_addr(input_text: String) -> bool:
    var regex = RegEx.new()

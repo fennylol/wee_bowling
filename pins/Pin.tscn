@@ -20,9 +20,14 @@ mass = 1.5
 physics_material_override = SubResource("PhysicsMaterial_3uk5a")
 center_of_mass_mode = 1
 center_of_mass = Vector3(0, 0.33, 0)
+contact_monitor = true
+max_contacts_reported = 5
 linear_damp = 0.95
 angular_damp = 0.1
 script = ExtResource("1_nx0ib")
+
+[node name="mouth_for_screaming" type="AudioStreamPlayer3D" parent="." unique_id=1126867081]
+unit_size = 15.0
 
 [node name="PinMesh" type="MeshInstance3D" parent="." unique_id=1993604312]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)

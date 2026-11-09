@@ -2,10 +2,13 @@ extends CharacterBody3D
 
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
+const KILL_DEPTH: float = -5.0
 
 @onready var camera = $DEBUG_CAMERA
 @onready var ObjCatcher: Area3D = $DEBUG_CAMERA/ObjCatcher
 @onready var ObjectVisualizerMesh: MeshInstance3D = $DEBUG_CAMERA/ObjCatcher/ObjectVisualizerMesh
+
+signal grabbed_object(obj: int, released: bool)
 
 var cap = false
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -83,10 +86,15 @@ func _process(_delta):
       else:Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
    
    if Input.is_action_just_pressed("grab") and GrabbableObj:
+      grabbed_object.emit(0, false)
       GrabbedObj = GrabbableObj
-   if Input.is_action_just_released("grab"):
+   if Input.is_action_just_released("grab") and GrabbedObj:
+      grabbed_object.emit(0, true)
       GrabbedObj = null
-      
+   
+   if position.y <= KILL_DEPTH:
+      position = Vector3.ZERO
+   
    ObjectVisualizerMesh.mesh.material = _DidGrabMatial if GrabbedObj else \
                                         _CanGrabMatial if GrabbableObj else \
                                         _SadMaterial 
@@ -111,6 +119,5 @@ func _physics_process(delta):
       var vec_to := ObjCatcher.global_position - GrabbedObj.global_position
       GrabbedObj.linear_velocity *= GRAB_DAMPING 
       GrabbedObj.linear_velocity += vec_to * delta * GrabForce
-   
    
    move_and_slide()

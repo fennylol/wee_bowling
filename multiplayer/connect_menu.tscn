@@ -1,11 +1,14 @@
 [gd_scene format=3 uid="uid://do53qj7jk7esd"]
 
+[ext_resource type="Script" uid="uid://b3gq5pxcg4786" path="res://multiplayer/connect_menu.gd" id="1_js4gt"]
+
 [node name="ConnectMenu" type="HBoxContainer" unique_id=13288426]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_js4gt")
 
 [node name="spacer" type="Control" parent="." unique_id=1452459821]
 layout_mode = 2
@@ -207,11 +210,12 @@ layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.1
 
-[node name="ready_button" type="Button" parent="VBoxContainer" unique_id=1485044988]
+[node name="status_label" type="Label" parent="VBoxContainer" unique_id=1485044988]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.3
-text = "ready"
+text = "not connected"
+horizontal_alignment = 1
 
 [node name="spacer6" type="Control" parent="VBoxContainer" unique_id=2075749329]
 layout_mode = 2

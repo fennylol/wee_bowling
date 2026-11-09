@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://dfq2p6mjjcysh"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_bsava"]
+top_radius = 0.1
+bottom_radius = 0.1
+height = 0.01
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c1rww"]
+albedo_color = Color(0.6509804, 0.8901961, 0.6313726, 1)
+
+[node name="spot" type="MeshInstance3D" unique_id=315815126]
+mesh = SubResource("CylinderMesh_bsava")
+surface_material_override/0 = SubResource("StandardMaterial3D_c1rww")

@@ -11,6 +11,7 @@ var BallNodes: Array[Ball]
 func _ready() -> void:
    for i in MaxBalls:
       var new_ball: Ball = BALL_NODE.instantiate()
+      new_ball.ParentBallMachine = self
       new_ball.cleared.connect(_handle_cleared_ball.bind(new_ball))
       BallNodes.append(new_ball)
 
@@ -36,20 +37,3 @@ func _process(delta: float) -> void:
       else:
          ball.QueueTime -= delta
          
-
-         
-#func _regenerate_pins() -> void:
-   #for pin:Pin in PinNodes:
-      #if pin and not pin.is_queued_for_deletion():
-         #pin.queue_free()
-   #PinNodes.clear()
-      #
-   #for i:int in MaxPins:
-      #var pin:Pin = PIN_NODE.instantiate()
-      #pin.set_name("Pin_"+str(i))
-      #add_child(pin)
-      #PinNodes.append(pin)
-      #pin.cleared.connect(_handle_cleared_pin.bind(pin))
-      #
-   #_reset_pins()
-   #QueuePinRegeneration = false

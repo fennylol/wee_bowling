@@ -11,9 +11,10 @@ config_version=5
 [application]
 
 config/name="wee_bowling"
-run/main_scene="uid://1n6hffbto8cc"
+run/main_scene="uid://gliypqhesgkr"
 config/features=PackedStringArray("4.7", "Mobile")
 config/icon="uid://jowtmtejb166"
+config/main_scene=""
 
 [display]
 
