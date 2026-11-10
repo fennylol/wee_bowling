@@ -2,6 +2,8 @@ extends Node
 class_name WeeBowling
 
 const DUMMY_NODE := preload("res://player/dummy/dummy.tscn")
+const GAMEOBJECT_SEND_INTERVAL: int = 2 # physics ticks
+const HEARTBEAT_TIME: float = 1.0
 
 var GO_REGISTRY = GameObject.Registry
 
@@ -10,15 +12,10 @@ var GO_REGISTRY = GameObject.Registry
 var _OTP := OneTruePingus.new()
 var Dummies: Dictionary = {}
 
-var DEBUG_PRINT_CONTROL_MESSAGES: bool = false
-
-## owned GameObjects are broadcast every this many physics ticks (2 = 30Hz at 60 ticks)
-const GAMEOBJECT_SEND_INTERVAL: int   = 2
-## every pinsetter's generation and standing pins are re-sent this often, which
-## recovers lost clears and resets
-const PINSETTER_HEARTBEAT_TIME: float = 1.0
-var _PhysicsTick   : int   = 0
+var _PhysicsTick: int = 0
 var _HeartbeatTimer: float = 0.0
+
+var DEBUG_PRINT_CONTROL_MESSAGES: bool = false
 
 func _ready() -> void:
    GameObject.LocalID = _OTP.NetworkID
@@ -45,10 +42,12 @@ func _process(delta: float) -> void:
       _on_wbm_resume_button_pressed(not _Player.Enabled)
 
    _HeartbeatTimer += delta
-   if _HeartbeatTimer >= PINSETTER_HEARTBEAT_TIME:
+   if _HeartbeatTimer >= HEARTBEAT_TIME:
       _HeartbeatTimer = 0.0
       for setter: PinSetter in PinSetter.Registry.values():
          _send_pinsetter_state_data(setter)
+      for machine: BallMachine in BallMachine.Registry.values():
+         _send_ballmachine_state_data(machine)
 
 func _physics_process(_delta: float) -> void:
    _send_player_transform_data(_Player.generate_transform_data(), _OTP.NetworkID)
@@ -65,9 +64,8 @@ func _physics_process(_delta: float) -> void:
 # ========================= #
 func _on_wbm_network_type_selected(global: bool) -> void:
    _WBM.set_ip_label(_OTP.get_addr_port(global))
-   if not global:
-     _OTP._discover_address()
-     _OTP.ExternAddr = "PEE.POO.CUM.POO"
+   # refresh stun so global is preloaded with a fresh address
+   if not global: _OTP._discover_address()
 
 func _on_wbm_resume_button_pressed(resume: bool) -> void:
    _WBM.visible = not resume
@@ -91,9 +89,6 @@ func _on_wbm_quit_button_pressed() -> void:
 # =================== #
 # connection handling #
 # =================== #
-## gossip: whenever anyone connects, broadcast the new peer to everyone, and
-## broadcast every other connected peer too. each machine add_peer()s whoever
-## it is missing, so the mesh fills itself in.
 func _on_connection_established(network_id: int, peer_address: String, peer_port: int) -> void:
    _spawn_dummy(network_id)
    _send_connection_data(network_id, peer_address, peer_port)
@@ -101,16 +96,8 @@ func _on_connection_established(network_id: int, peer_address: String, peer_port
      if peer.NetworkID == network_id: continue
      if peer.State != OneTruePingus.PingusStates.CONNECTED: continue
      _send_connection_data(peer.NetworkID, peer.Addr, peer.Port)
-   _send_world_state(network_id)
+   _send_world_state_data(network_id)
    _refresh_peer_list()
-## catch a new peer up, and only them: every object we own, plus our view of every
-## rack. unowned objects are left out because they haven't moved since they spawned
-func _send_world_state(network_id: int) -> void:
-   for game_obj in GameObject.Registry.values():
-     if is_instance_valid(game_obj) and game_obj.OwnerID == _OTP.NetworkID and not game_obj.IsCleared and game_obj.is_inside_tree():
-       _send_gameobject_transform_data(game_obj, network_id)
-   for setter: PinSetter in PinSetter.Registry.values():
-     _send_pinsetter_state_data(setter, network_id)
 func _refresh_peer_list() -> void:
    for peer:OneTruePingus.PingusPeer in _OTP.Peers.duplicate():
      if peer.KeepAliveNum*OneTruePingus._KEEP_ALIVE_TIME >= OneTruePingus._TIMEOUT_TIME:
@@ -143,7 +130,8 @@ enum DataTypes {
    GameObjectTransformData = 0x33,
    ClaimOwnershipData      = 0x44,
    GameObjectClearedData   = 0x55,
-   PinSetterStateData      = 0x66
+   PinSetterStateData      = 0x66,
+   BallMachineStateData    = 0x77
 }
 
 func _send_connection_data(network_id: int, peer_address: String, peer_port: int) -> void:
@@ -164,7 +152,6 @@ func _send_player_transform_data(data: PackedByteArray, owner_id: int) -> void:
    data_with_id.encode_u32(0, owner_id)
    data_with_id.append_array(data)
    _OTP.send_data(DataTypes.PlayerTransformData, data_with_id)
-## [lb]RegistryID u32[rb] + [method GameObject.generate_state_data]. sent to everyone, or only [param target_id]
 func _send_gameobject_transform_data(game_obj: GameObject, target_id: int = 0) -> void:
    var data: PackedByteArray = []
    data.resize(GameObject.REGISTRY_ID_SIZE)
@@ -172,7 +159,6 @@ func _send_gameobject_transform_data(game_obj: GameObject, target_id: int = 0) -
    data.append_array(game_obj.generate_state_data())
    if target_id: _OTP.send_data_to(target_id, DataTypes.GameObjectTransformData, data)
    else: _OTP.send_data(DataTypes.GameObjectTransformData, data)
-## [lb]RegistryID u32[rb][lb]OwnerID u32[rb][lb]ClaimCounter u32[rb]
 func _send_claim_ownership_data(game_obj: GameObject) -> void:
    var data: PackedByteArray = []
    data.resize(GameObject.REGISTRY_ID_SIZE + GameObject.OWNERSHIP_DATA_SIZE)
@@ -180,14 +166,12 @@ func _send_claim_ownership_data(game_obj: GameObject) -> void:
    data.encode_u32(GameObject.REGISTRY_ID_SIZE, game_obj.OwnerID)
    data.encode_u32(GameObject.REGISTRY_ID_SIZE + 4, game_obj.ClaimCounter)
    _OTP.send_data(DataTypes.ClaimOwnershipData, data)
-## [lb]RegistryID u32[rb][lb]ClaimCounter u32[rb]
 func _send_gameobject_cleared_data(game_obj: GameObject) -> void:
    var data: PackedByteArray = []
    data.resize(GameObject.REGISTRY_ID_SIZE + GameObject.COUNTER_SIZE)
    data.encode_u32(0, game_obj.RegistryID)
    data.encode_u32(GameObject.REGISTRY_ID_SIZE, game_obj.ClaimCounter)
    _OTP.send_data(DataTypes.GameObjectClearedData, data)
-## [lb]SetterID u32[rb][lb]Generation u32[rb] + one bit per standing pin. sent to everyone, or only [param target_id]
 func _send_pinsetter_state_data(setter: PinSetter, target_id: int = 0) -> void:
    var data: PackedByteArray = []
    data.resize(8)
@@ -196,6 +180,23 @@ func _send_pinsetter_state_data(setter: PinSetter, target_id: int = 0) -> void:
    data.append_array(setter.get_standing_mask())
    if target_id: _OTP.send_data_to(target_id, DataTypes.PinSetterStateData, data)
    else: _OTP.send_data(DataTypes.PinSetterStateData, data)
+func _send_ballmachine_state_data(machine: BallMachine, target_id: int = 0) -> void:
+   var data: PackedByteArray = []
+   data.resize(4)
+   data.encode_u32(0, machine.MachineID)
+   data.append_array(machine.get_ball_states())
+   if target_id: _OTP.send_data_to(target_id, DataTypes.BallMachineStateData, data)
+   else: _OTP.send_data(DataTypes.BallMachineStateData, data)
+
+# unowned objects haven't moved since they spawned, so only owned ones are sent
+func _send_world_state_data(network_id: int) -> void:
+   for game_obj in GameObject.Registry.values():
+     if is_instance_valid(game_obj) and game_obj.OwnerID == _OTP.NetworkID and not game_obj.Cleared:
+       _send_gameobject_transform_data(game_obj, network_id)
+   for setter: PinSetter in PinSetter.Registry.values():
+     _send_pinsetter_state_data(setter, network_id)
+   for machine: BallMachine in BallMachine.Registry.values():
+     _send_ballmachine_state_data(machine, network_id)
 
 func _recieve_data(_sender_id: int, data_type: int, data: PackedByteArray) -> void:
    #if data_type != OneTruePingus.DataTypes.CONTROL and data.size() < MinSizes[data_type]:
@@ -210,6 +211,7 @@ func _recieve_data(_sender_id: int, data_type: int, data: PackedByteArray) -> vo
       DataTypes.ClaimOwnershipData      : _recieve_claim_ownership_data      (data)
       DataTypes.GameObjectClearedData   : _recieve_gameobject_cleared_data   (data)
       DataTypes.PinSetterStateData      : _recieve_pinsetter_state_data      (data)
+      DataTypes.BallMachineStateData    : _recieve_ballmachine_state_data    (data)
 
       OneTruePingus.DataTypes.CONTROL:
          if DEBUG_PRINT_CONTROL_MESSAGES:
@@ -252,7 +254,7 @@ func _recieve_gameobject_transform_data(data: PackedByteArray) -> void:
 func _recieve_claim_ownership_data     (data: PackedByteArray) -> void:
    if data.size() < GameObject.REGISTRY_ID_SIZE + GameObject.OWNERSHIP_DATA_SIZE: return
    var game_obj = GameObject.Registry.get(data.decode_u32(0))
-   if is_instance_valid(game_obj) and not game_obj.IsCleared:
+   if is_instance_valid(game_obj) and not game_obj.Cleared:
       game_obj.accept_claim(data.decode_u32(GameObject.REGISTRY_ID_SIZE), data.decode_u32(GameObject.REGISTRY_ID_SIZE + 4))
 func _recieve_gameobject_cleared_data  (data: PackedByteArray) -> void:
    if data.size() < GameObject.REGISTRY_ID_SIZE + GameObject.COUNTER_SIZE: return
@@ -262,3 +264,7 @@ func _recieve_pinsetter_state_data     (data: PackedByteArray) -> void:
    if data.size() < 8: return
    var setter = PinSetter.Registry.get(data.decode_u32(0))
    if is_instance_valid(setter): setter.apply_remote_state(data.decode_u32(4), data.slice(8))
+func _recieve_ballmachine_state_data   (data: PackedByteArray) -> void:
+   if data.size() < 4: return
+   var machine = BallMachine.Registry.get(data.decode_u32(0))
+   if is_instance_valid(machine): machine.apply_remote_state(data.slice(4))

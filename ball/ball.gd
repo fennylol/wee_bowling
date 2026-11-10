@@ -16,12 +16,11 @@ const MIN_BOUNCE: float = 0.25
 
 var ParentBallMachine: BallMachine
 var QueueTime: float = QUEUE_TIME
-var Cleared: bool = false
 
 func _ready() -> void:
    super()
    
-   # seeded by the registry ID so every machine gives this ball the same look
+   # seeded so every peer gets the same ball
    var rng := RandomNumberGenerator.new()
    rng.seed = RegistryID
    var attribute_a: float = rng.randf()

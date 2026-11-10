@@ -61,7 +61,7 @@ var LocalAddr  : String            = "":
    set(new_val): LocalAddr = new_val
    get():
       for address in IP.get_local_addresses():
-         if address.begins_with("192.168"):
+         if _is_private_ipv4(address):
             LocalAddr = address
             return address
       return "PEE.POO.CUM.POO" 
@@ -101,7 +101,9 @@ func _discover_network_id() -> void:
       seed(((Time.get_unix_time_from_system()*100000)+_Udp.get_local_port()) as int)
       NetworkID = randi()
 func _discover_address(custom_stun_addr: String = "") -> void:
+   if _FetchingAddress: return
    _FetchingAddress = true
+   _RetryCount = 0
    var ag := AddressGopher.new(_Udp, custom_stun_addr)
 
    ag.info_fetching_complete.connect(
@@ -136,7 +138,9 @@ func _discover_address(custom_stun_addr: String = "") -> void:
 ## get our own IP:Port combo as a [String]. defaults to WAN. set [param external]
 ## false to get the LAN values. 
 func get_addr_port(external: bool = true) -> String:
-   if external: return ExternAddr + ":" + (str(ExternPort) if ExternAddr != "PEE.POO.CUM.POO" else "WEINER" )
+   if external:
+      if ExternAddr == "" or ExternPort == -1: return "PEE.POO.CUM.POO:WEINER"
+      return ExternAddr + ":" + (str(ExternPort) if ExternAddr != "PEE.POO.CUM.POO" else "WEINER" )
    else: return LocalAddr + ":" + (str(LocalPort) if LocalAddr != "PEE.POO.CUM.POO" else "WEINER" )
 ## add a IP:Port to target communications with. 
 func add_peer(target_addr: String, target_port: int, target_id: int = 0) -> void:
@@ -149,7 +153,7 @@ func add_peer(target_addr: String, target_port: int, target_id: int = 0) -> void
    Peers.append(peer)
    _emit_control("Attempting to connect to " + target_addr + ":" + str(target_port))
 func _process(delta: float) -> void:
-   if ExternAddr == "" or ExternPort == -1 or NetworkID == 0: return
+   if NetworkID == 0: return
 
    # handle incoming packets
    while not _FetchingAddress and _Udp.get_available_packet_count() > 0:
@@ -208,6 +212,12 @@ func _process(delta: float) -> void:
                peer.TimeSincePkt -= _KEEP_ALIVE_TIME
                peer.KeepAliveNum += 1
                _keepalive_peer(peer)
+func _is_private_ipv4(address: String) -> bool:
+   var o := address.split(".")
+   if o.size() != 4: return false
+   return o[0] == "10" \
+   or (o[0] == "172" and o[1].to_int() >= 16 and o[1].to_int() <= 31) \
+   or (o[0] == "192" and o[1] == "168")
 func _find_peer(from_addr: String, from_port: int, sender_id: int) -> PingusPeer:
    if sender_id != 0:
       for peer in Peers:
@@ -231,6 +241,19 @@ func send_data(data_type: int, data: PackedByteArray = PackedByteArray()) -> voi
       pkt.append_array(data)
       var send_err = _Udp.put_packet(pkt)
       if send_err != OK: _emit_control("ERROR: failed to send data to " + peer.Addr + ":" + str(peer.Port))
+## send typed application data to the single connected peer with [param target_id].
+## see [method send_data]
+func send_data_to(target_id: int, data_type: int, data: PackedByteArray = PackedByteArray()) -> void:
+   for peer in Peers:
+      if peer.State != PingusStates.CONNECTED or peer.NetworkID != target_id: continue
+      _Udp.set_dest_address(peer.Addr, peer.Port)
+      var pkt := _make_header(PingusTypes.DATA, peer)
+      pkt.resize(HEADER_SIZE + DATA_TYPE_SIZE)
+      pkt.encode_u8(HEADER_SIZE, data_type)
+      pkt.append_array(data)
+      var send_err = _Udp.put_packet(pkt)
+      if send_err != OK: _emit_control("ERROR: failed to send data to " + peer.Addr + ":" + str(peer.Port))
+      return
 func _make_header(pkt_type: PingusTypes, peer: PingusPeer) -> PackedByteArray:
    var hdr := PackedByteArray()
    hdr.resize(HEADER_SIZE)

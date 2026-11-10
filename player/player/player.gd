@@ -136,7 +136,6 @@ func _physics_process(delta):
       velocity.x = move_toward(velocity.x, 0, SPEED)
       velocity.z = move_toward(velocity.z, 0, SPEED)
    
-   # someone else picked it up, or it was cleared
    if GrabbedObj and GrabbedObj.OwnerID != GameObject.LocalID: GrabbedObj = null
    if GrabbedObj:
       var vec_to := ObjCatcher.global_position - GrabbedObj.global_position
