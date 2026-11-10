@@ -21,8 +21,6 @@ const BONK_SOUNDS: Array[AudioStream] = [
 ]
 const RARE_BONK_SOUNDS: Array[AudioStream] = []
 
-signal cleared()
-
 @onready var Mouth: AudioStreamPlayer3D = $mouth_for_screaming
 
 func _ready() -> void:
@@ -41,6 +39,6 @@ func _physics_process(_delta: float) -> void:
    and angular_velocity.length() < 0.1 \
    and basis.y.dot(Vector3.UP) <= cos(deg_to_rad(UPRIGHT_DEGREES)) \
    or position.y <= KILL_DEPTH:
-      cleared.emit()
+      try_clear()
 
    

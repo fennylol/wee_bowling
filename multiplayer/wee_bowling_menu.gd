@@ -46,7 +46,7 @@ func _ready() -> void:
    ConnectButton.pressed.connect(_on_connect_button_pressed)
    CopyIPButton.pressed.connect    (_copy_address.bind(func(addr: String): return addr))
    CopyCodeButton.pressed.connect  (_copy_address.bind(encode))
-   CopyKoreanButton.pressed.connect(_copy_address.bind(encode_korean))
+   CopyKoreanButton.pressed.connect(_copy_address.bind(enkorean))
 
    ResumeButton.pressed.connect(resume_button_pressed.emit.bind(true))
    
@@ -70,7 +70,7 @@ func _on_network_type_changed(global: bool) -> void:
 ## return "" for input that isn't theirs, so the first valid address wins.
 func _on_connect_button_pressed() -> void:
    var input_text := TargetIPBox.text.strip_edges()
-   for address: String in [input_text, decode(input_text), decode_korean(input_text)]:
+   for address: String in [input_text, decode(input_text), dekorean(input_text)]:
       if _is_valid_ip_addr(address) or _is_valid_ip_port(address):
          TargetIPBox.text = ""
          update_peer(address, OneTruePingus.PingusStates.INFORMING)
@@ -172,7 +172,7 @@ static func decode(code: String) -> String:
 const KOREAN_START := 0xAC00
 
 @warning_ignore("integer_division")
-static func encode_korean(addr: String) -> String:
+static func enkorean(addr: String) -> String:
    var parts := addr.split(":")
    var n := 0
    for o in parts[0].split("."):
@@ -185,7 +185,7 @@ static func encode_korean(addr: String) -> String:
    return code
 
 ## returns "" unless [param code] is exactly 4 syllables from U+AC00 to U+BBFF
-static func decode_korean(code: String) -> String:
+static func dekorean(code: String) -> String:
    code = code.strip_edges()
    if code.length() != 4: return ""
    var n := 0

@@ -11,6 +11,7 @@ var BallNodes: Array[Ball]
 func _ready() -> void:
    for i in MaxBalls:
       var new_ball: Ball = BALL_NODE.instantiate()
+      new_ball.register(("%s:ball:%d" % [get_path(), i]).hash())
       new_ball.ParentBallMachine = self
       new_ball.cleared.connect(_handle_cleared_ball.bind(new_ball))
       BallNodes.append(new_ball)

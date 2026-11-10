@@ -106,7 +106,7 @@ func _unhandled_input(event):
 
 # mouse capture
 func _process(_delta):
-   if Input.is_action_just_pressed("grab") and GrabbableObj:
+   if Input.is_action_just_pressed("grab") and GrabbableObj and GrabbableObj.claim(true):
       grabbed_object.emit(GrabbableObj.RegistryID, false)
       GrabbedObj = GrabbableObj
    if Input.is_action_just_released("grab") and GrabbedObj:
@@ -136,6 +136,8 @@ func _physics_process(delta):
       velocity.x = move_toward(velocity.x, 0, SPEED)
       velocity.z = move_toward(velocity.z, 0, SPEED)
    
+   # someone else picked it up, or it was cleared
+   if GrabbedObj and GrabbedObj.OwnerID != GameObject.LocalID: GrabbedObj = null
    if GrabbedObj:
       var vec_to := ObjCatcher.global_position - GrabbedObj.global_position
       GrabbedObj.linear_velocity *= GRAB_DAMPING 

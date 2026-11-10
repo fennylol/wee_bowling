@@ -12,8 +12,6 @@ const MIN_WEIGHT: float = 5.0
 const MAX_BOUNCE: float = 0.75
 const MIN_BOUNCE: float = 0.25
 
-signal cleared()
-
 @onready var BallMesh: MeshInstance3D = $BallMesh
 
 var ParentBallMachine: BallMachine
@@ -23,8 +21,11 @@ var Cleared: bool = false
 func _ready() -> void:
    super()
    
-   var attribute_a: float = randf()
-   var attribute_b: float = randf_range(0.5,0.8)
+   # seeded by the registry ID so every machine gives this ball the same look
+   var rng := RandomNumberGenerator.new()
+   rng.seed = RegistryID
+   var attribute_a: float = rng.randf()
+   var attribute_b: float = rng.randf_range(0.5,0.8)
    
    var mat := StandardMaterial3D.new()
    mat.albedo_color = Color.from_ok_hsl(attribute_a,0.75,attribute_b)
@@ -45,7 +46,7 @@ func _process(_delta: float) -> void:
    if (abs(global_position.distance_to(ParentBallMachine.global_position)) > KILL_DIST\
    and linear_velocity.length() < 0.5 and angular_velocity.length() < 0.1 ) \
    or position.y < KILL_DEPTH:
-      cleared.emit()
+      try_clear()
 
       
    
