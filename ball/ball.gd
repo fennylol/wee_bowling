@@ -33,10 +33,10 @@ func _ready() -> void:
    
    BallMesh.material_override = mat
    
-   mass = lerp(MIN_WEIGHT, MAX_WEIGHT, 1-attribute_a)
+   mass = 30 #lerp(MIN_WEIGHT, MAX_WEIGHT, 1-attribute_a)
    
    var phys_mat := PhysicsMaterial.new()
-   phys_mat.bounce = 0.5#lerp(MIN_BOUNCE, MAX_BOUNCE, inverse_lerp(0.5,0.8,attribute_b))
+   phys_mat.bounce = 0.5 #lerp(MIN_BOUNCE, MAX_BOUNCE, inverse_lerp(0.5,0.8,attribute_b))
    physics_material_override = phys_mat
    
    set_name("Ball_" + str(int(attribute_a*100)) + "_" + str(int(attribute_b)))

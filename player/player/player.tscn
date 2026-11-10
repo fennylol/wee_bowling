@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c5wp577lftwwe"]
 
-[ext_resource type="Script" uid="uid://0182w1pbsrsu" path="res://player/DEBUG_CHARACTER_3D/debug_character_3D.gd" id="1_ue2xd"]
+[ext_resource type="Script" uid="uid://0182w1pbsrsu" path="res://player/player/player.gd" id="1_ue2xd"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_bsava"]
 
@@ -16,21 +16,21 @@ radius = 0.35
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_invmk"]
 radius = 0.35
 
-[node name="DEBUG_CHARACTER_3D" type="CharacterBody3D" unique_id=416993745]
+[node name="Player" type="CharacterBody3D" unique_id=416993745]
 collision_layer = 128
 collision_mask = 128
 script = ExtResource("1_ue2xd")
 
-[node name="DEBUG_CAMERA" type="Camera3D" parent="." unique_id=1576378303]
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1576378303]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0)
 
-[node name="ObjCatcher" type="Area3D" parent="DEBUG_CAMERA" unique_id=370955365]
+[node name="ObjCatcher" type="Area3D" parent="Camera3D" unique_id=370955365]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.75)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="DEBUG_CAMERA/ObjCatcher" unique_id=553630839]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Camera3D/ObjCatcher" unique_id=553630839]
 shape = SubResource("SphereShape3D_bsava")
 
-[node name="ObjectVisualizerMesh" type="MeshInstance3D" parent="DEBUG_CAMERA/ObjCatcher" unique_id=625811794]
+[node name="ObjectVisualizerMesh" type="MeshInstance3D" parent="Camera3D/ObjCatcher" unique_id=625811794]
 mesh = SubResource("SphereMesh_bsava")
 
 [node name="pill" type="MeshInstance3D" parent="." unique_id=1229086379]
