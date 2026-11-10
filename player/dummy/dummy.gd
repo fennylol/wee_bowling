@@ -6,6 +6,7 @@ var NetworkID : int
 ## NODES AND TEXTURES
 @onready var Body: Node3D = $DummyMesh
 @onready var FakeEyes: Node3D = $FakeEyes
+@onready var NameLabel: Label3D = $NameLabel
 
 
 ## MOVEMENT DATA
@@ -33,6 +34,9 @@ func _physics_process(delta: float) -> void:
    rotation.y = _net_rot.y
    
    velocity = _net_vel
+
+func set_name_tag(new_name: String) -> void:
+   NameLabel.text = new_name
 
 func recieve_transform_data(data: PackedByteArray) -> void:
    _net_pos = Vector3(data.decode_float(0),  data.decode_float(4),  data.decode_float(8))

@@ -116,6 +116,28 @@ layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.1
 
+[node name="name_info" type="HBoxContainer" parent="SubMenus/ConnectionMenu" unique_id=1542887343]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.25
+
+[node name="name_box" type="LineEdit" parent="SubMenus/ConnectionMenu/name_info" unique_id=2113949651]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "your name"
+alignment = 1
+max_length = 24
+
+[node name="set_name_button" type="Button" parent="SubMenus/ConnectionMenu/name_info" unique_id=300595569]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "set name"
+
+[node name="spacer12" type="Control" parent="SubMenus/ConnectionMenu" unique_id=1103185768]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.1
+
 [node name="IP_info" type="HBoxContainer" parent="SubMenus/ConnectionMenu" unique_id=1197832613]
 layout_mode = 2
 size_flags_vertical = 3

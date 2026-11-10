@@ -26,6 +26,8 @@ var MenuState: MenuStates = MenuStates.NETWORK_SELECTION:
 @onready var CopyCodeButton  : Button    = $SubMenus/ConnectionMenu/IP_info/copy_buttons/copy_code_button
 @onready var CopyKoreanButton: Button    = $SubMenus/ConnectionMenu/IP_info/copy_buttons/copy_korean_button
 @onready var PeerStatusBox: TextEdit      = $SubMenus/ConnectionMenu/PeerStatusBox
+@onready var NameBox      : LineEdit      = $SubMenus/ConnectionMenu/name_info/name_box
+@onready var SetNameButton: Button        = $SubMenus/ConnectionMenu/name_info/set_name_button
 
 
 var Peers: Dictionary = {}
@@ -33,6 +35,7 @@ var Peers: Dictionary = {}
 signal network_type_selected(global: bool)
 signal connect_button_pressed(Address: String)
 signal quit_button_pressed()
+signal name_changed(new_name: String)
 signal resume_button_pressed()
 
 
@@ -44,6 +47,8 @@ func _ready() -> void:
    LocalButton.pressed.connect(_on_network_type_changed.bind(false))
 
    ConnectButton.pressed.connect(_on_connect_button_pressed)
+   SetNameButton.pressed.connect(_on_set_name_button_pressed)
+   NameBox.text_submitted.connect(_on_set_name_button_pressed.unbind(1))
    CopyIPButton.pressed.connect    (_copy_address.bind(func(addr: String): return addr))
    CopyCodeButton.pressed.connect  (_copy_address.bind(encode))
    CopyKoreanButton.pressed.connect(_copy_address.bind(enkorean))
@@ -55,6 +60,10 @@ func _ready() -> void:
 ## =============== #
 func _on_back_button_pressed() -> void:
    MenuState = MenuStates.NETWORK_SELECTION
+
+func _on_set_name_button_pressed() -> void:
+   var new_name := NameBox.text.strip_edges()
+   if new_name: name_changed.emit(new_name)
 
 ## drops every connection (handled by whoever listens to [signal quit_button_pressed])
 ## and returns to the global/local selection
@@ -99,7 +108,7 @@ func update_peer(peer_ip: String, status: OneTruePingus.PingusStates) -> void:
       PeerStatusBox.text += str(Peers.keys()[i]) + " " + str(OneTruePingus.PingusStates.find_key(Peers[Peers.keys()[i]])) + "\n"
 
 ## rebuild the peer list from [member OneTruePingus.Peers]. ported from tournamancy's ConnectMenu.update_peers
-func update_peers(peers: Array[OneTruePingus.PingusPeer]) -> void:
+func update_peers(peers: Array[OneTruePingus.PingusPeer], names: Dictionary = {}) -> void:
    Peers.clear()
    var lines: PackedStringArray = []
    for peer in peers:
@@ -110,7 +119,8 @@ func update_peers(peers: Array[OneTruePingus.PingusPeer]) -> void:
          OneTruePingus.PingusStates.INFORMING  : state_str += " informing..."
          OneTruePingus.PingusStates.CONNECTED  : state_str += " connected"
          _                                     : state_str += " unknown"
-      if peer.NetworkID != 0: state_str = str(peer.NetworkID) + "\n" + state_str
+      if names.has(peer.NetworkID): state_str = names[peer.NetworkID] + " (" + str(peer.NetworkID) + ")\n" + state_str
+      elif peer.NetworkID != 0: state_str = str(peer.NetworkID) + "\n" + state_str
       lines.append(state_str)
    PeerStatusBox.text = "\n".join(lines)
    _update_back_button()

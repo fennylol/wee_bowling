@@ -11,6 +11,8 @@ var GO_REGISTRY = GameObject.Registry
 @onready var _WBM: WeeBowlingMenu = $WeeBowlingMenu
 var _OTP := OneTruePingus.new()
 var Dummies: Dictionary = {}
+var PlayerName: String = ""
+var PeerNames: Dictionary = {}
 
 var _PhysicsTick: int = 0
 var _HeartbeatTimer: float = 0.0
@@ -19,6 +21,7 @@ var DEBUG_PRINT_CONTROL_MESSAGES: bool = false
 
 func _ready() -> void:
    GameObject.LocalID = _OTP.NetworkID
+   PlayerName = str(_OTP.NetworkID)
    GameObject.Events.object_claimed.connect(_send_claim_ownership_data)
    GameObject.Events.object_cleared.connect(_send_gameobject_cleared_data)
    PinSetter.Events.regenerated.connect(_send_pinsetter_state_data)
@@ -27,6 +30,7 @@ func _ready() -> void:
    _WBM.resume_button_pressed.connect (_on_wbm_resume_button_pressed)
    _WBM.connect_button_pressed.connect(_on_wbm_connect_button_pressed)
    _WBM.quit_button_pressed.connect   (_on_wbm_quit_button_pressed)
+   _WBM.name_changed.connect          (_on_wbm_name_changed)
 
    _OTP.recieved_data.connect(_recieve_data)
    _OTP.connection_established.connect(_on_connection_established)
@@ -48,6 +52,7 @@ func _process(delta: float) -> void:
          _send_pinsetter_state_data(setter)
       for machine: BallMachine in BallMachine.Registry.values():
          _send_ballmachine_state_data(machine)
+      _send_identity_data()
 
 func _physics_process(_delta: float) -> void:
    _send_player_transform_data(_Player.generate_transform_data(), _OTP.NetworkID)
@@ -77,6 +82,10 @@ func _on_wbm_connect_button_pressed(target_address: String) -> void:
    _OTP.add_peer(parts[0], parts[1].to_int())
    _refresh_peer_list()
 
+func _on_wbm_name_changed(new_name: String) -> void:
+   PlayerName = new_name
+   _send_identity_data()
+
 func _on_wbm_quit_button_pressed() -> void:
    _send_disconnection_data()
    for peer:OneTruePingus.PingusPeer in _OTP.Peers.duplicate():
@@ -97,6 +106,7 @@ func _on_connection_established(network_id: int, peer_address: String, peer_port
      if peer.State != OneTruePingus.PingusStates.CONNECTED: continue
      _send_connection_data(peer.NetworkID, peer.Addr, peer.Port)
    _send_world_state_data(network_id)
+   _send_identity_data()
    _refresh_peer_list()
 func _refresh_peer_list() -> void:
    for peer:OneTruePingus.PingusPeer in _OTP.Peers.duplicate():
@@ -104,7 +114,7 @@ func _refresh_peer_list() -> void:
        _despawn_dummy(peer.NetworkID)
        GameObject.release_all_owned_by(peer.NetworkID)
        _OTP.Peers.erase(peer)
-   _WBM.update_peers(_OTP.Peers)
+   _WBM.update_peers(_OTP.Peers, PeerNames)
 
 func _spawn_dummy(network_id: int) -> void:
    if network_id == 0 or network_id == _OTP.NetworkID: return
@@ -114,6 +124,7 @@ func _spawn_dummy(network_id: int) -> void:
    dummy.name = "dummy_" + str(network_id)
    Dummies.set(network_id, dummy)
    add_child(dummy)
+   dummy.set_name_tag(PeerNames.get(network_id, str(network_id)))
 func _despawn_dummy(network_id: int) -> void:
    var dummy: Dummy = Dummies.get(network_id)
    if dummy: dummy.queue_free()
@@ -131,7 +142,8 @@ enum DataTypes {
    ClaimOwnershipData      = 0x44,
    GameObjectClearedData   = 0x55,
    PinSetterStateData      = 0x66,
-   BallMachineStateData    = 0x77
+   BallMachineStateData    = 0x77,
+   IdentityData            = 0x15
 }
 
 func _send_connection_data(network_id: int, peer_address: String, peer_port: int) -> void:
@@ -146,6 +158,12 @@ func _send_disconnection_data(disconnecting_id: int = _OTP.NetworkID) -> void:
    data.resize(OneTruePingus.NETWORK_ID_SIZE)
    data.encode_u32(0, disconnecting_id)
    _OTP.send_data(DataTypes.DisconnectionData, data)
+func _send_identity_data() -> void:
+   var data: PackedByteArray = []
+   data.resize(OneTruePingus.NETWORK_ID_SIZE)
+   data.encode_u32(0, _OTP.NetworkID)
+   data.append_array(PlayerName.to_utf8_buffer())
+   _OTP.send_data(DataTypes.IdentityData, data)
 func _send_player_transform_data(data: PackedByteArray, owner_id: int) -> void:
    var data_with_id: PackedByteArray = []
    data_with_id.resize(OneTruePingus.NETWORK_ID_SIZE)
@@ -212,6 +230,7 @@ func _recieve_data(_sender_id: int, data_type: int, data: PackedByteArray) -> vo
       DataTypes.GameObjectClearedData   : _recieve_gameobject_cleared_data   (data)
       DataTypes.PinSetterStateData      : _recieve_pinsetter_state_data      (data)
       DataTypes.BallMachineStateData    : _recieve_ballmachine_state_data    (data)
+      DataTypes.IdentityData            : _recieve_identity_data             (data)
 
       OneTruePingus.DataTypes.CONTROL:
          if DEBUG_PRINT_CONTROL_MESSAGES:
@@ -268,3 +287,12 @@ func _recieve_ballmachine_state_data   (data: PackedByteArray) -> void:
    if data.size() < 4: return
    var machine = BallMachine.Registry.get(data.decode_u32(0))
    if is_instance_valid(machine): machine.apply_remote_state(data.slice(4))
+func _recieve_identity_data            (data: PackedByteArray) -> void:
+   if data.size() < OneTruePingus.NETWORK_ID_SIZE: return
+   var peer_id: int = data.decode_u32(0)
+   var new_name: String = data.slice(OneTruePingus.NETWORK_ID_SIZE).get_string_from_utf8().left(24)
+   if PeerNames.get(peer_id) == new_name: return
+   PeerNames[peer_id] = new_name
+   var dummy: Dummy = Dummies.get(peer_id)
+   if dummy: dummy.set_name_tag(new_name)
+   _refresh_peer_list()
