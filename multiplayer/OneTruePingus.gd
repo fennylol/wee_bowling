@@ -174,7 +174,7 @@ func _process(delta: float) -> void:
             if pkt_type != PingusTypes.INFORM: _emit_control("ERROR: incorrect packet type while informing"); continue
             if pkt.size() < HEADER_SIZE + PORT_SIZE: _emit_control("ERROR: INFORM packet too small for port"); continue
             peer.State = PingusStates.CONNECTED
-            peer.TimeSincePkt = 0.0
+            peer.clear_timers()
             _emit_control("Established connection to " + str(sender_id) + " (" + from_addr + ":" + str(from_port) + ")", sender_id)
             _inform_peer(peer, delta)
             connection_established.emit(sender_id, from_addr, from_port)
@@ -191,7 +191,7 @@ func _process(delta: float) -> void:
                PingusTypes.DATA:
                   if pkt.size() < HEADER_SIZE + DATA_TYPE_SIZE: _emit_control("ERROR: DATA packet missing type byte"); continue
                   recieved_data.emit(sender_id, pkt.decode_u8(HEADER_SIZE), pkt.slice(HEADER_SIZE + DATA_TYPE_SIZE))
-                  peer.TimeSincePkt = 0.0
+                  peer.clear_timers()
                _: _emit_control("ERROR: incorrect packet type while connected")
    
    # inform peers and keep connections alive
@@ -206,6 +206,7 @@ func _process(delta: float) -> void:
          PingusStates.CONNECTED:
             if peer.TimeSincePkt >= _KEEP_ALIVE_TIME:
                peer.TimeSincePkt -= _KEEP_ALIVE_TIME
+               peer.KeepAliveNum += 1
                _keepalive_peer(peer)
 func _find_peer(from_addr: String, from_port: int, sender_id: int) -> PingusPeer:
    if sender_id != 0:
@@ -269,12 +270,17 @@ class PingusPeer:
    var NetworkID    : int    = 0
    ## time elapsed since last packet. see [member OneTruePingus._KEEP_ALIVE_TIME] and [member OneTruePingus._TIMEOUT_TIME] (yeah those are both hidden properties i know lmao
    var TimeSincePkt : float  = 0.0
+   ## number of keepalives sent since the last packet arrived
+   var KeepAliveNum : int    = 1
    ## the state of the connection between the [OneTruePingus] and the peer.
    var State  : PingusStates = PingusStates.NOT_STARTED
    func _init(addr: String, port: int, id: int) -> void:
       Addr      = addr
       Port      = port
       NetworkID = id
+   func clear_timers() -> void:
+      TimeSincePkt = 0.0
+      KeepAliveNum = 0
 ## utility class to fetch external facing IP/port combo.[br]
 ## underpinned by [url=https://github.com/pradt2/always-online-stun.git]pradt2's github[/url]. many thanks to them![br][br]
 ## [i]*writted by Claude Opus 4.8, so it might be straight dookie idk. i didn't feel like dealing with the complexities of the STUN protocol. sue me...[/i]
