@@ -16,6 +16,9 @@ physics_material_override = SubResource("PhysicsMaterial_3uk5a")
 gravity_scale = 3.0
 script = ExtResource("1_3uk5a")
 
+[node name="mouth_for_screaming" type="AudioStreamPlayer3D" parent="." unique_id=586270424]
+unit_size = 15.0
+
 [node name="BallMesh" type="MeshInstance3D" parent="." unique_id=1150285554]
 mesh = ExtResource("2_3uk5a")
 

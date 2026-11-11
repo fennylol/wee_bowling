@@ -19,7 +19,6 @@ const BONK_SOUNDS: Array[AudioStream] = [
    preload("res://pins/sounds/knock_b.mp3"),
    preload("res://pins/sounds/knock_c.mp3")
 ]
-const RARE_BONK_SOUNDS: Array[AudioStream] = []
 
 @onready var Mouth: AudioStreamPlayer3D = $mouth_for_screaming
 
