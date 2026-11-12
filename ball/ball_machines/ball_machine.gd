@@ -18,7 +18,7 @@ func _ready() -> void:
       var new_ball: Ball = BALL_NODE.instantiate()
       new_ball.register(("%s:ball:%d" % [get_path(), i]).hash())
       new_ball.ParentBallMachine = self
-      new_ball.Cleared = true
+      new_ball.IsCleared = true
       new_ball.cleared.connect(_handle_cleared_ball.bind(new_ball))
       BallNodes.append(new_ball)
 
@@ -28,8 +28,8 @@ func _handle_cleared_ball(ball:Ball) -> void:
 
 func _return_ball(ball: Ball) -> void:
    ball.position = Vector3(0,1,-0.1)
-   ball.linear_velocity = Vector3(0.0,0.0,-3.5) * basis
-   ball.Cleared = false
+   ball.linear_velocity = Vector3(0.0,0.0,-2.5) * basis
+   ball.IsCleared = false
    # so a peer that hasn't returned this ball yet can't clear it again
    ball.ClaimCounter += 1
    add_child(ball)
@@ -39,11 +39,11 @@ func get_ball_states() -> PackedByteArray:
    data.resize(BallNodes.size() * 5)
    for i in BallNodes.size():
       data.encode_u32(i*5, BallNodes[i].ClaimCounter)
-      data.encode_u8(i*5 + 4, BallNodes[i].Cleared)
+      data.encode_u8(i*5 + 4, BallNodes[i].IsCleared)
    return data
 
-@warning_ignore("integer_division")
 func apply_remote_state(data: PackedByteArray) -> void:
+   @warning_ignore("integer_division")
    for i in min(BallNodes.size(), data.size() / 5):
       if data.decode_u8(i*5 + 4): BallNodes[i].remote_clear(data.decode_u32(i*5))
 
@@ -52,7 +52,7 @@ func _process(delta: float) -> void:
    for ball:Ball in BallNodes:
       if ball_released:
          ball.QueueTime += MIN_BALL_GAP
-      elif ball.QueueTime <= 0.0 and ball.Cleared:
+      elif ball.QueueTime <= 0.0 and ball.IsCleared:
          ball_released = true
          _return_ball(ball)
       else:

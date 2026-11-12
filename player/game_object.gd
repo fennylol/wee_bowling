@@ -18,7 +18,8 @@ static var LocalID: int = 0
 var RegistryID: int
 var OwnerID: int = 0
 var ClaimCounter: int = 0
-var Cleared: bool = false
+var IsCleared: bool = false
+var IsHeld: bool = false
 
 var _HasTarget: bool = false
 var _TargetPos := Vector3.ZERO
@@ -53,7 +54,7 @@ func register(id: int) -> void:
 # ownership #
 # ========= #
 func claim(by_pickup: bool) -> bool:
-   if Cleared: return false
+   if IsCleared: return false
    if OwnerID == LocalID: return true
    if OwnerID != 0 and not by_pickup: return false
    ClaimCounter += 1
@@ -79,19 +80,19 @@ static func release_all_owned_by(owner_id: int) -> void:
 # clearing #
 # ======== #
 func try_clear() -> void:
-   if Cleared: return
+   if IsHeld or IsCleared: return
    if OwnerID != 0 and OwnerID != LocalID: return
    ClaimCounter += 1
    _clear()
    Events.object_cleared.emit(self)
 
 func remote_clear(counter: int) -> void:
-   if Cleared or counter < ClaimCounter: return
+   if IsCleared or counter < ClaimCounter: return
    ClaimCounter = counter
    _clear()
 
 func _clear() -> void:
-   Cleared = true
+   IsCleared = true
    OwnerID = 0
    _HasTarget = false
    cleared.emit()
@@ -100,7 +101,7 @@ func _clear() -> void:
 # data handling #
 # ============= #
 func should_broadcast() -> bool:
-   if OwnerID != LocalID or Cleared: return false
+   if OwnerID != LocalID or IsCleared: return false
    if not sleeping:
       _SentAsleep = false
       return true
@@ -118,7 +119,7 @@ func generate_state_data() -> PackedByteArray:
    return data
 
 func on_state_data(data: PackedByteArray) -> void:
-   if Cleared or data.size() < OWNERSHIP_DATA_SIZE + TRANSFORM_DATA_SIZE: return
+   if IsCleared or data.size() < OWNERSHIP_DATA_SIZE + TRANSFORM_DATA_SIZE: return
    if accept_claim(data.decode_u32(0), data.decode_u32(4)):
       on_transform_data(data.slice(OWNERSHIP_DATA_SIZE))
 

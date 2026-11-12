@@ -5,6 +5,7 @@
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_3uk5a"]
 friction = 0.0
+rough = true
 bounce = 0.5
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_bsava"]

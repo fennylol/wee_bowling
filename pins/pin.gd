@@ -27,11 +27,11 @@ func _ready() -> void:
    body_entered.connect(_handle_collision)
 
 func _handle_collision(_body:Node3D) -> void:
-   if linear_velocity.length() > 0.5 \
-   or angular_velocity.length() > 0.5:
-      if not Mouth.playing:
-         Mouth.stream = BONK_SOUNDS[randi_range(0,BONK_SOUNDS.size()-1)]
-         Mouth.play()
+   if not Mouth.playing and not IsHeld \
+   and (linear_velocity.length() > 0.5 \
+   or angular_velocity.length() > 0.5):
+      Mouth.stream = BONK_SOUNDS[randi_range(0,BONK_SOUNDS.size()-1)]
+      Mouth.play()
 
 func _physics_process(_delta: float) -> void:
    if linear_velocity.length() < 0.1 \

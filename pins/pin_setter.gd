@@ -80,7 +80,7 @@ func get_standing_mask() -> PackedByteArray:
    mask.resize(ceili(MaxPins / 8.0))
    for i:int in MaxPins:
       var pin = GameObject.Registry.get(_pin_id(Generation, i))
-      if is_instance_valid(pin) and not pin.Cleared: mask[i >> 3] |= 1 << (i & 7)
+      if is_instance_valid(pin) and not pin.IsCleared: mask[i >> 3] |= 1 << (i & 7)
    return mask
 
 func apply_remote_state(generation: int, mask: PackedByteArray) -> void:
@@ -89,7 +89,7 @@ func apply_remote_state(generation: int, mask: PackedByteArray) -> void:
    for i:int in MaxPins:
       if (i >> 3) < mask.size() and mask[i >> 3] & (1 << (i & 7)): continue
       var pin = GameObject.Registry.get(_pin_id(Generation, i))
-      if is_instance_valid(pin) and not pin.Cleared: pin.remote_clear(pin.ClaimCounter)
+      if is_instance_valid(pin) and not pin.IsCleared: pin.remote_clear(pin.ClaimCounter)
 
 #func _reset_pins() -> void:
    #for i:int in MaxPins:

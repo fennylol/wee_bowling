@@ -34,7 +34,7 @@ func _ready() -> void:
    
    # seeded so every peer gets the same ball
    var rng := RandomNumberGenerator.new()
-   rng.seed = RegistryID
+   rng.seed = RegistryID 
    var attribute_a: float = rng.randf()
    var attribute_b: float = rng.randf_range(0.5,0.8)
    
@@ -54,11 +54,11 @@ func _ready() -> void:
    set_name("Ball_" + str(int(attribute_a*100)) + "_" + str(int(attribute_b)))
 
 func _handle_collision(_body:Node3D) -> void:
-   if linear_velocity.length() > 3.0:
-      if not Mouth.playing:
-         Mouth.volume_linear = lerp(0.1, 1.0, inverse_lerp(3.0, 100.0, linear_velocity.length()))
-         Mouth.stream = BONK_SOUNDS[randi_range(0,BONK_SOUNDS.size()-1)]
-         Mouth.play()  
+   if not Mouth.playing and not IsHeld \
+   and linear_velocity.length() > 3.0:
+      Mouth.volume_linear = lerp(0.1, 1.0, inverse_lerp(3.0, 100.0, linear_velocity.length()))
+      Mouth.stream = BONK_SOUNDS[randi_range(0,BONK_SOUNDS.size()-1)]
+      Mouth.play()  
 
 func _process(_delta: float) -> void:
    if (abs(global_position.distance_to(ParentBallMachine.global_position)) > KILL_DIST\

@@ -1,8 +1,15 @@
 [gd_scene format=3 uid="uid://ci6ptsk1f0dn7"]
 
 [ext_resource type="Material" uid="uid://b7b6y78efjcw" path="res://map/WoodFloor061_1K-JPG/WoodFloor061_1K-JPG.tres" id="1_2honu"]
+[ext_resource type="Script" uid="uid://bglfkplrj2o03" path="res://map/lane/lane.gd" id="1_e4ou1"]
 [ext_resource type="ArrayMesh" uid="uid://ch4b0i13bmdg6" path="res://map/quarter_pipe_mesh.tres" id="2_e4ou1"]
 [ext_resource type="Script" uid="uid://ty6gqo2ifypq" path="res://pins/pin_setter.gd" id="3_ifauo"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_e4ou1"]
+size = Vector3(0.125, 5.125, 6.75)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_t7xp4"]
+viewport_path = NodePath("SubViewport")
 
 [sub_resource type="BoxMesh" id="BoxMesh_t7xp4"]
 size = Vector3(35, 0.5, 5)
@@ -34,7 +41,35 @@ size = Vector3(7, 0.025, 0.125)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e4ou1"]
 albedo_color = Color(0.6509804, 0.8901961, 0.6313726, 1)
 
+[sub_resource type="BoxMesh" id="BoxMesh_ifauo"]
+size = Vector3(2.5, 1, 8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_t7xp4"]
+transparency = 1
+albedo_color = Color(0, 0, 0, 0.98039216)
+
 [node name="Lane" type="Node3D" unique_id=1630502424]
+script = ExtResource("1_e4ou1")
+
+[node name="SubViewport" type="SubViewport" parent="." unique_id=387948921]
+size = Vector2i(256, 193)
+
+[node name="Camera3D" type="Camera3D" parent="SubViewport" unique_id=1156961046]
+transform = Transform3D(-1, 8.444392e-08, -2.2626683e-08, 0, 0.25881907, 0.9659258, 8.742278e-08, 0.9659258, -0.25881907, 0, 7.5, -17.75)
+cull_mask = 1048573
+fov = 45.0
+
+[node name="TV" type="MeshInstance3D" parent="." unique_id=179355086]
+transform = Transform3D(-4.3047308e-08, 7.590402e-09, 1, 0.17364816, 0.9848076, 0, -0.9848076, 0.17364816, -4.371139e-08, 0, 6.5, -7.5)
+layers = 2
+cast_shadow = 0
+mesh = SubResource("BoxMesh_e4ou1")
+
+[node name="Sprite3D" type="Sprite3D" parent="TV" unique_id=1197487099]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -0.13, 0, 0)
+layers = 2
+pixel_size = 0.025
+texture = SubResource("ViewportTexture_t7xp4")
 
 [node name="floor_mesh" type="MeshInstance3D" parent="." unique_id=1718858023]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, -0.25, 0)
@@ -102,3 +137,8 @@ metadata/_custom_type_script = "uid://ty6gqo2ifypq"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 17.5)
 mesh = SubResource("BoxMesh_2honu")
 surface_material_override/0 = SubResource("StandardMaterial3D_e4ou1")
+
+[node name="pit" type="MeshInstance3D" parent="." unique_id=612284786]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, -0.75, -18.75)
+mesh = SubResource("BoxMesh_ifauo")
+surface_material_override/0 = SubResource("StandardMaterial3D_t7xp4")

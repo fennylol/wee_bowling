@@ -209,7 +209,7 @@ func _send_ballmachine_state_data(machine: BallMachine, target_id: int = 0) -> v
 # unowned objects haven't moved since they spawned, so only owned ones are sent
 func _send_world_state_data(network_id: int) -> void:
    for game_obj in GameObject.Registry.values():
-     if is_instance_valid(game_obj) and game_obj.OwnerID == _OTP.NetworkID and not game_obj.Cleared:
+     if is_instance_valid(game_obj) and game_obj.OwnerID == _OTP.NetworkID and not game_obj.IsCleared:
        _send_gameobject_transform_data(game_obj, network_id)
    for setter: PinSetter in PinSetter.Registry.values():
      _send_pinsetter_state_data(setter, network_id)
@@ -273,7 +273,7 @@ func _recieve_gameobject_transform_data(data: PackedByteArray) -> void:
 func _recieve_claim_ownership_data     (data: PackedByteArray) -> void:
    if data.size() < GameObject.REGISTRY_ID_SIZE + GameObject.OWNERSHIP_DATA_SIZE: return
    var game_obj = GameObject.Registry.get(data.decode_u32(0))
-   if is_instance_valid(game_obj) and not game_obj.Cleared:
+   if is_instance_valid(game_obj) and not game_obj.IsCleared:
       game_obj.accept_claim(data.decode_u32(GameObject.REGISTRY_ID_SIZE), data.decode_u32(GameObject.REGISTRY_ID_SIZE + 4))
 func _recieve_gameobject_cleared_data  (data: PackedByteArray) -> void:
    if data.size() < GameObject.REGISTRY_ID_SIZE + GameObject.COUNTER_SIZE: return

@@ -5,14 +5,27 @@ const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
 const KILL_DEPTH: float = -5.0
 const TRANSFORM_DATA_SIZE = 4*9
-const REGISTRY_ID_SIZE: int = 4
 
-static var Registry: Dictionary
-var RegistryID: int
+const GRAB_FORCE: float = 150.0
+const GRAB_DAMPING: float = 0.95
+
+const THROW_SOUNDS: Array[AudioStream] = [
+   preload("res://player/sounds/throw_0.mp3"),
+   preload("res://player/sounds/throw_1.mp3"),
+   preload("res://player/sounds/throw_2.mp3"),
+   preload("res://player/sounds/throw_3.mp3"),
+   preload("res://player/sounds/throw_4.mp3")
+]
+const RARE_THROW_SOUNDS: Array[AudioStream] = [
+   preload("res://player/sounds/throw_rare_0.mp3"),
+   preload("res://player/sounds/throw_rare_1.mp3")
+]
 
 @onready var _Camera = $Camera3D
-@onready var ObjCatcher: Area3D = $Camera3D/ObjCatcher
-@onready var ObjectVisualizerMesh: MeshInstance3D = $Camera3D/ObjCatcher/ObjectVisualizerMesh
+@onready var _ObjCatcher: Area3D = $Camera3D/ObjCatcher
+@onready var _ObjectVisualizerMesh: MeshInstance3D = $Camera3D/ObjCatcher/ObjectVisualizerMesh
+@onready var _MouthForScreaming: AudioStreamPlayer3D = $mouth_for_screaming
+
 
 signal grabbed_object(registry_id: int, released: bool)
 
@@ -32,8 +45,6 @@ var _DidGrabMatial := StandardMaterial3D.new()
 var GrabbableObj: GameObject = null
 var GrabbedObj: GameObject = null
 
-var GrabForce: float = 150.0
-var GRAB_DAMPING: float = 0.95
 
 # ╭----------------╮
 # |    UTILITY     |
@@ -82,8 +93,8 @@ func _ready():
    _DidGrabMatial.albedo_color = Color.DEEP_SKY_BLUE
    _DidGrabMatial.albedo_color.a = 0.25
    
-   ObjCatcher.body_entered.connect(_handle_body_entered)
-   ObjCatcher.body_exited.connect(_handle_body_exited)
+   _ObjCatcher.body_entered.connect(_handle_body_entered)
+   _ObjCatcher.body_exited.connect(_handle_body_exited)
 
 func _handle_body_entered(body: Node3D) -> void:
    if body is GameObject:
@@ -92,7 +103,7 @@ func _handle_body_entered(body: Node3D) -> void:
 func _handle_body_exited(body: Node3D) -> void:
    if body is GameObject:
       GrabbableObj = null
-      for other_body in ObjCatcher.get_overlapping_bodies():
+      for other_body in _ObjCatcher.get_overlapping_bodies():
          if other_body is GameObject:
             GrabbableObj = other_body
             break
@@ -109,16 +120,22 @@ func _process(_delta):
    if Input.is_action_just_pressed("grab") and GrabbableObj and GrabbableObj.claim(true):
       grabbed_object.emit(GrabbableObj.RegistryID, false)
       GrabbedObj = GrabbableObj
+      GrabbedObj.IsHeld = true
    if Input.is_action_just_released("grab") and GrabbedObj:
+      if GrabbedObj.linear_velocity.length() > 3.0:
+         _MouthForScreaming.stream = THROW_SOUNDS[randi_range(0,THROW_SOUNDS.size()-1)] if randi_range(0,25) < 25 else  RARE_THROW_SOUNDS[randi_range(0,RARE_THROW_SOUNDS.size()-1)]
+         _MouthForScreaming.play()
+      
       grabbed_object.emit(GrabbedObj.RegistryID, true)
+      GrabbedObj.IsHeld = false
       GrabbedObj = null
    
    if position.y <= KILL_DEPTH:
       position = Vector3.ZERO
    
-   ObjectVisualizerMesh.mesh.material = _DidGrabMatial if GrabbedObj else \
-                                        _CanGrabMatial if GrabbableObj else \
-                                        _SadMaterial 
+   _ObjectVisualizerMesh.mesh.material = _DidGrabMatial if GrabbedObj else \
+                                         _CanGrabMatial if GrabbableObj else \
+                                         _SadMaterial 
 
 # movement
 func _physics_process(delta):
@@ -129,7 +146,7 @@ func _physics_process(delta):
    
    var input_dir = Input.get_vector("left", "right", "up", "down")
    var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-   if direction:
+   if direction: # and not (GrabbedObj and Input.is_action_pressed("spin")):
       velocity.x = direction.x * SPEED
       velocity.z = direction.z * SPEED
    else:
@@ -138,9 +155,18 @@ func _physics_process(delta):
    
    if GrabbedObj and GrabbedObj.OwnerID != GameObject.LocalID: GrabbedObj = null
    if GrabbedObj:
-      var vec_to := ObjCatcher.global_position - GrabbedObj.global_position
+      var vec_to := _ObjCatcher.global_position - GrabbedObj.global_position
       GrabbedObj.linear_velocity *= GRAB_DAMPING 
-      GrabbedObj.linear_velocity += vec_to * delta * GrabForce
+      GrabbedObj.linear_velocity += vec_to * GRAB_FORCE * delta
+      
+      #if Input.is_action_pressed("spin"): 
+         #var spin_local := Vector3(input_dir.y, 0.0, -input_dir.x)
+         #GrabbedObj.angular_velocity += _Camera.global_basis * spin_local * SPIN_FORCE * delta
+      #else: GrabbedObj.angular_velocity *= SPIN_DAMPING
+
       grabbed_object.emit(GrabbedObj.RegistryID, false)
-   
+      
    move_and_slide()
+   
+var SPIN_FORCE: float = 20.0
+var SPIN_DAMPING: float = 0.95

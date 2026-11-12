@@ -100,9 +100,6 @@ size = Vector3(0.125, 5, 17)
 [sub_resource type="ViewportTexture" id="ViewportTexture_c1rww"]
 viewport_path = NodePath("Side2/SubViewport")
 
-[sub_resource type="BoxMesh" id="BoxMesh_yd35y"]
-size = Vector3(6.4, 4.8, 6.4)
-
 [node name="DuelLane" type="Node3D" unique_id=903776092]
 script = ExtResource("1_54uiw")
 
@@ -306,11 +303,13 @@ surface_material_override/0 = SubResource("StandardMaterial3D_s4nsk")
 [node name="TV" type="MeshInstance3D" parent="Side" unique_id=1429990421]
 transform = Transform3D(0.8528685, -0.15038373, -0.5, 0.17364818, 0.9848077, 0, 0.49240386, -0.08682409, 0.8660254, 8, 10, 0)
 layers = 2
+cast_shadow = 0
 mesh = SubResource("BoxMesh_c1rww")
 
 [node name="Sprite3D" type="Sprite3D" parent="Side/TV" unique_id=806471897]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -0.13, 0, 0)
 layers = 2
+cast_shadow = 0
 pixel_size = 0.035
 texture = SubResource("ViewportTexture_bsava")
 
@@ -354,6 +353,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_s4nsk")
 [node name="TV" type="MeshInstance3D" parent="Side2" unique_id=1420058479]
 transform = Transform3D(0.85286844, -0.15038371, 0.5, 0.17364816, 0.98480767, 0, -0.49240384, 0.08682408, 0.8660254, 8, 10, 0)
 layers = 2
+cast_shadow = 0
 mesh = SubResource("BoxMesh_c1rww")
 
 [node name="Sprite3D" type="Sprite3D" parent="Side2/TV" unique_id=214102199]
@@ -374,16 +374,3 @@ disabled = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 2.5, 0)
 shape = SubResource("BoxShape3D_pxq22")
 disabled = true
-
-[node name="TV" type="MeshInstance3D" parent="." unique_id=660141968]
-transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 1, 0, 10, 0)
-visible = false
-layers = 2
-mesh = SubResource("BoxMesh_yd35y")
-
-[node name="Sprite3D" type="Sprite3D" parent="TV" unique_id=1537561966]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -0.13, 0, 0)
-visible = false
-layers = 2
-pixel_size = 0.035
-texture = SubResource("ViewportTexture_bsava")
