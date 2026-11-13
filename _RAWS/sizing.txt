@@ -1,0 +1,23 @@
+DANCEFLOOR: 50x25
+
+LANE: 35m long 5m wide
+GUTTER: 1m semicircle
+COLLECTION BAY: 3-4m deep
+
+1m seperation between lanes
+
+DUAL LANE: 45m long 5m wide
+PIN_LINE: 4.8m
+PLAYER_LINE: 12.8m
+
+SIDE BAY: 4m wide 3m tall
+
+BALL TRAY: 2x3x1.5
+
+
+ZONES:
+Zen Bowling: 6 lanes
+Head-to-head bowling. 2 double-lanes
+Billiards - 1 (8*18)
+Ball pit - 1
+Skee-Ball - 3

@@ -3,6 +3,7 @@
 [ext_resource type="Material" uid="uid://b7b6y78efjcw" path="res://map/WoodFloor061_1K-JPG/WoodFloor061_1K-JPG.tres" id="1_cs7e4"]
 [ext_resource type="ArrayMesh" uid="uid://786cwsqcok54" path="res://map/quarter_pipe_short_mesh.tres" id="3_cs7e4"]
 [ext_resource type="PackedScene" uid="uid://b8rrnfcl2vn1b" path="res://map/lane/duel_lane.tscn" id="3_skqml"]
+[ext_resource type="PackedScene" uid="uid://cgfrhrpr8emae" path="res://map/test_geometry/geometry_05.tscn" id="5_6klam"]
 [ext_resource type="PackedScene" uid="uid://bw0oexpekxjao" path="res://map/lane/lane_pair.tscn" id="7_1yuiw"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6klam"]
@@ -51,7 +52,11 @@ mesh = SubResource("BoxMesh_cs7e4")
 
 [node name="floor2" type="MeshInstance3D" parent="lobby" unique_id=572094429]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, -47.85)
-visible = false
+material_override = ExtResource("1_cs7e4")
+mesh = SubResource("BoxMesh_xlftk")
+
+[node name="floor3" type="MeshInstance3D" parent="lobby" unique_id=440495614]
+transform = Transform3D(-0.0071107075, -0.29999065, -0.95391566, -0.00037591366, 0.9539406, -0.29999578, 0.9999748, -0.0017745867, -0.0068959817, 42.681736, 5.1315026, -14.609386)
 material_override = ExtResource("1_cs7e4")
 mesh = SubResource("BoxMesh_xlftk")
 
@@ -73,6 +78,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -48)
 shape = SubResource("BoxShape3D_l16eq")
 disabled = true
 
+[node name="floor3" type="CollisionShape3D" parent="lobby/18" unique_id=1819295077]
+transform = Transform3D(-0.0071107075, -0.29999065, -0.95391566, -0.00037591366, 0.9539406, -0.29999578, 0.9999748, -0.0017745867, -0.0068959817, 42.824818, 5.6765018, -14.608349)
+shape = SubResource("BoxShape3D_l16eq")
+
 [node name="spectator shelf" type="CollisionShape3D" parent="lobby/18" unique_id=1047346342]
 transform = Transform3D(-1.7484555e-07, 0, 19, 0, 2.5, 0, -4, 0, -8.305164e-07, 0, 1.25, -5.5)
 shape = SubResource("ConcavePolygonShape3D_1yuiw")
@@ -88,3 +97,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.5, 0, 0)
 
 [node name="DuelLane" parent="lanes" unique_id=903776092 instance=ExtResource("3_skqml")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.666, 51)
+
+[node name="Geometry05" parent="." unique_id=758403124 instance=ExtResource("5_6klam")]
+transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, 60.773376, 6.907139, -59.268112)
