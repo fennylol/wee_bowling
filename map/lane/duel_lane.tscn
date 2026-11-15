@@ -5,8 +5,8 @@
 [ext_resource type="ArrayMesh" uid="uid://6troixnncc0r" path="res://map/quarter_pipe_sloped_mesh.tres" id="2_54uiw"]
 [ext_resource type="ArrayMesh" uid="uid://ch4b0i13bmdg6" path="res://map/quarter_pipe_mesh.tres" id="3_qa0xa"]
 [ext_resource type="ArrayMesh" uid="uid://786cwsqcok54" path="res://map/quarter_pipe_short_mesh.tres" id="4_kditd"]
-[ext_resource type="PackedScene" uid="uid://b6j7x5q81xbgx" path="res://pins/PinSetter.tscn" id="5_1iki1"]
-[ext_resource type="PackedScene" uid="uid://dv0oh64nri52" path="res://ball/ball_machines/BallMachine.tscn" id="6_4qp41"]
+[ext_resource type="PackedScene" uid="uid://b6j7x5q81xbgx" path="res://game_objects/pins/PinSetter.tscn" id="5_1iki1"]
+[ext_resource type="PackedScene" uid="uid://dv0oh64nri52" path="res://game_objects/ball/ball_machines/BallMachine.tscn" id="6_4qp41"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_xnmev"]
 size = Vector3(45, 1, 5)

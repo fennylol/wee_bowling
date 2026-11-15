@@ -1,6 +1,6 @@
 [gd_scene format=4 uid="uid://cgfrhrpr8emae"]
 
-[ext_resource type="PackedScene" uid="uid://dv0oh64nri52" path="res://ball/ball_machines/BallMachine.tscn" id="1_d7fj0"]
+[ext_resource type="PackedScene" uid="uid://dv0oh64nri52" path="res://game_objects/ball/ball_machines/BallMachine.tscn" id="1_d7fj0"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_o62cd"]
 size = Vector3(73.1512, 1, 77.56486)

@@ -23,9 +23,7 @@ const RARE_THROW_SOUNDS: Array[AudioStream] = [
 
 @onready var _Camera = $Camera3D
 @onready var _ObjCatcher: Area3D = $Camera3D/ObjCatcher
-@onready var _ObjectVisualizerMesh: MeshInstance3D = $Camera3D/ObjCatcher/ObjectVisualizerMesh
 @onready var _MouthForScreaming: AudioStreamPlayer3D = $mouth_for_screaming
-
 
 signal grabbed_object(registry_id: int, released: bool)
 
@@ -37,10 +35,6 @@ var Enabled: bool = false:
       else:
          Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
-
-var _SadMaterial := StandardMaterial3D.new()
-var _CanGrabMatial := StandardMaterial3D.new()
-var _DidGrabMatial := StandardMaterial3D.new()
 
 var GrabbableObj: GameObject = null
 var GrabbedObj: GameObject = null
@@ -80,33 +74,22 @@ func _ready():
    register_input("right", KEY_D)
    register_input("up", KEY_W)
    register_input("menu", KEY_ESCAPE)
-   
-   _SadMaterial.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-   _SadMaterial.albedo_color = Color.RED
-   _SadMaterial.albedo_color.a = 0.25
-   
-   _CanGrabMatial.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-   _CanGrabMatial.albedo_color = Color.GREEN
-   _CanGrabMatial.albedo_color.a = 0.25
-   
-   _DidGrabMatial.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-   _DidGrabMatial.albedo_color = Color.DEEP_SKY_BLUE
-   _DidGrabMatial.albedo_color.a = 0.25
-   
-   _ObjCatcher.body_entered.connect(_handle_body_entered)
-   _ObjCatcher.body_exited.connect(_handle_body_exited)
 
-func _handle_body_entered(body: Node3D) -> void:
-   if body is GameObject:
-      GrabbableObj = body
-      
-func _handle_body_exited(body: Node3D) -> void:
-   if body is GameObject:
+func _find_closest_game_object() -> void:
+   if GrabbableObj:
+      GrabbableObj.toggle_outline(false)
       GrabbableObj = null
-      for other_body in _ObjCatcher.get_overlapping_bodies():
-         if other_body is GameObject:
-            GrabbableObj = other_body
-            break
+   
+   for body in _ObjCatcher.get_overlapping_bodies():
+      if body is GameObject:
+         body.toggle_outline(false)
+         var body_dist: float = body.global_position.distance_to(_ObjCatcher.global_position)
+         var grabbable_dist: float = GrabbableObj.global_position.distance_to(_ObjCatcher.global_position) if GrabbableObj else INF
+         if (body_dist < grabbable_dist):
+            GrabbableObj = body
+   
+   if GrabbableObj:
+      GrabbableObj.toggle_outline(true)
 
 # mouse
 func _unhandled_input(event):
@@ -117,6 +100,7 @@ func _unhandled_input(event):
 
 # mouse capture
 func _process(_delta):
+   _find_closest_game_object()
    if Input.is_action_just_pressed("grab") and GrabbableObj and GrabbableObj.claim(true):
       grabbed_object.emit(GrabbableObj.RegistryID, false)
       GrabbedObj = GrabbableObj
@@ -132,10 +116,6 @@ func _process(_delta):
    
    if position.y <= KILL_DEPTH:
       position = Vector3.ZERO
-   
-   _ObjectVisualizerMesh.mesh.material = _DidGrabMatial if GrabbedObj else \
-                                         _CanGrabMatial if GrabbableObj else \
-                                         _SadMaterial 
 
 # movement
 func _physics_process(delta):

@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://de3pmu83pdcbq"]
+
+[ext_resource type="ArrayMesh" uid="uid://c5u54vaylhsus" path="res://game_objects/pins/pin_mesh.tres" id="1_8k0n7"]
+[ext_resource type="Texture2D" uid="uid://cjefky1tlf7j" path="res://game_objects/pins/pin.png" id="1_g20kd"]
+[ext_resource type="Script" uid="uid://d1d7a2ady3jhi" path="res://game_objects/pins/pin.gd" id="1_nx0ib"]
+[ext_resource type="Shader" uid="uid://0oddj7hhen7v" path="res://game_objects/outline.gdshader" id="4_t4j38"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_3uk5a"]
+bounce = 0.75
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2x0uy"]
+render_priority = 0
+shader = ExtResource("4_t4j38")
+shader_parameter/color = Color(1, 0, 0, 1)
+shader_parameter/size = 1.05
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nx0ib"]
+next_pass = SubResource("ShaderMaterial_2x0uy")
+albedo_texture = ExtResource("1_g20kd")
+texture_filter = 0
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_bsava"]
+height = 1.125
+radius = 0.18
+
+[node name="Pin" type="RigidBody3D" unique_id=2058885192]
+mass = 1.5
+physics_material_override = SubResource("PhysicsMaterial_3uk5a")
+center_of_mass_mode = 1
+center_of_mass = Vector3(0, 0.33, 0)
+contact_monitor = true
+max_contacts_reported = 5
+linear_damp = 0.95
+angular_damp = 0.1
+script = ExtResource("1_nx0ib")
+
+[node name="mouth_for_screaming" type="AudioStreamPlayer3D" parent="." unique_id=1126867081]
+unit_size = 15.0
+
+[node name="PinMesh" type="MeshInstance3D" parent="." unique_id=1993604312]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = ExtResource("1_8k0n7")
+surface_material_override/0 = SubResource("StandardMaterial3D_nx0ib")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=850474721]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.562, 0)
+shape = SubResource("CylinderShape3D_bsava")
