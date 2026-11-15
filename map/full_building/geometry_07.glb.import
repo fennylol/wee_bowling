@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://bsh0i3w3uwjpb"
-path="res://.godot/imported/geometry_05.glb-02d3d0b67c2fbb878566b33bab115212.scn"
+uid="uid://ddafqey5g47hb"
+path="res://.godot/imported/geometry_07.glb-0e2f1397b6542966dd64fecd29664275.scn"
 
 [deps]
 
-source_file="res://map/test_geometry/geometry_05.glb"
-dest_files=["res://.godot/imported/geometry_05.glb-02d3d0b67c2fbb878566b33bab115212.scn"]
+source_file="res://map/full_building/geometry_07.glb"
+dest_files=["res://.godot/imported/geometry_07.glb-0e2f1397b6542966dd64fecd29664275.scn"]
 
 [params]
 

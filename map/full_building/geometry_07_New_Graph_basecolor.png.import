@@ -1,0 +1,44 @@
+[remap]
+
+importer="texture"
+type="CompressedTexture2D"
+uid="uid://75dhqfu051cr"
+path.s3tc="res://.godot/imported/geometry_07_New_Graph_basecolor.png-519dd558564d707a8f5ad5333a9e9937.s3tc.ctex"
+metadata={
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
+}
+generator_parameters={
+"md5": "56405585a7eab3717ecd0f9c7ebab6ce"
+}
+
+[deps]
+
+source_file="res://map/full_building/geometry_07_New_Graph_basecolor.png"
+dest_files=["res://.godot/imported/geometry_07_New_Graph_basecolor.png-519dd558564d707a8f5ad5333a9e9937.s3tc.ctex"]
+
+[params]
+
+compress/mode=2
+compress/high_quality=false
+compress/lossy_quality=0.7
+compress/uastc_level=0
+compress/rdo_quality_loss=0.0
+compress/hdr_compression=1
+compress/normal_map=0
+compress/channel_pack=0
+mipmaps/generate=true
+mipmaps/limit=-1
+roughness/mode=0
+roughness/src_normal=""
+process/channel_remap/red=0
+process/channel_remap/green=1
+process/channel_remap/blue=2
+process/channel_remap/alpha=3
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/normal_map_invert_y=false
+process/hdr_as_srgb=false
+process/hdr_clamp_exposure=false
+process/size_limit=0
+detect_3d/compress_to=0

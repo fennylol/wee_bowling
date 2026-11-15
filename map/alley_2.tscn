@@ -1,0 +1,66 @@
+[gd_scene format=3 uid="uid://c8cwx02375str"]
+
+[ext_resource type="PackedScene" uid="uid://qs1oibn0nb0v" path="res://map/full_building/full_building.tscn" id="1_v50v5"]
+[ext_resource type="PackedScene" uid="uid://ba3egdfstyurg" path="res://map/decorations/ceiling_light.tscn" id="2_u5kf6"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6klam"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_cs7e4"]
+sky_material = SubResource("ProceduralSkyMaterial_6klam")
+
+[sub_resource type="Environment" id="Environment_1yuiw"]
+background_mode = 2
+sky = SubResource("Sky_cs7e4")
+glow_enabled = true
+
+[node name="TheAlley" type="Node3D" unique_id=705342910]
+
+[node name="lobby" type="Node3D" parent="." unique_id=1966335159]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 17)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="lobby" unique_id=853518689]
+transform = Transform3D(0.4527679, 0.7721729, -0.4458142, 2.780595e-08, 0.49999994, 0.86602545, 0.8916284, -0.39210856, 0.22638391, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="lobby" unique_id=695025107]
+environment = SubResource("Environment_1yuiw")
+
+[node name="FullBuilding" parent="." unique_id=1736029031 instance=ExtResource("1_v50v5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 0, 5)
+
+[node name="lights" type="Node3D" parent="." unique_id=945301304]
+
+[node name="ceiling_light" parent="lights" unique_id=1531389414 instance=ExtResource("2_u5kf6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 5.5, -11)
+
+[node name="ceiling_light2" parent="lights" unique_id=1794663472 instance=ExtResource("2_u5kf6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.805973, 5.5, -30.452461)
+
+[node name="ceiling_light3" parent="lights" unique_id=606023888 instance=ExtResource("2_u5kf6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.868606, 5.5, -41.58295)
+
+[node name="ceiling_light4" parent="lights" unique_id=60103569 instance=ExtResource("2_u5kf6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.640275, 5.5, -40.12588)
+
+[node name="ceiling_light5" parent="lights" unique_id=1304975297 instance=ExtResource("2_u5kf6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.659603, 5.5, -40.230904)
+
+[node name="ceiling_light6" parent="lights" unique_id=703698985 instance=ExtResource("2_u5kf6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.88666, 5.5, -20.722004)
+
+[node name="ceiling_light7" parent="lights" unique_id=163577582 instance=ExtResource("2_u5kf6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.524113, 5.5, -9.897053)
+
+[node name="ceiling_light8" parent="lights" unique_id=1941576356 instance=ExtResource("2_u5kf6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.24414, 5.5, -20.990149)
+
+[node name="ceiling_light9" parent="lights" unique_id=1090156555 instance=ExtResource("2_u5kf6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 37.573997, 5.5, -10.395028)
+
+[node name="ceiling_light10" parent="lights" unique_id=1447017563 instance=ExtResource("2_u5kf6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 37.573997, 5.5, -31.47549)
+
+[node name="ceiling_light11" parent="lights" unique_id=320365141 instance=ExtResource("2_u5kf6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34.429214, 5.5, -47.251453)
