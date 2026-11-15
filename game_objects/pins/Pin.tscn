@@ -3,7 +3,7 @@
 [ext_resource type="ArrayMesh" uid="uid://c5u54vaylhsus" path="res://game_objects/pins/pin_mesh.tres" id="1_8k0n7"]
 [ext_resource type="Texture2D" uid="uid://cjefky1tlf7j" path="res://game_objects/pins/pin.png" id="1_g20kd"]
 [ext_resource type="Script" uid="uid://d1d7a2ady3jhi" path="res://game_objects/pins/pin.gd" id="1_nx0ib"]
-[ext_resource type="Shader" uid="uid://0oddj7hhen7v" path="res://game_objects/outline.gdshader" id="4_t4j38"]
+[ext_resource type="Shader" uid="uid://cbipt318pdjsv" path="res://game_objects/outline.gdshader" id="4_t4j38"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_3uk5a"]
 bounce = 0.75
@@ -12,7 +12,7 @@ bounce = 0.75
 render_priority = 0
 shader = ExtResource("4_t4j38")
 shader_parameter/color = Color(1, 0, 0, 1)
-shader_parameter/size = 1.05
+shader_parameter/width = 0.0125
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nx0ib"]
 next_pass = SubResource("ShaderMaterial_2x0uy")

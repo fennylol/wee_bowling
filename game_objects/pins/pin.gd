@@ -1,4 +1,4 @@
-@tool
+#@tool
 extends GameObject
 class_name Pin
 
@@ -33,6 +33,8 @@ func _ready() -> void:
    _MeshMaterial.albedo_texture = PIN_TEXTURE
    _MeshMaterial.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
    PinMesh.material_override = _MeshMaterial
+   if not Engine.is_editor_hint():
+      PinMesh.mesh = _outline_mesh(PinMesh.mesh)
 
 func _handle_collision(_body:Node3D) -> void:
    if not Mouth.playing and not IsHeld \

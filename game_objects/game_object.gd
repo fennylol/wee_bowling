@@ -16,6 +16,8 @@ static var Events: EventBus = EventBus.new()
 static var Registry: Dictionary
 static var LocalID: int = 0
 
+static var _OutlineMeshes: Dictionary = {}
+
 var RegistryID: int
 var OwnerID: int = 0
 var ClaimCounter: int = 0
@@ -60,7 +62,28 @@ func register(id: int) -> void:
 func toggle_outline(enabled: bool) -> void:
    _MeshMaterial.next_pass = _ShaderMaterial if enabled else null
    _ShaderMaterial.set_shader_parameter("color", _OutlineColor)
-   
+
+static func _outline_mesh(src: Mesh) -> Mesh:
+   if src == null or _OutlineMeshes.has(src): return _OutlineMeshes.get(src, src)
+   var out := ArrayMesh.new()
+   for s in src.get_surface_count():
+      var arrays := src.surface_get_arrays(s)
+      var verts: PackedVector3Array = arrays[Mesh.ARRAY_VERTEX]
+      var norms: PackedVector3Array = arrays[Mesh.ARRAY_NORMAL]
+      var sums := {}
+      for i in verts.size():
+         var k := verts[i].snapped(Vector3.ONE * 0.0001)
+         sums[k] = sums.get(k, Vector3.ZERO) + norms[i]
+      var custom := PackedFloat32Array()
+      for v in verts:
+         var n: Vector3 = sums[v.snapped(Vector3.ONE * 0.0001)].normalized()
+         custom.append_array([n.x, n.y, n.z])
+      arrays[Mesh.ARRAY_CUSTOM0] = custom
+      out.add_surface_from_arrays(src.surface_get_primitive_type(s), arrays, [], {},
+         Mesh.ARRAY_CUSTOM_RGB_FLOAT << Mesh.ARRAY_FORMAT_CUSTOM0_SHIFT)
+      out.surface_set_material(s, src.surface_get_material(s))
+   _OutlineMeshes[src] = out
+   return out
 
 # ========= #
 # ownership #
