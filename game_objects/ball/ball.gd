@@ -37,10 +37,10 @@ func _ready() -> void:
    rng.seed = RegistryID 
    var attribute_a: float = rng.randf()
    var attribute_b: float = rng.randf_range(0.5,0.8)
-   _OutlineColor = Color.from_ok_hsl(attribute_a,0.75,attribute_b)
+   _OutlineColor = (Color.from_ok_hsl(attribute_a,0.75,attribute_b)) * 0.6 + (Color.WHITE * 0.4)
    
    _MeshMaterial = StandardMaterial3D.new()
-   _MeshMaterial.albedo_color = _OutlineColor
+   _MeshMaterial.albedo_color = Color.from_ok_hsl(attribute_a,0.75,attribute_b)
    _MeshMaterial.albedo_texture = BALL_TEXTURE
    _MeshMaterial.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
    BallMesh.material_override = _MeshMaterial

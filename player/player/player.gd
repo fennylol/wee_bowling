@@ -76,6 +76,10 @@ func _ready():
    register_input("menu", KEY_ESCAPE)
 
 func _find_closest_game_object() -> void:
+   if GrabbedObj: 
+      GrabbedObj.toggle_outline(true)
+      return
+   
    if GrabbableObj:
       GrabbableObj.toggle_outline(false)
       GrabbableObj = null
@@ -100,7 +104,6 @@ func _unhandled_input(event):
 
 # mouse capture
 func _process(_delta):
-   _find_closest_game_object()
    if Input.is_action_just_pressed("grab") and GrabbableObj and GrabbableObj.claim(true):
       grabbed_object.emit(GrabbableObj.RegistryID, false)
       GrabbedObj = GrabbableObj
@@ -113,6 +116,8 @@ func _process(_delta):
       grabbed_object.emit(GrabbedObj.RegistryID, true)
       GrabbedObj.IsHeld = false
       GrabbedObj = null
+   
+   _find_closest_game_object()
    
    if position.y <= KILL_DEPTH:
       position = Vector3.ZERO

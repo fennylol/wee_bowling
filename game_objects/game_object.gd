@@ -61,7 +61,6 @@ func toggle_outline(enabled: bool) -> void:
    _MeshMaterial.next_pass = _ShaderMaterial if enabled else null
    _ShaderMaterial.set_shader_parameter("color", _OutlineColor)
    
-   
 
 # ========= #
 # ownership #
