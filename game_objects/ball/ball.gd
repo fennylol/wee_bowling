@@ -45,6 +45,8 @@ func _ready() -> void:
    _MeshMaterial.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
    BallMesh.material_override = _MeshMaterial
    
+   BallMesh.mesh = _outline_mesh(BallMesh.mesh)
+   
    mass = 50 #lerp(MIN_WEIGHT, MAX_WEIGHT, 1-attribute_a)
    
    var phys_mat := PhysicsMaterial.new()

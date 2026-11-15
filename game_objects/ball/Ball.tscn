@@ -2,13 +2,13 @@
 
 [ext_resource type="Script" uid="uid://cwgqpucbdolkl" path="res://game_objects/ball/ball.gd" id="1_3cndo"]
 [ext_resource type="ArrayMesh" uid="uid://cvmqh7dcn2ss7" path="res://game_objects/ball/ball_mesh.tres" id="2_2x0uy"]
-[ext_resource type="Shader" uid="uid://0oddj7hhen7v" path="res://game_objects/outline.gdshader" id="3_3cndo"]
+[ext_resource type="Shader" uid="uid://cbipt318pdjsv" path="res://game_objects/outline.gdshader" id="3_3cndo"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_sfyvp"]
 render_priority = 0
 shader = ExtResource("3_3cndo")
 shader_parameter/color = Color(1, 0, 0, 1)
-shader_parameter/size = 1.0499999988824
+shader_parameter/width = 0.0125
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3uk5a"]
 next_pass = SubResource("ShaderMaterial_sfyvp")
