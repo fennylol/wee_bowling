@@ -3183,13 +3183,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31, 1, -56)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45, 0, -15)
 
 [node name="Skiball" parent="skiball" unique_id=1387333481 instance=ExtResource("12_xwylj")]
-transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 15, 0, -5)
+transform = Transform3D(1.25, 0, 0, 0, 1.25, 0, 0, 0, 1.25, 15, 0, -2)
 
 [node name="Skiball2" parent="skiball" unique_id=1294381571 instance=ExtResource("12_xwylj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, 0)
+transform = Transform3D(1.25, 0, 0, 0, 1.25, 0, 0, 0, 1.25, 9, 0, -2)
 
 [node name="Skiball3" parent="skiball" unique_id=1687022326 instance=ExtResource("12_xwylj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 0)
+transform = Transform3D(1.25, 0, 0, 0, 1.25, 0, 0, 0, 1.25, 3, 0, -2)
 
 [node name="Skiball4" parent="skiball" unique_id=638195071 instance=ExtResource("12_xwylj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 0)
+transform = Transform3D(1.25, 0, 0, 0, 1.25, 0, 0, 0, 1.25, -3, 0, -2)

@@ -138,10 +138,10 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 5.09
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 21.030083, 1.00375, -64.33524)
 
 [node name="BallMachine" parent="." unique_id=242885092 instance=ExtResource("4_g5r5v")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.5, 0.004, -19.166)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.5, 0.004, -18.166)
 
 [node name="BallMachine2" parent="." unique_id=1193711568 instance=ExtResource("4_g5r5v")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.5, 0.004, -15.166)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.5, 0.004, -18.166)
 
 [node name="BallMachine4" parent="." unique_id=1609323004 instance=ExtResource("4_g5r5v")]
 transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, 48.613483, -2.6912122, -49.538353)
@@ -159,4 +159,4 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 23.9
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 14.997063, 0.0037599802, -44.671818)
 
 [node name="BallMachine8" parent="." unique_id=1980239502 instance=ExtResource("4_g5r5v")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.5, 0.004, -15.166)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.5, 0.004, -18.166)
