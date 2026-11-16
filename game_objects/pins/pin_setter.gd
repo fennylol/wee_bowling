@@ -1,4 +1,4 @@
-#@tool
+@tool
 extends Node3D
 class_name PinSetter
 
@@ -48,8 +48,9 @@ func _regenerate_pins(new_generation: int = -1) -> void:
    for i:int in MaxPins:
       var y: float = floorf((sqrt(8*i+1)-1)/2.0)
       var x: float = i-((y*(y+2))/2.0)
+      y *= 0.85 # technically, pins are actually spaced at an x:y ratio of 20.75/24 (~0.86453) but 0.85 is cleaner.
       
-      var pin :Pin            = PIN_NODE.instantiate()
+      var pin: Pin = PIN_NODE.instantiate()
       pin.set_name("Pin_"+str(i))
       pin.register(_pin_id(Generation, i))
       pin.position = Vector3(x*PinSpacing, 0, y*PinSpacing)

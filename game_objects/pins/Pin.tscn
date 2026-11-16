@@ -8,6 +8,10 @@
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_3uk5a"]
 bounce = 0.75
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_t4j38"]
+albedo_texture = ExtResource("1_g20kd")
+texture_filter = 0
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2x0uy"]
 render_priority = 0
 shader = ExtResource("4_t4j38")
@@ -39,6 +43,7 @@ unit_size = 15.0
 
 [node name="PinMesh" type="MeshInstance3D" parent="." unique_id=1993604312]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+material_override = SubResource("StandardMaterial3D_t4j38")
 mesh = ExtResource("1_8k0n7")
 surface_material_override/0 = SubResource("StandardMaterial3D_nx0ib")
 

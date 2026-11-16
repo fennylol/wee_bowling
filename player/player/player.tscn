@@ -5,6 +5,11 @@
 [sub_resource type="SphereShape3D" id="SphereShape3D_bsava"]
 radius = 0.75
 
+[sub_resource type="CylinderMesh" id="CylinderMesh_bsava"]
+top_radius = 0.01
+bottom_radius = 0.01
+height = 0.01
+
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_r2f68"]
 radius = 0.35
 
@@ -27,6 +32,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.75)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Camera3D/ObjCatcher" unique_id=553630839]
 shape = SubResource("SphereShape3D_bsava")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Camera3D" unique_id=976851284]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, -0.5561739)
+cast_shadow = 0
+mesh = SubResource("CylinderMesh_bsava")
 
 [node name="pill" type="MeshInstance3D" parent="." unique_id=1229086379]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)

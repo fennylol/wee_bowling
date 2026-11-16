@@ -18,8 +18,10 @@ config/main_scene=""
 
 [display]
 
-window/stretch/mode="canvas_items"
-window/stretch/aspect="expand"
+window/size/viewport_width=512
+window/size/viewport_height=480
+window/stretch/mode="viewport"
+window/stretch/aspect="keep_height"
 
 [filesystem]
 
@@ -38,9 +40,20 @@ spin={
 ]
 }
 
+[layer_names]
+
+3d_render/layer_2="ignored by action cams"
+
 [physics]
 
+3d/run_on_separate_thread=true
+common/physics_ticks_per_second=120
 3d/physics_engine="Jolt Physics"
+3d/physics_ticks_per_second=120
+3d/size/viewport_height=600
+3d/size/viewport_width=800
+3d/stretch/aspect="keep_height"
+3d/stretch/mode="viewport"
 
 [rendering]
 

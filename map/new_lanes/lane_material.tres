@@ -1,0 +1,13 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://datwwrda567jq"]
+
+[ext_resource type="Texture2D" uid="uid://75dhqfu051cr" path="res://map/full_building/geometry_07_New_Graph_basecolor.png" id="1_207ov"]
+[ext_resource type="Texture2D" uid="uid://btbwjxfv2fn8b" path="res://map/full_building/geometry_07_New_Graph_normal.png" id="2_5gfjq"]
+
+[resource]
+resource_name = "Polished Wood"
+albedo_texture = ExtResource("1_207ov")
+roughness = 0.2
+normal_enabled = true
+normal_texture = ExtResource("2_5gfjq")
+uv1_scale = Vector3(3, 3, 3)
+metadata/_gltf_primary_texture_coord = 0

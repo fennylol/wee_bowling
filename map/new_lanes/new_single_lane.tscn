@@ -1,0 +1,99 @@
+[gd_scene format=3 uid="uid://bhccjrlkmfx52"]
+
+[ext_resource type="Material" uid="uid://datwwrda567jq" path="res://map/new_lanes/lane_material.tres" id="1_qk8ht"]
+[ext_resource type="Script" uid="uid://bglfkplrj2o03" path="res://map/lane/lane.gd" id="1_vec76"]
+[ext_resource type="ArrayMesh" uid="uid://dufp1qj7e7lrc" path="res://map/new_lanes/gutter_mesh.tres" id="3_qayv2"]
+[ext_resource type="Script" uid="uid://ty6gqo2ifypq" path="res://game_objects/pins/pin_setter.gd" id="4_yjuhh"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_cxg8h"]
+size = Vector3(5, 1, 35)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_ug5qa"]
+data = PackedVector3Array(0.5, 0.0284, -17.5, 0.4619, 0.3371, 17.5, 0.4619, -0.1629, -17.5, 0.5, 0.0284, -17.5, 0.5, 0.5284, 17.5, 0.4619, 0.3371, 17.5, 0.4619, -0.1629, -17.5, 0.35349998, 0.1749, 17.5, 0.35349998, -0.3251, -17.5, 0.4619, -0.1629, -17.5, 0.4619, 0.3371, 17.5, 0.35349998, 0.1749, 17.5, 0.35349998, -0.3251, -17.5, 0.19129999, 0.0665, 17.5, 0.19129999, -0.4335, -17.5, 0.35349998, -0.3251, -17.5, 0.35349998, 0.1749, 17.5, 0.19129999, 0.0665, 17.5, 0.19129999, -0.4335, -17.5, 0, 0.0284, 17.5, 0, -0.4716, -17.5, 0.19129999, -0.4335, -17.5, 0.19129999, 0.0665, 17.5, 0, 0.0284, 17.5, 0, -0.4716, -17.5, -0.19139999, 0.0665, 17.5, -0.19139999, -0.4335, -17.5, 0, -0.4716, -17.5, 0, 0.0284, 17.5, -0.19139999, 0.0665, 17.5, -0.19139999, -0.4335, -17.5, -0.3536, 0.1749, 17.5, -0.3536, -0.3251, -17.5, -0.19139999, -0.4335, -17.5, -0.19139999, 0.0665, 17.5, -0.3536, 0.1749, 17.5, -0.3536, -0.3251, -17.5, -0.4619, 0.3371, 17.5, -0.4619, -0.1629, -17.5, -0.3536, -0.3251, -17.5, -0.3536, 0.1749, 17.5, -0.4619, 0.3371, 17.5, -0.4619, -0.1629, -17.5, -0.5, 0.5284, 17.5, -0.5, 0.0284, -17.5, -0.4619, -0.1629, -17.5, -0.4619, 0.3371, 17.5, -0.5, 0.5284, 17.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bsava"]
+size = Vector3(5, 1, 35)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ooyl3"]
+size = Vector3(7, 1, 35)
+
+[sub_resource type="BoxMesh" id="BoxMesh_qk8ht"]
+size = Vector3(0.125, 3, 4)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_vec76"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="BoxMesh" id="BoxMesh_vec76"]
+size = Vector3(2.5, 1, 8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hi3qp"]
+transparency = 1
+albedo_color = Color(0, 0, 0, 0.98039216)
+
+[node name="NewSingleLane" type="Node3D" unique_id=330033670]
+script = ExtResource("1_vec76")
+
+[node name="lane" type="MeshInstance3D" parent="." unique_id=224184349]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+material_override = ExtResource("1_qk8ht")
+mesh = SubResource("BoxMesh_cxg8h")
+
+[node name="left_gutter" type="MeshInstance3D" parent="." unique_id=840539837]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, -0.5, 0)
+mesh = ExtResource("3_qayv2")
+
+[node name="right_gutter" type="MeshInstance3D" parent="." unique_id=1895383736]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, -0.5, 0)
+mesh = ExtResource("3_qayv2")
+
+[node name="1" type="StaticBody3D" parent="." unique_id=862303648]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+
+[node name="left_gutter" type="CollisionShape3D" parent="1" unique_id=1851319836]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 0)
+shape = SubResource("ConcavePolygonShape3D_ug5qa")
+
+[node name="right_gutter" type="CollisionShape3D" parent="1" unique_id=2063764549]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 0)
+shape = SubResource("ConcavePolygonShape3D_ug5qa")
+
+[node name="floor" type="CollisionShape3D" parent="1" unique_id=243058329]
+shape = SubResource("BoxShape3D_bsava")
+
+[node name="8" type="StaticBody3D" parent="." unique_id=429456518]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+collision_layer = 128
+collision_mask = 128
+
+[node name="floor" type="CollisionShape3D" parent="8" unique_id=1604736594]
+shape = SubResource("BoxShape3D_ooyl3")
+
+[node name="PinSetter" type="Node3D" parent="." unique_id=1946789523]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, -14)
+script = ExtResource("4_yjuhh")
+metadata/_custom_type_script = "uid://ty6gqo2ifypq"
+
+[node name="SubViewport" type="SubViewport" parent="." unique_id=633245282]
+size = Vector2i(120, 90)
+
+[node name="Camera3D" type="Camera3D" parent="SubViewport" unique_id=828251932]
+transform = Transform3D(-1, 8.444392e-08, -2.2626683e-08, 0, 0.25881907, 0.9659258, 8.742278e-08, 0.9659258, -0.25881907, 0, 7.5, -17.75)
+cull_mask = 1048573
+fov = 40.0
+
+[node name="TV" type="MeshInstance3D" parent="." unique_id=1759067851]
+transform = Transform3D(-3.9615962e-08, 1.8473228e-08, 1, 0.42261818, 0.9063076, 0, -0.9063076, 0.42261818, -4.371139e-08, 0, 4.75, 15)
+layers = 2
+cast_shadow = 0
+mesh = SubResource("BoxMesh_qk8ht")
+
+[node name="Sprite3D" type="Sprite3D" parent="TV" unique_id=1299930090]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -0.13, 0, 0)
+layers = 2
+pixel_size = 0.03
+texture = SubResource("ViewportTexture_vec76")
+
+[node name="pit" type="MeshInstance3D" parent="." unique_id=1035158192]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, -0.75, -18.75)
+mesh = SubResource("BoxMesh_vec76")
+surface_material_override/0 = SubResource("StandardMaterial3D_hi3qp")

@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" uid="uid://b5sddf66c3ikd" path="res://map/lane/duel_lane.gd" id="1_54uiw"]
 [ext_resource type="Material" uid="uid://b7b6y78efjcw" path="res://map/WoodFloor061_1K-JPG/WoodFloor061_1K-JPG.tres" id="1_e7tl3"]
-[ext_resource type="ArrayMesh" uid="uid://6troixnncc0r" path="res://map/quarter_pipe_sloped_mesh.tres" id="2_54uiw"]
-[ext_resource type="ArrayMesh" uid="uid://ch4b0i13bmdg6" path="res://map/quarter_pipe_mesh.tres" id="3_qa0xa"]
-[ext_resource type="ArrayMesh" uid="uid://786cwsqcok54" path="res://map/quarter_pipe_short_mesh.tres" id="4_kditd"]
+[ext_resource type="ArrayMesh" uid="uid://6troixnncc0r" path="res://map/decorations/quarter_pipe_sloped_mesh.tres" id="2_54uiw"]
+[ext_resource type="ArrayMesh" uid="uid://ch4b0i13bmdg6" path="res://map/decorations/quarter_pipe_mesh.tres" id="3_qa0xa"]
+[ext_resource type="ArrayMesh" uid="uid://786cwsqcok54" path="res://map/decorations/quarter_pipe_short_mesh.tres" id="4_kditd"]
 [ext_resource type="PackedScene" uid="uid://b6j7x5q81xbgx" path="res://game_objects/pins/PinSetter.tscn" id="5_1iki1"]
 [ext_resource type="PackedScene" uid="uid://dv0oh64nri52" path="res://game_objects/ball/ball_machines/BallMachine.tscn" id="6_4qp41"]
 

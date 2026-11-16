@@ -1,0 +1,40 @@
+[gd_resource type="ArrayMesh" format=4 uid="uid://dufp1qj7e7lrc"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_p6hkb"]
+resource_name = "Gutter"
+cull_mode = 2
+albedo_color = Color(0.5379683, 0.5379683, 0.5379683, 1)
+metallic = 0.5
+roughness = 0.75
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_y7wfa"]
+_surfaces = [{
+"aabb": AABB(-0.49999997, -0.47155818, -17.5, 1, 1, 35),
+"format": 34896613377,
+"index_count": 48,
+"index_data": PackedByteArray("AAABAAIAAAADAAEAAgABAAQAAgAEAAUABQAEAAYABQAGAAcABwAGAAgABwAIAAkACQAIAAoACQAKAAsACwAKAAwACwAMAA0ADQAMAA4ADQAOAA8ADwAOABAADwAQABEA"),
+"name": "Gutter",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 18,
+"vertex_data": PackedByteArray("////fwAAAABA9gPP//8AAED2A08AAAAA////////AACB2nyl//8AAIHafSUAAAAA+7C9if//AAD7sL4JAAAAAP9//3///wAA/38AAAAAAAADT72J//8AAANPvgkAAAAAfSV8pf//AAB9JX0lAAAAAL4JA8///wAAvgkDTwAAAAAAAP////8AAAAA/38AAAAA")
+}]
+blend_shape_mode = 0
+
+[resource]
+resource_name = "geometry_07_Cylinder_002"
+_surfaces = [{
+"aabb": AABB(-0.49999997, -0.47155818, -17.5, 1, 1, 35),
+"attribute_data": PackedByteArray("UIh/ejaI0ow2iH96UIjSjDaIf3ociNKMHIh/ejaI0oxcfAllRHxbd0R8CGVcfFx3RHwIZSp8W3cqfAhlRHxbdyp8CGUSfFt3EnwIZSp8W3emowNwkKNXgpCjBHCmo1aCkKMEcHajV4J2owRwkKNXgnajBHBdo1eCXaMEcHajV4I="),
+"format": 34896613399,
+"index_count": 48,
+"index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABAAHAAUACAAJAAoACAALAAkADAANAA4ADAAPAA0AEAARABIAEAATABEAFAAVABYAFAAXABUAGAAZABoAGAAbABkAHAAdAB4AHAAfAB0A"),
+"material": SubResource("StandardMaterial3D_p6hkb"),
+"name": "Gutter",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 32,
+"vertex_data": PackedByteArray("////fwAAQNFA9gPP//9A0UD2A08AAEDR////////QNFA9gNPAACXyYHafKX//5fJgdp9JQAAl8lA9gPP//+XyYHafSUAAPjD+7C9if//+MP7sL4JAAD4w4HafKX///jD+7C+CQAA9sD/f/9////3wP9/AAAAAPbA+7C9if//98D/fwAAAAD2wANPvYn///bAA0++CQAA9sD/f/9////2wANPvgkAAPjDfSV8pf//+MN9JX0lAAD4wwNPvYn///jDfSV9JQAAlsm+CQPP//+Wyb4JA08AAJbJfSV8pf//lsm+CQNPAABB0QAA/////0DRAAD/fwAAQdG+CQPP//9A0Z3YUs+e2FLPndhSz57YUs9I3+bBSN/mwUjf5sFI3+bBHOgcsBzoHLAc6BywHOgcsJr18JSa9fCUmvXwlJr18JQO65t1DuubdQ7rm3UO65t14c8caOHPHGjhzxxo4c8caBe+R18XvkdfF75HXxe+R1+ssJ5YrLCeWKywnlissJ5Y")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_y7wfa")

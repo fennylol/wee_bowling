@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bw0oexpekxjao"]
 
 [ext_resource type="Material" uid="uid://b7b6y78efjcw" path="res://map/WoodFloor061_1K-JPG/WoodFloor061_1K-JPG.tres" id="1_mii5u"]
-[ext_resource type="ArrayMesh" uid="uid://ch4b0i13bmdg6" path="res://map/quarter_pipe_mesh.tres" id="2_jtt48"]
+[ext_resource type="ArrayMesh" uid="uid://ch4b0i13bmdg6" path="res://map/decorations/quarter_pipe_mesh.tres" id="2_jtt48"]
 [ext_resource type="PackedScene" uid="uid://ci6ptsk1f0dn7" path="res://map/lane/lane.tscn" id="3_30vg6"]
 [ext_resource type="PackedScene" uid="uid://dv0oh64nri52" path="res://game_objects/ball/ball_machines/BallMachine.tscn" id="4_jtt48"]
 
