@@ -8,7 +8,6 @@
 [ext_resource type="PackedScene" uid="uid://b8rrnfcl2vn1b" path="res://map/lane/duel_lane.tscn" id="5_xawkk"]
 [ext_resource type="Texture2D" uid="uid://b4ncsfdavb08s" path="res://map/full_building/geometry_07_OfficeCeiling001_1K-JPG_Metalness.jpg.001-OfficeCeiling001_1K-JPG_Roughness.jpg.png" id="6_xawkk"]
 [ext_resource type="Texture2D" uid="uid://jxlb5ld1v1nj" path="res://map/full_building/geometry_07_carpet.webp.webp" id="7_xwylj"]
-[ext_resource type="Texture2D" uid="uid://hnusqjbk8avm" path="res://map/full_building/geometry_07_lanemarkings.webp" id="8_n7383"]
 [ext_resource type="PackedScene" uid="uid://cu6ymp5hv4tjx" path="res://map/new_lanes/lane_room.tscn" id="9_5v56j"]
 [ext_resource type="PackedScene" uid="uid://r2jqi5jlxsba" path="res://map/decorations/lounging/lounge.tscn" id="10_y7g3l"]
 [ext_resource type="PackedScene" uid="uid://dei40816j12qd" path="res://map/decorations/skiball.tscn" id="12_xwylj"]
@@ -1480,174 +1479,6 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_8ggmf")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0k2x3"]
-resource_name = "LaneMarkings"
-transparency = 4
-cull_mode = 2
-albedo_texture = ExtResource("8_n7383")
-roughness = 0.5
-metadata/_gltf_primary_texture_coord = 0
-
-[sub_resource type="ArrayMesh" id="ArrayMesh_442d5"]
-_surfaces = [{
-"aabb": AABB(-2.5, 0, -1.2507834, 5, 1e-05, 2.501567),
-"format": 34896613377,
-"index_count": 6,
-"index_data": PackedByteArray("AAABAAIAAAADAAEA"),
-"name": "LaneMarkings",
-"primitive": 3,
-"uv_scale": Vector4(0, 0, 0, 0),
-"vertex_count": 4,
-"vertex_data": PackedByteArray("AAAAAP//AAD//wAAAAAAAP//AAD//wAAAAAAAAAAAAA=")
-}]
-blend_shape_mode = 0
-
-[sub_resource type="ArrayMesh" id="ArrayMesh_ow1l0"]
-resource_name = "geometry_07_Plane_023"
-_surfaces = [{
-"aabb": AABB(-2.5, 0, -1.2507834, 5, 1e-05, 2.501567),
-"attribute_data": PackedByteArray("/wPl4Mb6pwLG+uXg/wOnAg=="),
-"format": 34896613399,
-"index_count": 6,
-"index_data": PackedByteArray("AAABAAIAAAADAAEA"),
-"material": SubResource("StandardMaterial3D_0k2x3"),
-"name": "LaneMarkings",
-"primitive": 3,
-"uv_scale": Vector4(0, 0, 0, 0),
-"vertex_count": 4,
-"vertex_data": PackedByteArray("AAAAAP///7///wAAAAD/v///AAD///+/AAAAAAAA/7/+//9/////f////3/+//9/")
-}]
-blend_shape_mode = 0
-shadow_mesh = SubResource("ArrayMesh_442d5")
-
-[sub_resource type="ArrayMesh" id="ArrayMesh_1bg5q"]
-_surfaces = [{
-"aabb": AABB(-2.5, 0, -0.2021797, 5, 1e-05, 0.4043594),
-"format": 34896613377,
-"index_count": 6,
-"index_data": PackedByteArray("AAABAAIAAAADAAEA"),
-"name": "LaneMarkings",
-"primitive": 3,
-"uv_scale": Vector4(0, 0, 0, 0),
-"vertex_count": 4,
-"vertex_data": PackedByteArray("AAAAAP//AAD//wAAAAAAAP//AAD//wAAAAAAAAAAAAA=")
-}]
-blend_shape_mode = 0
-
-[sub_resource type="ArrayMesh" id="ArrayMesh_775wi"]
-resource_name = "geometry_07_Plane_024"
-_surfaces = [{
-"aabb": AABB(-2.5, 0, -0.2021797, 5, 1e-05, 0.4043594),
-"attribute_data": PackedByteArray("w4D+////WO7/////w4BY7g=="),
-"format": 34896613399,
-"index_count": 6,
-"index_data": PackedByteArray("AAABAAIAAAADAAEA"),
-"material": SubResource("StandardMaterial3D_0k2x3"),
-"name": "LaneMarkings",
-"primitive": 3,
-"uv_scale": Vector4(1.9770157, 2.0743098, 0, 0),
-"vertex_count": 4,
-"vertex_data": PackedByteArray("AAAAAP///7///wAAAAD/v///AAD///+/AAAAAAAA/7////9/////f////3////9/")
-}]
-blend_shape_mode = 0
-shadow_mesh = SubResource("ArrayMesh_1bg5q")
-
-[sub_resource type="ArrayMesh" id="ArrayMesh_4hkv0"]
-_surfaces = [{
-"aabb": AABB(-2.5, 0, -0.2021797, 5, 1e-05, 0.4043594),
-"format": 34896613377,
-"index_count": 6,
-"index_data": PackedByteArray("AAABAAIAAAADAAEA"),
-"name": "LaneMarkings",
-"primitive": 3,
-"uv_scale": Vector4(0, 0, 0, 0),
-"vertex_count": 4,
-"vertex_data": PackedByteArray("AAAAAP//AAD//wAAAAAAAP//AAD//wAAAAAAAAAAAAA=")
-}]
-blend_shape_mode = 0
-
-[sub_resource type="ArrayMesh" id="ArrayMesh_27npq"]
-resource_name = "geometry_07_Plane_025"
-_surfaces = [{
-"aabb": AABB(-2.5, 0, -0.2021797, 5, 1e-05, 0.4043594),
-"attribute_data": PackedByteArray("w4D+////WO7/////w4BY7g=="),
-"format": 34896613399,
-"index_count": 6,
-"index_data": PackedByteArray("AAABAAIAAAADAAEA"),
-"material": SubResource("StandardMaterial3D_0k2x3"),
-"name": "LaneMarkings",
-"primitive": 3,
-"uv_scale": Vector4(1.9770157, 2.0743098, 0, 0),
-"vertex_count": 4,
-"vertex_data": PackedByteArray("AAAAAP///7///wAAAAD/v///AAD///+/AAAAAAAA/7////9/////f////3////9/")
-}]
-blend_shape_mode = 0
-shadow_mesh = SubResource("ArrayMesh_4hkv0")
-
-[sub_resource type="ArrayMesh" id="ArrayMesh_8jh21"]
-_surfaces = [{
-"aabb": AABB(-2.5, 0, -0.2021797, 5, 1e-05, 0.4043594),
-"format": 34896613377,
-"index_count": 6,
-"index_data": PackedByteArray("AAABAAIAAAADAAEA"),
-"name": "LaneMarkings",
-"primitive": 3,
-"uv_scale": Vector4(0, 0, 0, 0),
-"vertex_count": 4,
-"vertex_data": PackedByteArray("AAAAAP//AAD//wAAAAAAAP//AAD//wAAAAAAAAAAAAA=")
-}]
-blend_shape_mode = 0
-
-[sub_resource type="ArrayMesh" id="ArrayMesh_pclxb"]
-resource_name = "geometry_07_Plane_026"
-_surfaces = [{
-"aabb": AABB(-2.5, 0, -0.2021797, 5, 1e-05, 0.4043594),
-"attribute_data": PackedByteArray("w4D+////WO7/////w4BY7g=="),
-"format": 34896613399,
-"index_count": 6,
-"index_data": PackedByteArray("AAABAAIAAAADAAEA"),
-"material": SubResource("StandardMaterial3D_0k2x3"),
-"name": "LaneMarkings",
-"primitive": 3,
-"uv_scale": Vector4(1.9770157, 2.0743098, 0, 0),
-"vertex_count": 4,
-"vertex_data": PackedByteArray("AAAAAP///7///wAAAAD/v///AAD///+/AAAAAAAA/7////9/////f////3////9/")
-}]
-blend_shape_mode = 0
-shadow_mesh = SubResource("ArrayMesh_8jh21")
-
-[sub_resource type="ArrayMesh" id="ArrayMesh_im5qg"]
-_surfaces = [{
-"aabb": AABB(-2.5, 0, -1.2507834, 5, 1e-05, 2.501567),
-"format": 34896613377,
-"index_count": 6,
-"index_data": PackedByteArray("AAABAAIAAAADAAEA"),
-"name": "LaneMarkings",
-"primitive": 3,
-"uv_scale": Vector4(0, 0, 0, 0),
-"vertex_count": 4,
-"vertex_data": PackedByteArray("AAAAAP//AAD//wAAAAAAAP//AAD//wAAAAAAAAAAAAA=")
-}]
-blend_shape_mode = 0
-
-[sub_resource type="ArrayMesh" id="ArrayMesh_lwuqy"]
-resource_name = "geometry_07_Plane_027"
-_surfaces = [{
-"aabb": AABB(-2.5, 0, -1.2507834, 5, 1e-05, 2.501567),
-"attribute_data": PackedByteArray("/wPl4Mb6pwLG+uXg/wOnAg=="),
-"format": 34896613399,
-"index_count": 6,
-"index_data": PackedByteArray("AAABAAIAAAADAAEA"),
-"material": SubResource("StandardMaterial3D_0k2x3"),
-"name": "LaneMarkings",
-"primitive": 3,
-"uv_scale": Vector4(0, 0, 0, 0),
-"vertex_count": 4,
-"vertex_data": PackedByteArray("AAAAAP///7///wAAAAD/v///AAD///+/AAAAAAAA/7/+//9/////f////3/+//9/")
-}]
-blend_shape_mode = 0
-shadow_mesh = SubResource("ArrayMesh_im5qg")
-
 [sub_resource type="ArrayMesh" id="ArrayMesh_l0opa"]
 _surfaces = [{
 "aabb": AABB(-8.075625, -2.7500005, -0.50000423, 16.15125, 5.5, 1.0000074),
@@ -2884,7 +2715,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60.17561, 6.5, -58.499985)
 mesh = SubResource("ArrayMesh_sbh5b")
 
 [node name="duel_lane_ceil" type="MeshInstance3D" parent="floor-ceiling" unique_id=1106485164]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 80.15124, 7.25, -37.499996)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 80.151, 11.725, -37.5)
+layers = 2
 mesh = SubResource("ArrayMesh_vrqyc")
 
 [node name="floor" type="MeshInstance3D" parent="floor-ceiling" unique_id=1422165054]
@@ -2984,26 +2816,6 @@ mesh = SubResource("ArrayMesh_fl6w0")
 [node name="MESH_ONLY_014" type="MeshInstance3D" parent="MESH_ONLY" unique_id=57012770]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50.621067, 6.25, -56.77319)
 mesh = SubResource("ArrayMesh_5vmbi")
-
-[node name="MESH_ONLY_034" type="MeshInstance3D" parent="MESH_ONLY" unique_id=1259443504]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 79.6512, -2.95, -44.25078)
-mesh = SubResource("ArrayMesh_ow1l0")
-
-[node name="MESH_ONLY_035" type="MeshInstance3D" parent="MESH_ONLY" unique_id=1592769729]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 79.6512, -2.95, -27.597813)
-mesh = SubResource("ArrayMesh_775wi")
-
-[node name="MESH_ONLY_036" type="MeshInstance3D" parent="MESH_ONLY" unique_id=1997696004]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 79.6512, -2.95, -47.402172)
-mesh = SubResource("ArrayMesh_27npq")
-
-[node name="MESH_ONLY_037" type="MeshInstance3D" parent="MESH_ONLY" unique_id=432663233]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 79.6512, -2.95, -55.402172)
-mesh = SubResource("ArrayMesh_pclxb")
-
-[node name="MESH_ONLY_038" type="MeshInstance3D" parent="MESH_ONLY" unique_id=1911859094]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 79.6512, -2.95, -30.74921)
-mesh = SubResource("ArrayMesh_lwuqy")
 
 [node name="walls" type="Node3D" parent="." unique_id=121448019]
 

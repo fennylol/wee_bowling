@@ -4,5 +4,3 @@
 
 [node name="PinSetter" type="Node3D" unique_id=247713855]
 script = ExtResource("1_y0qho")
-PinSpacing = 0.75
-MaxPins = 15
