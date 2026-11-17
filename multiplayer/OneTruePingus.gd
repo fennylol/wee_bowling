@@ -56,15 +56,8 @@ var ExternPort : int               = -1:
       if rx.search(str(new_port)): ExternPort = new_port
 ## a unique ID to differentiate our traffic on the network
 var NetworkID  : int               = 0
-## the local address we are sending from. [b]READONLY[/b]
-var LocalAddr  : String            = "":
-   set(new_val): LocalAddr = new_val
-   get():
-      for address in IP.get_local_addresses():
-         if _is_private_ipv4(address):
-            LocalAddr = address
-            return address
-      return "PEE.POO.CUM.POO" 
+## the local address we are sending from. cached, see [method refresh_local_addr]. [b]READONLY[/b]
+var LocalAddr  : String            = "PEE.POO.CUM.POO"
 ## the local port we are sending from. [b]READONLY[/b]
 var LocalPort  : int               = 0:
    set(new_val): LocalPort = new_val
@@ -92,6 +85,7 @@ signal connection_established(sender_id: int, address: String, port: int)
 func _init(external_address: String = "", network_id: int = 0, custom_stun_addr: String = "") -> void:
    NetworkID = network_id
    ExternAddr = external_address
+   refresh_local_addr()
    var bind_err = _Udp.bind(0)
    if bind_err != OK: _emit_control("ERROR: OneTruePingus failed to bind UDP socket"); return
    if NetworkID  == 0: _discover_network_id()
@@ -141,7 +135,16 @@ func get_addr_port(external: bool = true) -> String:
    if external:
       if ExternAddr == "" or ExternPort == -1: return "PEE.POO.CUM.POO:WEINER"
       return ExternAddr + ":" + (str(ExternPort) if ExternAddr != "PEE.POO.CUM.POO" else "WEINER" )
-   else: return LocalAddr + ":" + (str(LocalPort) if LocalAddr != "PEE.POO.CUM.POO" else "WEINER" )
+   refresh_local_addr()
+   return LocalAddr + ":" + (str(LocalPort) if LocalAddr != "PEE.POO.CUM.POO" else "WEINER" )
+## re-reads the first private IPv4 into [member LocalAddr]. this asks the OS for
+## every network interface (~0.1 ms or more), so call it rarely and never per packet.
+func refresh_local_addr() -> void:
+   for address in IP.get_local_addresses():
+      if _is_private_ipv4(address):
+         LocalAddr = address
+         return
+   LocalAddr = "PEE.POO.CUM.POO"
 ## add a IP:Port to target communications with. 
 func add_peer(target_addr: String, target_port: int, target_id: int = 0) -> void:
    if target_id != 0 and target_id == NetworkID: return

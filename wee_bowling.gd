@@ -3,6 +3,7 @@ class_name WeeBowling
 
 const DUMMY_NODE := preload("res://player/dummy/dummy.tscn")
 const GAMEOBJECT_SEND_INTERVAL: int = 2 # physics ticks
+const GAMEOBJECT_SEND_BUDGET: int = 4
 const HEARTBEAT_TIME: float = 1.0
 
 var GO_REGISTRY = GameObject.Registry
@@ -15,6 +16,7 @@ var PlayerName: String = ""
 var PeerNames: Dictionary = {}
 
 var _PhysicsTick: int = 0
+var _SendCursor: int = 0
 var _HeartbeatTimer: float = 0.0
 
 var DEBUG_PRINT_CONTROL_MESSAGES: bool = false
@@ -59,9 +61,22 @@ func _physics_process(_delta: float) -> void:
 
    _PhysicsTick += 1
    if _PhysicsTick % GAMEOBJECT_SEND_INTERVAL == 0:
-      for game_obj in GameObject.Registry.values():
-         if is_instance_valid(game_obj) and game_obj.should_broadcast():
-            _send_gameobject_transform_data(game_obj)
+      _send_gameobject_batch()
+
+
+func _send_gameobject_batch() -> void:
+   var objs: Array = GameObject.Registry.values()
+   if objs.is_empty(): return
+   var start: int = _SendCursor % objs.size()
+   var sent: int = 0
+   for i in objs.size():
+      if sent >= GAMEOBJECT_SEND_BUDGET: break
+      var idx: int = (start + i) % objs.size()
+      var game_obj = objs[idx]
+      if is_instance_valid(game_obj) and game_obj.should_broadcast():
+         _send_gameobject_transform_data(game_obj)
+         sent += 1
+         _SendCursor = idx + 1
 
 
 # ========================= #
@@ -69,7 +84,6 @@ func _physics_process(_delta: float) -> void:
 # ========================= #
 func _on_wbm_network_type_selected(global: bool) -> void:
    _WBM.set_ip_label(_OTP.get_addr_port(global))
-   # refresh stun so global is preloaded with a fresh address
    if not global: _OTP._discover_address()
 
 func _on_wbm_resume_button_pressed(resume: bool) -> void:
@@ -205,8 +219,6 @@ func _send_ballmachine_state_data(machine: BallMachine, target_id: int = 0) -> v
    data.append_array(machine.get_ball_states())
    if target_id: _OTP.send_data_to(target_id, DataTypes.BallMachineStateData, data)
    else: _OTP.send_data(DataTypes.BallMachineStateData, data)
-
-# unowned objects haven't moved since they spawned, so only owned ones are sent
 func _send_world_state_data(network_id: int) -> void:
    for game_obj in GameObject.Registry.values():
      if is_instance_valid(game_obj) and game_obj.OwnerID == _OTP.NetworkID and not game_obj.IsCleared:

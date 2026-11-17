@@ -28,7 +28,7 @@ func _handle_cleared_ball(ball:Ball) -> void:
 
 func _return_ball(ball: Ball) -> void:
    ball.position = Vector3(0,1,-0.1)
-   ball.linear_velocity = Vector3(0.0,0.0,-2.5) * basis
+   ball.linear_velocity = Vector3(0.0,0.0,-1.5) * basis
    ball.IsCleared = false
    # so a peer that hasn't returned this ball yet can't clear it again
    ball.ClaimCounter += 1
