@@ -4,7 +4,8 @@ class_name Player
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
 const KILL_DEPTH: float = -5.0
-const TRANSFORM_DATA_SIZE = 4*9
+## position (3) + body rotation quaternion (4) + hands pitch (1) + velocity (3)
+const TRANSFORM_DATA_SIZE = 4*11
 
 const GRAB_FORCE: float = 150.0
 const GRAB_DAMPING: float = 0.95
@@ -25,6 +26,10 @@ const RARE_THROW_SOUNDS: Array[AudioStream] = [
 @onready var _ObjCatcher: Area3D = $Camera3D/ObjCatcher
 @onready var _MouthForScreaming: AudioStreamPlayer3D = $mouth_for_screaming
 
+@onready var _ThumpZone: Area3D = $thumpzone
+@onready var _Ragdoll: RigidBody3D = $seperator/Ragdoll
+var old_rotation: Vector3
+
 signal grabbed_object(registry_id: int, released: bool)
 
 var Enabled: bool = false:
@@ -39,6 +44,9 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var GrabbableObj: GameObject = null
 var GrabbedObj: GameObject = null
 
+var KNOCKOUT_TIME: float = 2.0
+var KnockoutTimer: float = -KNOCKOUT_TIME
+var RecoveryTime: float = 0.0
 
 # ╭----------------╮
 # |    UTILITY     |
@@ -53,17 +61,21 @@ func register_input(input_name: String, keycode: Key):
 func generate_transform_data() -> PackedByteArray:
    var data := PackedByteArray()
    data.resize(TRANSFORM_DATA_SIZE)
-   
+   # full body rotation, so a ragdolled player arrives tipped over
+   var body_rot := transform.basis.get_rotation_quaternion()
+
    data.encode_float(0,  position.x)
-   data.encode_float(4,  position.y) 
+   data.encode_float(4,  position.y)
    data.encode_float(8,  position.z)
-   data.encode_float(12, _Camera.rotation.x)
-   data.encode_float(16, rotation.y) 
-   data.encode_float(20, rotation.z)
-   data.encode_float(24, velocity.x)
-   data.encode_float(28, velocity.y)
-   data.encode_float(32, velocity.z)
-   
+   data.encode_float(12, body_rot.x)
+   data.encode_float(16, body_rot.y)
+   data.encode_float(20, body_rot.z)
+   data.encode_float(24, body_rot.w)
+   data.encode_float(28, _Camera.rotation.x)
+   data.encode_float(32, velocity.x)
+   data.encode_float(36, velocity.y)
+   data.encode_float(40, velocity.z)
+
    return data
 
 
@@ -74,6 +86,22 @@ func _ready():
    register_input("right", KEY_D)
    register_input("up", KEY_W)
    register_input("menu", KEY_ESCAPE)
+   
+   _ThumpZone.body_entered.connect(_on_body_entered)
+   #_ThumpZone.body_exited.connect(_on_body_exited)
+
+func _on_body_entered(body: Node3D) -> void:
+   if body is Ball and not body == GrabbedObj \
+   and body.linear_velocity.length() >= 5 \
+   and KnockoutTimer < -KNOCKOUT_TIME:
+         _Ragdoll.global_transform = global_transform
+         old_rotation = rotation
+         RecoveryTime = sqrt(body.linear_velocity.length())
+         KnockoutTimer = RecoveryTime
+         print(RecoveryTime)
+
+#func _on_body_exited(body: Node3D) -> void: pass
+
 
 func _find_closest_game_object() -> void:
    if GrabbedObj: 
@@ -103,7 +131,19 @@ func _unhandled_input(event):
       _Camera.rotation.x = clamp(_Camera.rotation.x, -PI/2, PI/2)
 
 # mouse capture
-func _process(_delta):
+func _process(delta):
+   if position.y <= KILL_DEPTH:
+      position = Vector3.ZERO
+   
+   KnockoutTimer -= delta
+   if KnockoutTimer > 0.0:
+      global_transform = _Ragdoll.global_transform
+      _Camera.fov = lerp(1, 75, (RecoveryTime-KnockoutTimer)/RecoveryTime)
+      return
+   elif KnockoutTimer > -RecoveryTime:
+      rotation = lerp(rotation, old_rotation, abs(KnockoutTimer)/RecoveryTime)
+      return
+   
    if Input.is_action_just_pressed("grab") and GrabbableObj and GrabbableObj.claim(true):
       grabbed_object.emit(GrabbableObj.RegistryID, false)
       GrabbedObj = GrabbableObj
@@ -119,8 +159,6 @@ func _process(_delta):
    
    _find_closest_game_object()
    
-   if position.y <= KILL_DEPTH:
-      position = Vector3.ZERO
 
 # movement
 func _physics_process(delta):

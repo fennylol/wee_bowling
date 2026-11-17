@@ -12,7 +12,8 @@ var NetworkID : int
 ## MOVEMENT DATA
 var velocity := Vector3.ZERO
 var _net_pos := Vector3.ZERO
-var _net_rot := Vector3.ZERO
+var _net_rot := Quaternion.IDENTITY
+var _net_pitch: float = 0.0
 var _net_vel := Vector3.ZERO
 var _has_net_state: bool = false
 var _time_since_packet: float = 0.0
@@ -30,8 +31,8 @@ func _physics_process(delta: float) -> void:
    position = position.lerp(_net_pos, t)
 
    #FakeEyes.quaternion = quaternion.slerp(Quaternion.from_euler(_net_rot), t)
-   FakeEyes.rotation.x = clamp(_net_rot.x, -PI/2, PI/2)
-   rotation.y = _net_rot.y
+   quaternion = quaternion.slerp(_net_rot, t)
+   FakeEyes.rotation.x = clamp(_net_pitch, -PI/2, PI/2)
    
    velocity = _net_vel
 
@@ -39,9 +40,12 @@ func set_name_tag(new_name: String) -> void:
    NameLabel.text = new_name
 
 func recieve_transform_data(data: PackedByteArray) -> void:
-   _net_pos = Vector3(data.decode_float(0),  data.decode_float(4),  data.decode_float(8))
-   _net_rot = Vector3(data.decode_float(12), data.decode_float(16), data.decode_float(20))
-   _net_vel = Vector3(data.decode_float(24), data.decode_float(28), data.decode_float(32))
+   # also rejects packets from builds that still send the old 36 byte layout
+   if data.size() < Player.TRANSFORM_DATA_SIZE: return
+   _net_pos   = Vector3(data.decode_float(0),  data.decode_float(4),  data.decode_float(8))
+   _net_rot   = Quaternion(data.decode_float(12), data.decode_float(16), data.decode_float(20), data.decode_float(24)).normalized()
+   _net_pitch = data.decode_float(28)
+   _net_vel   = Vector3(data.decode_float(32), data.decode_float(36), data.decode_float(40))
    
    
    #var flags := data.decode_u8(36)

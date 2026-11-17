@@ -45,3 +45,21 @@ mesh = SubResource("CapsuleMesh_r2f68")
 [node name="pill_collision" type="CollisionShape3D" parent="." unique_id=464818820]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_invmk")
+
+[node name="thumpzone" type="Area3D" parent="." unique_id=784565317]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="thumpzone" unique_id=807106038]
+shape = SubResource("CapsuleShape3D_invmk")
+
+[node name="seperator" type="Node" parent="." unique_id=1811057534]
+
+[node name="Ragdoll" type="RigidBody3D" parent="seperator" unique_id=374420505]
+
+[node name="pill" type="MeshInstance3D" parent="seperator/Ragdoll" unique_id=1431770043]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("CapsuleMesh_r2f68")
+
+[node name="pill_collision" type="CollisionShape3D" parent="seperator/Ragdoll" unique_id=2024977646]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_invmk")
