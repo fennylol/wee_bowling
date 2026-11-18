@@ -44,9 +44,9 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var GrabbableObj: GameObject = null
 var GrabbedObj: GameObject = null
 
-var KNOCKOUT_TIME: float = 2.0
-var KnockoutTimer: float = -KNOCKOUT_TIME
-var RecoveryTime: float = 0.0
+var KnockoutTime: float
+var RECOVERY_TIME: float = 1.5
+var KnockoutTimer: float = -RECOVERY_TIME
 
 # ╭----------------╮
 # |    UTILITY     |
@@ -61,7 +61,6 @@ func register_input(input_name: String, keycode: Key):
 func generate_transform_data() -> PackedByteArray:
    var data := PackedByteArray()
    data.resize(TRANSFORM_DATA_SIZE)
-   # full body rotation, so a ragdolled player arrives tipped over
    var body_rot := transform.basis.get_rotation_quaternion()
 
    data.encode_float(0,  position.x)
@@ -93,12 +92,12 @@ func _ready():
 func _on_body_entered(body: Node3D) -> void:
    if body is Ball and not body == GrabbedObj \
    and body.linear_velocity.length() >= 5 \
-   and KnockoutTimer < -KNOCKOUT_TIME:
+   and KnockoutTimer < -RECOVERY_TIME:
          _Ragdoll.global_transform = global_transform
          old_rotation = rotation
-         RecoveryTime = sqrt(body.linear_velocity.length())
-         KnockoutTimer = RecoveryTime
-         print(RecoveryTime)
+         KnockoutTime = sqrt(body.linear_velocity.length())
+         KnockoutTimer = KnockoutTime
+         body.claim(true)
 
 #func _on_body_exited(body: Node3D) -> void: pass
 
@@ -131,18 +130,9 @@ func _unhandled_input(event):
       _Camera.rotation.x = clamp(_Camera.rotation.x, -PI/2, PI/2)
 
 # mouse capture
-func _process(delta):
+func _process(_delta):
    if position.y <= KILL_DEPTH:
       position = Vector3.ZERO
-   
-   KnockoutTimer -= delta
-   if KnockoutTimer > 0.0:
-      global_transform = _Ragdoll.global_transform
-      _Camera.fov = lerp(1, 75, (RecoveryTime-KnockoutTimer)/RecoveryTime)
-      return
-   elif KnockoutTimer > -RecoveryTime:
-      rotation = lerp(rotation, old_rotation, abs(KnockoutTimer)/RecoveryTime)
-      return
    
    if Input.is_action_just_pressed("grab") and GrabbableObj and GrabbableObj.claim(true):
       grabbed_object.emit(GrabbableObj.RegistryID, false)
@@ -162,7 +152,17 @@ func _process(delta):
 
 # movement
 func _physics_process(delta):
-   if !Enabled: return
+   
+   KnockoutTimer -= delta
+   if KnockoutTimer > 0.0:
+      global_transform = _Ragdoll.global_transform
+      _Camera.fov = lerp(1, 75, (KnockoutTime-KnockoutTimer)/KnockoutTime)
+      return
+   elif KnockoutTimer > -RECOVERY_TIME:
+      rotation = lerp(rotation, old_rotation, abs(KnockoutTimer)/RECOVERY_TIME)
+      if not is_on_floor(): velocity.y -= gravity * delta
+      return
+   
    if not is_on_floor(): velocity.y -= gravity * delta
    
    if Input.is_action_just_pressed("jump") and is_on_floor(): velocity.y = JUMP_VELOCITY

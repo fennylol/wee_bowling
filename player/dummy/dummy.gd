@@ -25,7 +25,7 @@ func _physics_process(delta: float) -> void:
 
    _time_since_packet += delta
    if _time_since_packet < EXTRAPOLATION_LIMIT:
-      _net_pos += _net_vel * delta   # only extrapolate while data is fresh
+      _net_pos += _net_vel * delta
 
    var t := 1.0 - exp(-20.0 * delta)
    position = position.lerp(_net_pos, t)
