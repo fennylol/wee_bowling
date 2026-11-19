@@ -1,6 +1,13 @@
 extends RigidBody3D
 class_name GameObject
 
+signal cleared()
+
+static var Events: EventBus = EventBus.new()
+static var Registry: Dictionary
+static var LocalID: int = 0
+static var _OutlineMeshes: Dictionary = {}
+
 const OUTLINE_SHADER  := preload("res://game_objects/outline.gdshader")
 const TRANSFORM_DATA_SIZE: int = 4*12+1
 const REGISTRY_ID_SIZE: int = 4
@@ -9,14 +16,6 @@ const OWNERSHIP_DATA_SIZE: int = 4 + COUNTER_SIZE
 const CORRECTION_RATE: float = 15.0
 const SNAP_DISTANCE: float = 2.0
 const MAX_EXTRAPOLATION: float = 0.25
-
-signal cleared()
-
-static var Events: EventBus = EventBus.new()
-static var Registry: Dictionary
-static var LocalID: int = 0
-
-static var _OutlineMeshes: Dictionary = {}
 
 var RegistryID: int
 var OwnerID: int = 0
@@ -35,9 +34,7 @@ var _MeshMaterial: StandardMaterial3D
 var _ShaderMaterial: ShaderMaterial
 var _OutlineColor := Color.WHITE
 
-class EventBus:
-   signal object_claimed(obj: GameObject)
-   signal object_cleared(obj: GameObject)
+
 
 func _ready() -> void:
    if RegistryID == 0: register(str(get_path()).hash())
@@ -203,3 +200,8 @@ func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
    state.transform        = Transform3D(Basis(rot), state.transform.origin.lerp(target_pos, t))
    state.linear_velocity  = state.linear_velocity.lerp(_TargetLinVel, t)
    state.angular_velocity = state.angular_velocity.lerp(_TargetAngVel, t)
+   
+
+class EventBus:
+   signal object_claimed(obj: GameObject)
+   signal object_cleared(obj: GameObject)

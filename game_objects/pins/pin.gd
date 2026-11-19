@@ -19,11 +19,10 @@ const BONK_SOUNDS: Array[AudioStream] = [
    preload("res://game_objects/pins/sounds/knock_9.mp3"),
    preload("res://game_objects/pins/sounds/knock_a.mp3"),
    preload("res://game_objects/pins/sounds/knock_b.mp3"),
-   preload("res://game_objects/pins/sounds/knock_c.mp3")
-]
+   preload("res://game_objects/pins/sounds/knock_c.mp3")]
 
-@onready var Mouth: AudioStreamPlayer3D = $mouth_for_screaming
-@onready var PinMesh: MeshInstance3D = $PinMesh
+@onready var _Mouth: AudioStreamPlayer3D = $mouth_for_screaming
+@onready var _PinMesh: MeshInstance3D = $_PinMesh
 
 func _ready() -> void:
    super()
@@ -32,16 +31,16 @@ func _ready() -> void:
    _MeshMaterial = StandardMaterial3D.new()
    _MeshMaterial.albedo_texture = PIN_TEXTURE
    _MeshMaterial.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
-   PinMesh.material_override = _MeshMaterial
+   _PinMesh.material_override = _MeshMaterial
    if not Engine.is_editor_hint():
-      PinMesh.mesh = _outline_mesh(PinMesh.mesh)
+      _PinMesh.mesh = _outline_mesh(_PinMesh.mesh)
 
 func _handle_collision(_body:Node3D) -> void:
-   if not Mouth.playing and not IsHeld \
+   if not _Mouth.playing and not IsHeld \
    and (linear_velocity.length() > 0.5 \
    or angular_velocity.length() > 0.5):
-      Mouth.stream = BONK_SOUNDS[randi_range(0,BONK_SOUNDS.size()-1)]
-      Mouth.play()
+      _Mouth.stream = BONK_SOUNDS[randi_range(0,BONK_SOUNDS.size()-1)]
+      _Mouth.play()
 
 func _physics_process(_delta: float) -> void:
    if linear_velocity.length() < 0.1 \
