@@ -51,7 +51,6 @@ var _AirDashesLeft         : int   = 0
 var _DashTimeLeft          : float = 0.0
 var _DashLockoutLeft       : float = 0.0
 var _DashVelocity          : Vector3 = Vector3.ZERO
-var _PreDashSpeed          : float = 0.0
 var _IsAirDash             : bool  = false
 
 const _SLIDE_START_SPEED   : float = 350.0 / _UNITS_PER_METRE  # deadlock.wiki/Movement
@@ -66,6 +65,8 @@ var _BodyMeshRest          : Transform3D
 const KILL_DEPTH    : float = -5.0
 const GRAB_FORCE    : float = 150.0
 const GRAB_DAMPING  : float = 0.95
+const SPIN_FORCE    : float = 75.0
+const SPIN_DAMPING  : float = 0.99
 const KNOCKOUT_SPEED: float = 10
 const RECOVERY_TIME : float = 0.5
 
@@ -102,8 +103,7 @@ var GrabbedObj   : GameObject = null
 var KnockoutTime : float = 0.0
 var KnockoutTimer: float = -RECOVERY_TIME
 
-var SPIN_FORCE: float = 20.0
-var SPIN_DAMPING: float = 0.95
+
 
 
 func _ready():
@@ -301,7 +301,6 @@ func _try_dash(wish_dir: Vector3) -> void:
    var speed: float = _AIR_DASH_SPEED if _IsAirDash else _GROUND_DASH_SPEED
    var distance: float = _AIR_DASH_DISTANCE if _IsAirDash else _GROUND_DASH_DISTANCE
    _DashVelocity = dash_dir * speed
-   _PreDashSpeed = Vector2(velocity.x, velocity.z).length()
    _DashTimeLeft = distance / speed
 
 
@@ -316,9 +315,6 @@ func _handle_dash(delta: float) -> void:
    _DashTimeLeft -= delta
    if _DashTimeLeft <= 0:
       _DashLockoutLeft = _DASH_LOCKOUT
-      var exit_velocity: Vector3 = _DashVelocity.normalized() * _PreDashSpeed
-      velocity.x = exit_velocity.x
-      velocity.z = exit_velocity.z
 
 
 # =============== #
@@ -385,7 +381,6 @@ func _on_thumpzone_body_entered(body: Node3D) -> void:
 
 
 func _handle_knockout(delta: float) -> void:
-   print("knocked out")
    global_transform = _Ragdoll.global_transform
    var fov: float = lerp(1, 75, (KnockoutTime-KnockoutTimer)/KnockoutTime)
    _FPVCamera.fov = fov
@@ -394,7 +389,6 @@ func _handle_knockout(delta: float) -> void:
 
 
 func _handle_recovery(delta: float) -> void:
-   print("recovering ", Time.get_unix_time_from_system() )
    var remaining := KnockoutTimer + RECOVERY_TIME
    var to_upright := Quaternion(basis.y.normalized(), Vector3.UP)
    quaternion = Quaternion.IDENTITY.slerp(to_upright, minf(1.0, delta / remaining)) * quaternion
@@ -411,10 +405,14 @@ func _handle_grabbed_object(delta: float) -> void:
       GrabbedObj.linear_velocity *= GRAB_DAMPING
       GrabbedObj.linear_velocity += vec_to * GRAB_FORCE * delta
 
-      #if Input.is_action_pressed("spin"):
-         #var spin_local := Vector3(input_dir.y, 0.0, -input_dir.x)
-         #GrabbedObj.angular_velocity += _Camera.global_basis * spin_local * SPIN_FORCE * delta
-      #else: GrabbedObj.angular_velocity *= SPIN_DAMPING
+      GrabbedObj.angular_velocity *= SPIN_DAMPING
+      var cam_basis := _FPVCamera.global_basis
+      var cam_local_vec_to := cam_basis.inverse() * vec_to
+      var cam_local_lin_v  := cam_basis.inverse() * GrabbedObj.linear_velocity
+      cam_local_vec_to.z = 0
+      cam_local_lin_v.z  = 0
+      var cam_local_ang := cam_local_lin_v.cross(cam_local_vec_to)
+      GrabbedObj.angular_velocity += cam_basis * cam_local_ang * delta * SPIN_FORCE
 
       grabbed_object.emit(GrabbedObj.RegistryID, false)
 

@@ -60,8 +60,7 @@ func _handle_collision(_body:Node3D) -> void:
 
 func _process(_delta: float) -> void:
    if (abs(global_position.distance_to(ParentBallMachine.global_position)) > KILL_DIST \
-   and linear_velocity.length() < 0.5 and angular_velocity.length() < 0.1) \
-   or position.y < KILL_DEPTH:
+   and sleeping) or position.y < KILL_DEPTH:
       try_clear()
 
       

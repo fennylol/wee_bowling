@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://75dhqfu051cr" path="res://map/full_building/geometry_07_New_Graph_basecolor.png" id="1_orc01"]
 [ext_resource type="Texture2D" uid="uid://btbwjxfv2fn8b" path="res://map/full_building/geometry_07_New_Graph_normal.png" id="2_5cb35"]
+[ext_resource type="Script" uid="uid://dt6jraehtxoas" path="res://game_objects/killzone.gd" id="3_k7ijo"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eashf"]
 resource_name = "Polished Wood"
@@ -272,6 +273,9 @@ data = PackedVector3Array(-1.7763, 0.288, -0.4459, -1.7763, -0.4777, -0.2811, -1
 [sub_resource type="BoxShape3D" id="BoxShape3D_mjf6r"]
 size = Vector3(3.5525, 3.3589144, 0.16476987)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_bsava"]
+size = Vector3(3, 0.125, 4)
+
 [node name="Skiball" type="Node3D" unique_id=1387333481]
 
 [node name="ramp" type="MeshInstance3D" parent="." unique_id=1831904755]
@@ -329,3 +333,11 @@ shape = SubResource("ConcavePolygonShape3D_ye0gv")
 [node name="backwall" type="CollisionShape3D" parent="18" unique_id=1307022784]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 1.677, 9.05)
 shape = SubResource("BoxShape3D_mjf6r")
+
+[node name="KillZone" type="Area3D" parent="." unique_id=1648072901]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.225, 6.775)
+script = ExtResource("3_k7ijo")
+metadata/_custom_type_script = "uid://dt6jraehtxoas"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="KillZone" unique_id=1153424290]
+shape = SubResource("BoxShape3D_bsava")

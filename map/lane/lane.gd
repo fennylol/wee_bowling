@@ -6,4 +6,4 @@ class_name Lane
 
 func _ready() -> void:
    ActionCam.rotation += rotation
-   ActionCam.global_position = to_global(Vector3(0, 7.5, -17.75))
+   ActionCam.global_position = to_global(Vector3(0, 7.5, -13.5))
