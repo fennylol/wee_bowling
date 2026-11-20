@@ -59,8 +59,12 @@ const _SLIDE_FRICTION      : float = 0.5             # fraction of speed lost pe
 const _SLIDE_TURN_RATE     : float = deg_to_rad(60)  # radians per second of steering; guess
 const _SLIDE_MIN_SLOPE     : float = deg_to_rad(5)   # steeper floors start a slide at any speed
 const _SLIDE_LEAN          : float = deg_to_rad(45)
+const _FPV_SLIDE_CAM_DROP  : float = 0.75
+const _OTS_SLIDE_CAM_DROP  : float = 0.4
+const _SLIDE_CAMERA_RATE   : float = 12.0
 var _IsSliding             : bool  = false
 var _BodyMeshRest          : Transform3D
+var _FPVCameraRestY        : float
 
 const KILL_DEPTH    : float = -5.0
 const GRAB_FORCE    : float = 150.0
@@ -138,6 +142,7 @@ func _ready():
    _CameraRay.collision_mask = collision_mask
    _CameraRay.add_exception(self)
    _BodyMeshRest = _BodyMesh.transform
+   _FPVCameraRestY = _FPVCamera.position.y
 
    _ThumpZone.body_entered.connect(_on_thumpzone_body_entered)
 
@@ -441,7 +446,7 @@ func _find_closest_game_object() -> void:
 # ============= #
 # handle inputs #
 # ============= #
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
    if Input.is_action_just_pressed("grab") and GrabbableObj and GrabbableObj.claim(true):
       grabbed_object.emit(GrabbableObj.RegistryID, false)
       GrabbedObj = GrabbableObj
@@ -462,6 +467,9 @@ func _process(_delta: float) -> void:
 
    _BodyMesh.transform = Transform3D(Basis(Vector3.RIGHT, _SLIDE_LEAN) * _BodyMeshRest.basis, _BodyMeshRest.origin) \
       if _IsSliding else _BodyMeshRest
+
+   var camera_y: float = _FPVCameraRestY - (0.0 if not _IsSliding else _FPV_SLIDE_CAM_DROP if _FPVCamera.current else _OTS_SLIDE_CAM_DROP)
+   _FPVCamera.position.y = lerpf(_FPVCamera.position.y, camera_y, 1.0 - exp(-_SLIDE_CAMERA_RATE * delta))
 
 func _toggle_view() -> void:
    if _FPVCamera.current:

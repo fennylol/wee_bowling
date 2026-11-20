@@ -456,6 +456,19 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_u676w")
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y7g3l"]
+resource_name = "Base Floor"
+cull_mode = 2
+albedo_texture = ExtResource("5_t3c57")
+metallic_specular = 0.25
+metallic_texture = ExtResource("6_xawkk")
+metallic_texture_channel = 2
+roughness_texture = ExtResource("6_xawkk")
+roughness_texture_channel = 1
+uv1_scale = Vector3(22.5, 22.5, 22.5)
+uv1_offset = Vector3(0.15, 0.15, 0)
+metadata/_gltf_primary_texture_coord = 0
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_t3c57"]
 albedo_texture = ExtResource("9_t3c57")
 texture_filter = 0
@@ -1939,6 +1952,7 @@ mesh = SubResource("ArrayMesh_vrqyc")
 [node name="floor" type="MeshInstance3D" parent="floor-ceiling" unique_id=1422165054]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33.083458, -0.5073676, -35.515057)
 mesh = SubResource("ArrayMesh_4gx5u")
+surface_material_override/0 = SubResource("StandardMaterial3D_y7g3l")
 surface_material_override/1 = SubResource("StandardMaterial3D_t3c57")
 
 [node name="8" type="StaticBody3D" parent="floor-ceiling" unique_id=911378050]
