@@ -3,7 +3,7 @@ class_name Ball
 
 const QUEUE_TIME: float = 5.0
 const KILL_DEPTH: float = -5.0
-const KILL_DIST : float = 3.0 
+const KILL_DIST : float = 5.0 
 const MAX_WEIGHT: float = 100.0
 const MIN_WEIGHT: float = 5.0
 const MAX_BOUNCE: float = 0.75

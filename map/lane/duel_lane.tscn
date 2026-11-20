@@ -6,8 +6,8 @@
 [ext_resource type="ArrayMesh" uid="uid://ch4b0i13bmdg6" path="res://map/decorations/quarter_pipe_mesh.tres" id="3_qa0xa"]
 [ext_resource type="ArrayMesh" uid="uid://786cwsqcok54" path="res://map/decorations/quarter_pipe_short_mesh.tres" id="4_kditd"]
 [ext_resource type="PackedScene" uid="uid://b6j7x5q81xbgx" path="res://game_objects/pins/PinSetter.tscn" id="5_1iki1"]
-[ext_resource type="PackedScene" uid="uid://dv0oh64nri52" path="res://game_objects/ball/ball_machines/BallMachine.tscn" id="6_4qp41"]
 [ext_resource type="PackedScene" uid="uid://v0ok763xx4r8" path="res://map/new_lanes/pit.tscn" id="6_qa0xa"]
+[ext_resource type="PackedScene" uid="uid://cb8x4mdlci3ff" path="res://game_objects/ball/ball_machines/BallMachineStraight.tscn" id="7_qa0xa"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_xnmev"]
 size = Vector3(45, 1, 5)
@@ -291,11 +291,11 @@ transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 22.5
 [node name="pit2" parent="." unique_id=703054280 instance=ExtResource("6_qa0xa")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -22.5, 0, 0)
 
-[node name="BallMachine" parent="." unique_id=1951559352 instance=ExtResource("6_4qp41")]
-transform = Transform3D(4.371139e-08, -3.821371e-15, 1, 8.742278e-08, 1, 0, -1, 8.742278e-08, 4.371139e-08, 16.875, 1.6, -8.25)
+[node name="BallMachineStraight" parent="." unique_id=1951559352 instance=ExtResource("7_qa0xa")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 17.325, 1.5, -7.5)
 
-[node name="BallMachine2" parent="." unique_id=1288308189 instance=ExtResource("6_4qp41")]
-transform = Transform3D(-1.3113416e-07, 0, -1, 0, 1, 0, -1, 0, 1.3113416e-07, -16.875, 1.6, -8.25)
+[node name="BallMachineStraight2" parent="." unique_id=1366469949 instance=ExtResource("7_qa0xa")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -17.325, 1.5, -7.5)
 
 [node name="Side" type="Node3D" parent="." unique_id=1267350202]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.75, 0, 0)
