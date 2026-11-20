@@ -26,6 +26,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 17)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="lobby" unique_id=853518689]
 transform = Transform3D(0.4527679, 0.7721729, -0.4458142, 2.780595e-08, 0.49999994, 0.86602545, 0.8916284, -0.39210856, 0.22638391, 0, 0, 0)
+visible = false
 shadow_enabled = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="lobby" unique_id=695025107]
@@ -137,20 +138,20 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 5.09
 [node name="BallMachine3" parent="machines" unique_id=390863600 instance=ExtResource("4_g5r5v")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 21.030083, 1.00375, -64.33524)
 
-[node name="BallMachine" parent="." unique_id=242885092 instance=ExtResource("4_g5r5v")]
+[node name="BallMachine4" parent="machines" unique_id=242885092 instance=ExtResource("4_g5r5v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.5, 0.004, -18.166)
 
-[node name="BallMachine2" parent="." unique_id=1193711568 instance=ExtResource("4_g5r5v")]
+[node name="BallMachine5" parent="machines" unique_id=1193711568 instance=ExtResource("4_g5r5v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.5, 0.004, -18.166)
 
-[node name="BallMachine3" parent="." unique_id=1389726696 instance=ExtResource("4_g5r5v")]
+[node name="BallMachine6" parent="machines" unique_id=1389726696 instance=ExtResource("4_g5r5v")]
 transform = Transform3D(0.4699419, 0, -0.88269734, 0, 1, 0, 0.88269734, 0, 0.4699419, -11.64204, 0.0037599802, -24.10731)
 
-[node name="BallMachine6" parent="." unique_id=1613557234 instance=ExtResource("4_g5r5v")]
+[node name="BallMachine7" parent="machines" unique_id=1613557234 instance=ExtResource("4_g5r5v")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 23.992216, 0.0037599802, -44.671818)
 
-[node name="BallMachine7" parent="." unique_id=1430044488 instance=ExtResource("4_g5r5v")]
+[node name="BallMachine8" parent="machines" unique_id=1430044488 instance=ExtResource("4_g5r5v")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 14.997063, 0.0037599802, -44.671818)
 
-[node name="BallMachine8" parent="." unique_id=1980239502 instance=ExtResource("4_g5r5v")]
+[node name="BallMachine9" parent="machines" unique_id=1980239502 instance=ExtResource("4_g5r5v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.5, 0.004, -18.166)

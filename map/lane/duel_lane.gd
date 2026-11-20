@@ -8,8 +8,6 @@ class_name DuelLane
 @onready var Side1Setter: PinSetter = $Side/PinSetter
 @onready var Side2Setter: PinSetter = $Side2/PinSetter
 
-
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
    Side1Cam.rotation += rotation
    Side2Cam.rotation += rotation

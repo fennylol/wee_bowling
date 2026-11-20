@@ -3,7 +3,14 @@
 [ext_resource type="PackedScene" uid="uid://dcly50g1obeg4" path="res://map/new_lanes/lane_seperater.tscn" id="1_usmcd"]
 [ext_resource type="PackedScene" uid="uid://bhccjrlkmfx52" path="res://map/new_lanes/new_single_lane.tscn" id="2_ikhu4"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_usmcd"]
+resource_name = "Performance Floor"
+cull_mode = 2
+albedo_color = Color(0.59522694, 0.4691875, 0.2489987, 1)
+roughness = 0.75
+
 [sub_resource type="BoxMesh" id="BoxMesh_qn6fe"]
+material = SubResource("StandardMaterial3D_usmcd")
 size = Vector3(49, 1, 4.5)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_bsava"]

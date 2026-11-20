@@ -1,17 +1,12 @@
 [gd_scene format=4 uid="uid://dei40816j12qd"]
 
-[ext_resource type="Texture2D" uid="uid://75dhqfu051cr" path="res://map/full_building/geometry_07_New_Graph_basecolor.png" id="1_orc01"]
-[ext_resource type="Texture2D" uid="uid://btbwjxfv2fn8b" path="res://map/full_building/geometry_07_New_Graph_normal.png" id="2_5cb35"]
 [ext_resource type="Script" uid="uid://dt6jraehtxoas" path="res://game_objects/killzone.gd" id="3_k7ijo"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eashf"]
-resource_name = "Polished Wood"
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1tgyk"]
+resource_name = "Performance Floor"
 cull_mode = 2
-albedo_texture = ExtResource("1_orc01")
-roughness = 0.1
-normal_enabled = true
-normal_texture = ExtResource("2_5cb35")
-metadata/_gltf_primary_texture_coord = 0
+albedo_color = Color(0.59522694, 0.4691875, 0.2489987, 1)
+roughness = 0.75
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_i577g"]
 _surfaces = [{
@@ -35,7 +30,7 @@ _surfaces = [{
 "format": 34359742487,
 "index_count": 246,
 "index_data": PackedByteArray("AAABAAIAAAADAAEABAABAAUAAQAGAAUAAQAHAAYACAAJAAoACAALAAkADAANAAoADgAKAA0ADgANAA8AEAARABIAEAATABEAEwAUABEAEwAVABQAFQAWABQAFQAXABYAGAAWABcAGQAaABsAGQAcABoAHQAeAB8AHQAgAB4AIQAeACIAIQAiACMAJAAhACMAJAAjACUAJgAkACUAJgAlACcAKAAmACcAKQAqACsAKQAsACoALQAuAC8ALQAwAC4AMQAyADMAMQA0ADIANQA2ADcANQA4ADYAOQA6ADsAOQA8ADoAPQA+AD8APQBAAD4AQQBCAEMAQQBEAEIARQBGAEcARQBIAEYASQBKAEsASQBMAEoATQBOAE8ATQBQAE4AUQBSAFMAUQBUAFIAVQBWAFcAVQBYAFYAWQBaAFsAWQBcAFoAXABdAFoAXABeAF0AXgBfAF0AXgBgAF8AYQBfAGAAYgBjAGQAYgBlAGMAZgBnAGgAZgBpAGcAagBrAGwAagBtAGsAbgBvAHAAbgBxAG8AcgBzAHQAcwB1AHQAcwB2AHUAdgB3AHUAdgB4AHcAeAB5AHcAeAB6AHkAewB8AH0AewB+AHwAfwCAAIEAfwCCAIAAgwCEAIUAgwCGAIQAhwCIAIkAhwCKAIgA"),
-"material": SubResource("StandardMaterial3D_eashf"),
+"material": SubResource("StandardMaterial3D_1tgyk"),
 "name": "Polished Wood",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
