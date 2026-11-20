@@ -10,6 +10,8 @@ var GO_REGISTRY = GameObject.Registry
 
 @onready var _Player: Player = $Player
 @onready var _WBM: WeeBowlingMenu = $WeeBowlingMenu
+@onready var _Crosshair: CanvasLayer = $CanvasLayer
+
 var _OTP := OneTruePingus.new()
 var Dummies: Dictionary = {}
 var PlayerName: String = ""
@@ -89,6 +91,7 @@ func _on_wbm_network_type_selected(global: bool) -> void:
 func _on_wbm_resume_button_pressed(resume: bool) -> void:
    _WBM.visible = not resume
    _Player.Enabled = resume
+   _Crosshair.visible = resume
 
 func _on_wbm_connect_button_pressed(target_address: String) -> void:
    var parts := target_address.rsplit(":", true, 1)

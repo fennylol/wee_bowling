@@ -10,6 +10,25 @@ script = ExtResource("1_8bn30")
 
 [node name="TheAlley3" parent="." unique_id=705342910 instance=ExtResource("2_eq3t8")]
 
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=907784143]
+visible = false
+
+[node name="Label" type="Label" parent="CanvasLayer" unique_id=1459943882]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="WeeBowlingMenu" parent="." unique_id=13288426 instance=ExtResource("2_rdx6i")]
 
 [node name="Player" parent="." unique_id=416993745 instance=ExtResource("4_eq3t8")]

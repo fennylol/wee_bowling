@@ -1,4 +1,4 @@
-@tool
+#@tool
 extends GameObject
 class_name Pin
 
@@ -22,7 +22,7 @@ const BONK_SOUNDS: Array[AudioStream] = [
    preload("res://game_objects/pins/sounds/knock_c.mp3")]
 
 @onready var _Mouth: AudioStreamPlayer3D = $mouth_for_screaming
-@onready var _PinMesh: MeshInstance3D = $_PinMesh
+@onready var _PinMesh: MeshInstance3D = $PinMesh
 
 func _ready() -> void:
    super()

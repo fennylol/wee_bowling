@@ -20,7 +20,7 @@ const BONK_SOUNDS: Array[AudioStream] = [
    preload("res://game_objects/ball/sounds/thud_6.mp3")]
 
 @onready var _Mouth: AudioStreamPlayer3D = $mouth_for_screaming
-@onready var _BallMesh: MeshInstance3D = $_BallMesh
+@onready var _BallMesh: MeshInstance3D = $BallMesh
 
 var ParentBallMachine: BallMachine
 var QueueTime: float = QUEUE_TIME
