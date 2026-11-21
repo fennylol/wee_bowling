@@ -1,0 +1,70 @@
+[gd_scene format=3 uid="uid://cu6ymp5hv4tjx"]
+
+[ext_resource type="PackedScene" uid="uid://dcly50g1obeg4" path="res://map/lanes/assemblage/lane_seperater.tscn" id="1_usmcd"]
+[ext_resource type="PackedScene" uid="uid://bhccjrlkmfx52" path="res://map/lanes/lane.tscn" id="2_ikhu4"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_usmcd"]
+resource_name = "Performance Floor"
+cull_mode = 2
+albedo_color = Color(0.59522694, 0.4691875, 0.2489987, 1)
+roughness = 0.75
+
+[sub_resource type="BoxMesh" id="BoxMesh_qn6fe"]
+material = SubResource("StandardMaterial3D_usmcd")
+size = Vector3(49, 1, 4.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bsava"]
+size = Vector3(49, 1, 4.5)
+
+[node name="LaneRoom" type="Node3D" unique_id=1808184806]
+
+[node name="LaneSeperater" parent="." unique_id=293637928 instance=ExtResource("1_usmcd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 0, 0)
+
+[node name="Lane" parent="." unique_id=330033670 instance=ExtResource("2_ikhu4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, 0)
+
+[node name="LaneSeperater2" parent="." unique_id=282228644 instance=ExtResource("1_usmcd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, 0)
+
+[node name="Lane2" parent="." unique_id=845602687 instance=ExtResource("2_ikhu4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, 0)
+
+[node name="LaneSeperater3" parent="." unique_id=1278208503 instance=ExtResource("1_usmcd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, 0)
+
+[node name="Lane3" parent="." unique_id=1540220851 instance=ExtResource("2_ikhu4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 0)
+
+[node name="LaneSeperater4" parent="." unique_id=1664439985 instance=ExtResource("1_usmcd")]
+
+[node name="Lane4" parent="." unique_id=2103658369 instance=ExtResource("2_ikhu4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 0)
+
+[node name="LaneSeperater5" parent="." unique_id=2092269518 instance=ExtResource("1_usmcd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 0)
+
+[node name="Lane5" parent="." unique_id=453236636 instance=ExtResource("2_ikhu4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, 0)
+
+[node name="LaneSeperater6" parent="." unique_id=1899363317 instance=ExtResource("1_usmcd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, 0)
+
+[node name="Lane6" parent="." unique_id=1204349091 instance=ExtResource("2_ikhu4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, 0)
+
+[node name="LaneSeperater7" parent="." unique_id=530242221 instance=ExtResource("1_usmcd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0, 0)
+
+[node name="Stepper" type="MeshInstance3D" parent="." unique_id=310910933]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 19.75)
+mesh = SubResource("BoxMesh_qn6fe")
+
+[node name="18" type="StaticBody3D" parent="." unique_id=1326910177]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+collision_layer = 129
+collision_mask = 129
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="18" unique_id=1069765935]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 19.75)
+shape = SubResource("BoxShape3D_bsava")

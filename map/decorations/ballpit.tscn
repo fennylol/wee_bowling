@@ -1,7 +1,7 @@
 [gd_scene format=4 uid="uid://bn0sbrkvpd2hb"]
 
-[ext_resource type="Texture2D" uid="uid://bejdkmhye7h35" path="res://map/full_building/geometry_07_Net004A_1K-PNG_Color.png.001-Net004A_1K-PNG_Opacity.png.png" id="1_4o3ud"]
-[ext_resource type="Texture2D" uid="uid://dphyn8c4vcklo" path="res://map/full_building/geometry_07_Net004A_1K-PNG_NormalGL.png" id="2_nj5r0"]
+[ext_resource type="Texture2D" uid="uid://bejdkmhye7h35" path="res://_OLDS/map/full_building/geometry_07_Net004A_1K-PNG_Color.png.001-Net004A_1K-PNG_Opacity.png.png" id="1_4o3ud"]
+[ext_resource type="Texture2D" uid="uid://dphyn8c4vcklo" path="res://_OLDS/map/full_building/geometry_07_Net004A_1K-PNG_NormalGL.png" id="2_nj5r0"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2jg0d"]
 resource_name = "Red"

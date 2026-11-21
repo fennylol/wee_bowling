@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://gliypqhesgkr"]
 
 [ext_resource type="Script" uid="uid://dpajpqkoficwd" path="res://wee_bowling.gd" id="1_8bn30"]
-[ext_resource type="PackedScene" uid="uid://cnmsqjtb4k452" path="res://map/alley_3.tscn" id="2_eq3t8"]
+[ext_resource type="PackedScene" uid="uid://cnmsqjtb4k452" path="res://map/the_alley.tscn" id="2_eq3t8"]
 [ext_resource type="PackedScene" uid="uid://do53qj7jk7esd" path="res://multiplayer/wee_bowling_menu.tscn" id="2_rdx6i"]
 [ext_resource type="PackedScene" uid="uid://c5wp577lftwwe" path="res://player/player/player.tscn" id="4_eq3t8"]
 
