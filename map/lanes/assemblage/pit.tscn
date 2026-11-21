@@ -30,10 +30,10 @@ size = Vector3(0.5, 5.25, 8)
 albedo_color = Color(0, 0, 0, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_hi3qp"]
-size = Vector3(0.5, 6, 8)
+size = Vector3(0.45, 6, 8)
 
 [sub_resource type="BoxMesh" id="BoxMesh_qayv2"]
-size = Vector3(3.5, 6, 0.5)
+size = Vector3(3.5, 6, 0.45)
 
 [sub_resource type="BoxMesh" id="BoxMesh_ug5qa"]
 size = Vector3(3.5, 1, 9)
