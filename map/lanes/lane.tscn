@@ -18,6 +18,9 @@ size = Vector3(5, 1, 35)
 [sub_resource type="BoxShape3D" id="BoxShape3D_ooyl3"]
 size = Vector3(7, 1, 35)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_31u5h"]
+size = Vector3(0.125, 3, 4)
+
 [sub_resource type="BoxMesh" id="BoxMesh_qk8ht"]
 size = Vector3(0.125, 3, 4)
 
@@ -61,6 +64,15 @@ collision_mask = 128
 
 [node name="floor" type="CollisionShape3D" parent="8" unique_id=1604736594]
 shape = SubResource("BoxShape3D_ooyl3")
+
+[node name="18" type="StaticBody3D" parent="." unique_id=917350125]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+collision_layer = 129
+collision_mask = 129
+
+[node name="TV" type="CollisionShape3D" parent="18" unique_id=1557548919]
+transform = Transform3D(-3.9615962e-08, 1.8473228e-08, 1, 0.42261818, 0.9063076, 0, -0.9063076, 0.42261818, -4.371139e-08, 0, 5.25, 15)
+shape = SubResource("BoxShape3D_31u5h")
 
 [node name="PinSetter" type="Node3D" parent="." unique_id=1946789523]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, -14)

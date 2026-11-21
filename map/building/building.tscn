@@ -1757,7 +1757,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 81.663864, -0.49999997, -37.4
 shape = SubResource("ConcavePolygonShape3D_l5cbl")
 
 [node name="SkiballZone" type="Node3D" parent="." unique_id=1799975791]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45, 0, -15)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45, -0.64, -15)
 
 [node name="Skiball" parent="SkiballZone" unique_id=1387333481 instance=ExtResource("10_wqehg")]
 transform = Transform3D(1.25, 0, 0, 0, 1.25, 0, 0, 0, 1.25, 15, 0, -2)

@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://gsy13o5qpusd" path="res://map/building/building.tscn" id="1_skqml"]
 [ext_resource type="PackedScene" uid="uid://ba3egdfstyurg" path="res://map/decorations/ceiling_light.tscn" id="2_0cjcx"]
+[ext_resource type="PackedScene" uid="uid://cb8x4mdlci3ff" path="res://game_objects/ball/ball_machines/BallMachineStraight.tscn" id="3_0cjcx"]
 [ext_resource type="PackedScene" uid="uid://dv0oh64nri52" path="res://game_objects/ball/ball_machines/BallMachine.tscn" id="3_6klam"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6klam"]
@@ -18,8 +19,8 @@ glow_enabled = true
 
 [node name="TheAlley3" type="Node3D" unique_id=705342910]
 
-[node name="FullBuilding" parent="." unique_id=1736029031 instance=ExtResource("1_skqml")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24.914543, -0.036473274, 4.9837837)
+[node name="Building" parent="." unique_id=1736029031 instance=ExtResource("1_skqml")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 0, 5)
 
 [node name="lobby" type="Node3D" parent="." unique_id=1966335159]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 17)
@@ -129,7 +130,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.359474, 5.5, -58.443493)
 
 [node name="machines" type="Node3D" parent="." unique_id=1211182319]
 
-[node name="BallMachine" parent="machines" unique_id=1951559352 instance=ExtResource("3_6klam")]
+[node name="BallMachineStraight3" parent="machines" unique_id=1951559352 instance=ExtResource("3_0cjcx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0.57, -14)
+
+[node name="BallMachineStraight4" parent="machines" unique_id=517809372 instance=ExtResource("3_0cjcx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26, 0.57, -14)
+
+[node name="BallMachineStraight5" parent="machines" unique_id=1154182664 instance=ExtResource("3_0cjcx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0.57, -14)
+
+[node name="BallMachine" parent="machines" unique_id=4914102 instance=ExtResource("3_6klam")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -10.838127, 1.00375, -64.33524)
 
 [node name="BallMachine2" parent="machines" unique_id=1662370641 instance=ExtResource("3_6klam")]
@@ -137,12 +147,6 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 5.09
 
 [node name="BallMachine3" parent="machines" unique_id=390863600 instance=ExtResource("3_6klam")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 21.030083, 1.00375, -64.33524)
-
-[node name="BallMachine4" parent="machines" unique_id=242885092 instance=ExtResource("3_6klam")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.5, 0.004, -18.166)
-
-[node name="BallMachine5" parent="machines" unique_id=1193711568 instance=ExtResource("3_6klam")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.5, 0.004, -18.166)
 
 [node name="BallMachine6" parent="machines" unique_id=1389726696 instance=ExtResource("3_6klam")]
 transform = Transform3D(0.4699419, 0, -0.88269734, 0, 1, 0, 0.88269734, 0, 0.4699419, -11.64204, 0.0037599802, -24.10731)
@@ -152,6 +156,3 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 23.9
 
 [node name="BallMachine8" parent="machines" unique_id=1430044488 instance=ExtResource("3_6klam")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 14.997063, 0.0037599802, -44.671818)
-
-[node name="BallMachine9" parent="machines" unique_id=1980239502 instance=ExtResource("3_6klam")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.5, 0.004, -18.166)
