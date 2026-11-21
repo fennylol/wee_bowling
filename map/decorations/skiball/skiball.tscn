@@ -1,7 +1,7 @@
 [gd_scene format=4 uid="uid://dei40816j12qd"]
 
 [ext_resource type="PackedScene" uid="uid://wq1m627g0syn" path="res://map/decorations/skiball/target.tscn" id="1_ukrf8"]
-[ext_resource type="Script" uid="uid://dt6jraehtxoas" path="res://game_objects/killzone.gd" id="3_k7ijo"]
+[ext_resource type="Script" uid="uid://dt6jraehtxoas" path="res://game_objects/trigger/kill_trigger.gd" id="3_k7ijo"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1tgyk"]
 resource_name = "Performance Floor"
@@ -231,7 +231,7 @@ data = PackedVector3Array(-1.7763, 0.288, -0.4459, -1.7763, -0.4777, -0.2811, -1
 size = Vector3(3.5525, 3.3589144, 0.16476987)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_bsava"]
-size = Vector3(3, 0.125, 4)
+size = Vector3(3, 0.05, 4.4)
 
 [node name="Skiball" type="Node3D" unique_id=1387333481]
 
@@ -296,4 +296,5 @@ script = ExtResource("3_k7ijo")
 metadata/_custom_type_script = "uid://dt6jraehtxoas"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="KillZone" unique_id=1153424290]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 0)
 shape = SubResource("BoxShape3D_bsava")
