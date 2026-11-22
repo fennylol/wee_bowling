@@ -1,5 +1,6 @@
 [gd_scene format=4 uid="uid://wq1m627g0syn"]
 
+[ext_resource type="Script" uid="uid://dvexunhlqth4v" path="res://map/decorations/skiball/target.gd" id="1_ep6ri"]
 [ext_resource type="Script" uid="uid://0o26idh2qoqq" path="res://game_objects/trigger/message_trigger.gd" id="1_plq48"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_p6hkb"]
@@ -48,6 +49,11 @@ radius = 0.2
 [node name="target" type="MeshInstance3D" unique_id=1258246184]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0, 0, 0)
 mesh = SubResource("ArrayMesh_ye0gv")
+script = ExtResource("1_ep6ri")
+
+[node name="MouthForScreaming" type="AudioStreamPlayer3D" parent="." unique_id=321258707]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1.0000001, 0, 0, 0)
+unit_size = 15.0
 
 [node name="100" type="Area3D" parent="." unique_id=382750965]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.15, 0, 1.4000001)
