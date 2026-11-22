@@ -1,12 +1,12 @@
 extends MeshInstance3D
 
+@onready var _010  : MessageTrigger      = $"10"
+@onready var _020  : MessageTrigger      = $"20"
+@onready var _030  : MessageTrigger      = $"30"
+@onready var _040  : MessageTrigger      = $"40"
+@onready var _050  : MessageTrigger      = $"50"
 @onready var _100  : MessageTrigger      = $"100"
 @onready var _101  : MessageTrigger      = $"101"
-@onready var _050  : MessageTrigger      = $"50"
-@onready var _040  : MessageTrigger      = $"40"
-@onready var _030  : MessageTrigger      = $"30"
-@onready var _020  : MessageTrigger      = $"20"
-@onready var _010  : MessageTrigger      = $"10"
 @onready var _Mouth: AudioStreamPlayer3D = $MouthForScreaming
 
 const PLOP_SOUNDS: Array[AudioStream] = [

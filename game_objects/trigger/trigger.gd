@@ -4,6 +4,7 @@ class_name Trigger
 signal gameobject_entered(game_object: GameObject)
 signal ball_entered(ball: Ball)
 signal pin_entered(pin: Pin)
+#signal player_entered
 
 func _ready() -> void:
    body_entered.connect(

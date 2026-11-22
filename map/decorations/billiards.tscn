@@ -125,30 +125,32 @@ data = PackedVector3Array(4.9999, -0.1776, 0.92359996, 4.6754, 0.072399996, 0.70
 
 [node name="billiards" type="Node3D" unique_id=1615314503]
 
-[node name="billiards_bounding_box_051" type="MeshInstance3D" parent="." unique_id=1347836086]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 46.057106, -0.05409029, -35.237488)
+[node name="bottom" type="MeshInstance3D" parent="." unique_id=1347836086]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.057106018, -0.05409029, -0.2374878)
+visible = false
 mesh = SubResource("ArrayMesh_6t0jk")
 
-[node name="billiards_concave_002" type="MeshInstance3D" parent="." unique_id=1267733960]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 46.057095, 0.5970845, -35.237484)
+[node name="walls" type="MeshInstance3D" parent="." unique_id=1267733960]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.057094574, 0.5970845, -0.23748398)
 mesh = SubResource("ArrayMesh_kmh20")
 
-[node name="billiards_concave_004" type="MeshInstance3D" parent="." unique_id=378432130]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 46.05711, 0.17759769, -35.237484)
+[node name="felt" type="MeshInstance3D" parent="." unique_id=378432130]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.057109833, 0.17759769, -0.23748398)
 mesh = SubResource("ArrayMesh_p62kl")
 
 [node name="18" type="StaticBody3D" parent="." unique_id=1108769175]
 collision_layer = 129
 collision_mask = 129
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="18" unique_id=2015875451]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 46.057106, -0.05409029, -35.237488)
+[node name="bottom" type="CollisionShape3D" parent="18" unique_id=2015875451]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.057106018, -0.05409029, -0.2374878)
 shape = SubResource("BoxShape3D_c02qy")
+disabled = true
 
-[node name="CollisionShape3D2" type="CollisionShape3D" parent="18" unique_id=2082673447]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 46.057095, 0.5970845, -35.237484)
+[node name="walls" type="CollisionShape3D" parent="18" unique_id=2082673447]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.057094574, 0.5970845, -0.23748398)
 shape = SubResource("ConcavePolygonShape3D_a2ey7")
 
-[node name="CollisionShape3D3" type="CollisionShape3D" parent="18" unique_id=322149446]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 46.05711, 0.17759769, -35.237484)
+[node name="felt" type="CollisionShape3D" parent="18" unique_id=322149446]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.057109833, 0.17759769, -0.23748398)
 shape = SubResource("ConcavePolygonShape3D_uu3or")
