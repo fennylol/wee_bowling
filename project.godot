@@ -13,6 +13,7 @@ config_version=5
 config/name="wee_bowling"
 run/main_scene="uid://gliypqhesgkr"
 config/features=PackedStringArray("4.7", "Mobile")
+boot_splash/image="uid://jowtmtejb166"
 config/icon="uid://jowtmtejb166"
 config/main_scene=""
 

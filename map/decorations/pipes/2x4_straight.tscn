@@ -32,12 +32,12 @@ collision_mask = 129
 [node name="2x4Straight" type="CollisionShape3D" parent="18" unique_id=1801113543]
 shape = SubResource("ConcavePolygonShape3D_xfr6h")
 
-[node name="Label3D" type="Label3D" parent="." unique_id=788991576]
+[node name="Arrow" type="Label3D" parent="." unique_id=788991576]
 transform = Transform3D(3.8213705e-15, -4.3711385e-08, 1.8499999, -1.9999999, -4.3711385e-08, 0, 8.742277e-08, -0.99999994, -8.0866066e-08, 1.25, 0, -5.4639237e-08)
 text = "⬳"
 font_size = 128
 
-[node name="Label3D2" type="Label3D" parent="." unique_id=1680116969]
+[node name="Arrow2" type="Label3D" parent="." unique_id=1680116969]
 transform = Transform3D(3.8213705e-15, -4.3711385e-08, 1.8499999, -1.9999999, -4.3711385e-08, 0, 8.742277e-08, -0.99999994, -8.0866066e-08, -1.25, 0, 5.4639237e-08)
 text = "⬳"
 font_size = 128

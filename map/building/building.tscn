@@ -10,10 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://r2jqi5jlxsba" path="res://map/decorations/lounging/lounge.tscn" id="8_naa8d"]
 [ext_resource type="PackedScene" uid="uid://b8rrnfcl2vn1b" path="res://map/lanes/duel_lanes/duel_lane.tscn" id="9_jcf1r"]
 [ext_resource type="PackedScene" uid="uid://dei40816j12qd" path="res://map/decorations/skiball/skiball.tscn" id="10_wqehg"]
-[ext_resource type="PackedScene" uid="uid://cwn667rigp61d" path="res://map/decorations/billiards.tscn" id="11_6fcab"]
-[ext_resource type="PackedScene" uid="uid://c7sdjx08nfyio" path="res://map/decorations/pipes/2x4_straight.tscn" id="12_88m12"]
-[ext_resource type="PackedScene" uid="uid://d31layahewbh0" path="res://map/decorations/pipes/2x2_curve.tscn" id="13_uu6kn"]
-[ext_resource type="PackedScene" uid="uid://c4ei6dfmdg78w" path="res://map/decorations/pipes/2x4_junction.tscn" id="14_uu6kn"]
+[ext_resource type="PackedScene" uid="uid://cxp0nkj0h3rtd" path="res://map/decorations/adventure_park/AdventurePark.tscn" id="11_6fcab"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cuqkh"]
 resource_name = "Base Floor"
@@ -173,7 +170,7 @@ size = Vector3(49, 10.5, 1)
 size = Vector3(1, 15, 42)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_c4m75"]
-size = Vector3(56, 5, 1)
+size = Vector3(56, 4, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_h30sa"]
 size = Vector3(1, 4, 19)
@@ -1457,7 +1454,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 55.5, 7.5, -92)
 shape = SubResource("BoxShape3D_jb1cn")
 
 [node name="laneroom_roof" type="CollisionShape3D" parent="walls/18" unique_id=317786763]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 9.5, -50.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 9, -50.5)
 shape = SubResource("BoxShape3D_c4m75")
 
 [node name="laneroom_roof2" type="CollisionShape3D" parent="walls/18" unique_id=370634657]
@@ -1783,42 +1780,5 @@ transform = Transform3D(1.25, 0, 0, 0, 1.25, 0, 0, 0, 1.25, 3, 0, -2)
 [node name="Skiball4" parent="SkiballZone" unique_id=638195071 instance=ExtResource("10_wqehg")]
 transform = Transform3D(1.25, 0, 0, 0, 1.25, 0, 0, 0, 1.25, -3, 0, -2)
 
-[node name="billiards" parent="." unique_id=1615314503 instance=ExtResource("11_6fcab")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 49.007214, -1.9073486e-06, -34.926163)
-
-[node name="2x4Straight" parent="." unique_id=1511394883 instance=ExtResource("12_88m12")]
-transform = Transform3D(1.5, 0, 0, 0, -6.556708e-08, -1.5, 0, 1.5, -6.556708e-08, 21, 2, -27)
-
-[node name="2x4Straight5" parent="." unique_id=60839486 instance=ExtResource("12_88m12")]
-transform = Transform3D(-1.5, -1.3113416e-07, 5.732056e-15, 0, -6.556708e-08, -1.5, 1.3113416e-07, -1.5, 6.556708e-08, 27, 8, -27)
-
-[node name="2x4Straight6" parent="." unique_id=699806952 instance=ExtResource("12_88m12")]
-transform = Transform3D(-1.4488887, 0.38822854, -1.6970008e-08, 0, -6.556708e-08, -1.5, -0.38822854, -1.4488887, 6.3332934e-08, 27.179228, 1.9999971, -34.0969)
-
-[node name="2x4Straight7" parent="." unique_id=694072444 instance=ExtResource("12_88m12")]
-transform = Transform3D(-1.0559264, 0.90621567, 0.56017154, 0.6127405, 1.1617786, -0.7244443, -0.8715321, -0.2811467, -1.1880186, 37.932022, 4.986908, -24.834522)
-
-[node name="2x2Curve" parent="." unique_id=1195218514 instance=ExtResource("13_uu6kn")]
-transform = Transform3D(-1.5, 0, -1.3113416e-07, -1.3113416e-07, -6.556708e-08, 1.5, -5.732056e-15, 1.5, 6.556708e-08, 21, 2, -33)
-
-[node name="2x2Curve2" parent="." unique_id=64449637 instance=ExtResource("13_uu6kn")]
-transform = Transform3D(6.556708e-08, 5.732056e-15, 1.5, 1.3113416e-07, -1.5, 0, 1.5, 1.3113416e-07, -6.556708e-08, 21, 8, -33)
-
-[node name="2x2Curve4" parent="." unique_id=14003853 instance=ExtResource("13_uu6kn")]
-transform = Transform3D(1.3113416e-07, -1.5, -6.556708e-08, -6.5567086e-08, 6.556707e-08, -1.5, 1.5, 1.3113416e-07, -6.556708e-08, 33, 8, -33)
-
-[node name="2x4Straight4" parent="." unique_id=323260387 instance=ExtResource("12_88m12")]
-transform = Transform3D(-1.5, 1.3113416e-07, -5.732056e-15, 0, -6.556708e-08, -1.5, -1.3113416e-07, -1.5, 6.556708e-08, 33, 2, -27)
-
-[node name="2x2Curve3" parent="." unique_id=528153140 instance=ExtResource("13_uu6kn")]
-transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 33, 2, -33)
-
-[node name="2x2Curve5" parent="." unique_id=1332676760 instance=ExtResource("14_uu6kn")]
-transform = Transform3D(-6.556708e-08, -1.5, 0, 1.5, -6.556708e-08, 0, 0, 0, 1.5, 27, 8, -33)
-
-[node name="2x2Curve6" parent="." unique_id=1669612131 instance=ExtResource("14_uu6kn")]
-transform = Transform3D(-1.4999999, 6.556707e-08, 0, 2.3294106e-22, 6.556709e-08, -1.4999999, -6.556708e-08, -1.5, -6.556708e-08, 27, 8, -21)
-
-[node name="2x2Curve7" parent="." unique_id=62857142 instance=ExtResource("14_uu6kn")]
-transform = Transform3D(-1.8835593e-08, 0.7500001, 1.299038, -1.5, 6.556708e-08, -5.9604645e-08, -8.658508e-08, -1.2990384, 0.74999994, 10, 2, -36)
-IsOutputtingSide = true
+[node name="AdventurePark" parent="." unique_id=38090645 instance=ExtResource("11_6fcab")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38, 0, -37)

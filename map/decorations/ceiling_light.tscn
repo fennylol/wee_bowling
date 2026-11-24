@@ -10,13 +10,13 @@ material = SubResource("StandardMaterial3D_gptfh")
 
 [node name="lights" type="Node3D" unique_id=1531389414]
 
-[node name="AreaLight3D" type="AreaLight3D" parent="." unique_id=915515957]
+[node name="AreaLight3D" type="SpotLight3D" parent="." unique_id=1057253827]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, -0.2, 0)
-light_color = Color(1, 0.83137256, 0.6509804, 1)
-light_energy = 40.0
-light_indirect_energy = 40.0
-area_range = 10.0
-area_size = Vector2(10, 10)
+light_color = Color(1, 0.6296487, 0.04231341, 1)
+light_energy = 0.355
+spot_range = 30.0
+spot_attenuation = 0.25
+spot_angle = 55.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=211183085]
 transform = Transform3D(1, 0, 0, 0, -1, 8.742278e-08, 0, -8.742278e-08, -1, 0, -0.05, 0)

@@ -1,6 +1,6 @@
 [gd_resource type="ArrayMesh" format=4 uid="uid://dj57gvb2yj7na"]
 
-[ext_resource type="Texture2D" uid="uid://ct63wkuuersft" path="res://_RAWS/bandit_body.png" id="1_n6qf6"]
+[ext_resource type="Texture2D" uid="uid://ct63wkuuersft" path="res://_RAWS/bandit_body/bandit_body.png" id="1_n6qf6"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_303ia"]
 resource_name = "body"

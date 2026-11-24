@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://bij1078rs0rbd"
-path="res://.godot/imported/2x2_slant_pipe.glb-52ef75775bf61f6a2bfda13205484ce4.scn"
+path="res://.godot/imported/2x2_slant_pipe.glb-a9864481799e9275e55dfbe012ef0e1d.scn"
 
 [deps]
 
-source_file="res://_RAWS/2x2_slant_pipe.glb"
-dest_files=["res://.godot/imported/2x2_slant_pipe.glb-52ef75775bf61f6a2bfda13205484ce4.scn"]
+source_file="res://_RAWS/pipes/2x2_slant_pipe.glb"
+dest_files=["res://.godot/imported/2x2_slant_pipe.glb-a9864481799e9275e55dfbe012ef0e1d.scn"]
 
 [params]
 

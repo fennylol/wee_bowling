@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://bib0db2gsouhh"
-path="res://.godot/imported/2x4_T_pipe.glb-b35639e65970fb83310e8a1139d910c1.scn"
+uid="uid://cd6xgnq7kyia5"
+path="res://.godot/imported/4_1_shrinker_pipe.glb-42dc492df9c5e5c9c0527e2a63448980.scn"
 
 [deps]
 
-source_file="res://_RAWS/2x4_T_pipe.glb"
-dest_files=["res://.godot/imported/2x4_T_pipe.glb-b35639e65970fb83310e8a1139d910c1.scn"]
+source_file="res://_RAWS/pipes/4_1_shrinker_pipe.glb"
+dest_files=["res://.godot/imported/4_1_shrinker_pipe.glb-42dc492df9c5e5c9c0527e2a63448980.scn"]
 
 [params]
 

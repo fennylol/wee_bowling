@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://b4qfpr0e351nd"
-path="res://.godot/imported/2x2_curve_pipe.glb-893dfb640a1eeb565bc544626ca8b907.scn"
+path="res://.godot/imported/2x2_curve_pipe.glb-dbda9fd790270793cd140a36ef9ea94a.scn"
 
 [deps]
 
-source_file="res://_RAWS/2x2_curve_pipe.glb"
-dest_files=["res://.godot/imported/2x2_curve_pipe.glb-893dfb640a1eeb565bc544626ca8b907.scn"]
+source_file="res://_RAWS/pipes/2x2_curve_pipe.glb"
+dest_files=["res://.godot/imported/2x2_curve_pipe.glb-dbda9fd790270793cd140a36ef9ea94a.scn"]
 
 [params]
 
